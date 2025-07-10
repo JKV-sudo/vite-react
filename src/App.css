@@ -22,6 +22,7 @@ body {
   width: 100%;
 }
 
+/* App shell centering */
 .App {
   min-height: 100vh;
   background: #000000;
@@ -32,12 +33,27 @@ body {
   padding: 0;
 }
 
-/* Main element centering */
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+/* Section container centering */
+.hero-container,
+.services-container,
+.about-container,
+.portfolio-container,
+.contact-container,
+.footer-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
 }
 
 /* Dark Theme Color Variables */

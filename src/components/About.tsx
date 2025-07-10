@@ -449,22 +449,32 @@ const About: React.FC = () => {
                   scale: 1.02,
                   boxShadow: "0 15px 40px rgba(157, 78, 221, 0.4)",
                 }}
-                animate={{
-                  boxShadow: [
-                    "0 0 20px rgba(157, 78, 221, 0.3)",
-                    "0 0 30px rgba(255, 0, 64, 0.4)",
-                    "0 0 20px rgba(157, 78, 221, 0.3)",
-                  ],
-                }}
                 transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: index * 0.5,
+                  duration: 0.8,
+                  delay: 1.8 + index * 0.2,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
                 }}
                 viewport={{ once: true }}
               >
-                <p className="testimonial-text">"{testimonial.text}"</p>
+                <motion.p
+                  className="testimonial-text"
+                  animate={{
+                    textShadow: [
+                      "0 0 5px rgba(157, 78, 221, 0.3)",
+                      "0 0 10px rgba(157, 78, 221, 0.5)",
+                      "0 0 5px rgba(157, 78, 221, 0.3)",
+                    ],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  "{testimonial.text}"
+                </motion.p>
                 <div className="testimonial-author">
                   <strong>{testimonial.author}</strong>
                   <span>{testimonial.company}</span>

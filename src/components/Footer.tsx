@@ -203,116 +203,97 @@ const Footer: React.FC = () => {
                   x2="100%"
                   y2="100%"
                 >
-                  <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.3" />
-                  <stop offset="50%" stopColor="#39ff14" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#ff006e" stopOpacity="0.3" />
+                  <stop offset="0%" stopColor="#00d4ff" />
+                  <stop offset="50%" stopColor="#39ff14" />
+                  <stop offset="100%" stopColor="#ff006e" />
                 </linearGradient>
               </defs>
-              {/* Neural connections - create a network pattern */}
-              <motion.path
-                d="M 50 50 L 150 50 L 250 50 L 350 50 M 50 50 L 100 100 L 150 50 M 150 50 L 200 100 L 250 50 M 250 50 L 300 100 L 350 50 M 50 150 L 150 150 L 250 150 L 350 150 M 50 150 L 100 100 L 150 150 M 150 150 L 200 100 L 250 150 M 250 150 L 300 100 L 350 150 M 100 100 L 200 100 L 300 100"
+              {/* Neural connections */}
+              <path
+                d="M50,50 L150,30 L250,70 L350,50 M50,100 L150,80 L250,120 L350,100 M50,150 L150,130 L250,170 L350,150"
                 stroke="url(#neuralGradient)"
                 strokeWidth="2"
                 fill="none"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 0.8 }}
-                transition={{ duration: 2, delay: 0.5 }}
+                opacity="0.6"
+                className="neural-path"
               />
             </svg>
-
             {/* Neural nodes */}
-            <div className="neural-nodes">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="neural-node"
-                  style={{
-                    left: `${(i % 4) * 25 + 12.5}%`,
-                    top: `${Math.floor(i / 4) * 50 + 25}%`,
-                  }}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{
-                    scale: 1.3,
-                    boxShadow: "0 0 20px rgba(0, 212, 255, 0.8)",
-                  }}
-                />
-              ))}
-            </div>
+            {Array.from({ length: 12 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="neural-node"
+                style={{
+                  position: "absolute",
+                  left: `${50 + (i % 4) * 100}px`,
+                  top: `${50 + Math.floor(i / 4) * 50}px`,
+                  width: "8px",
+                  height: "8px",
+                  background:
+                    i % 3 === 0
+                      ? "#00d4ff"
+                      : i % 3 === 1
+                      ? "#39ff14"
+                      : "#ff006e",
+                  borderRadius: "50%",
+                  boxShadow: `0 0 10px ${
+                    i % 3 === 0
+                      ? "#00d4ff"
+                      : i % 3 === 1
+                      ? "#39ff14"
+                      : "#ff006e"
+                  }`,
+                }}
+                animate={{
+                  scale: [1, 1.5, 1],
+                  opacity: [0.6, 1, 0.6],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
           </div>
+
           <motion.h2
             className="footer-title"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            animate={{
+              textShadow: [
+                "0 0 10px #00d4ff",
+                "0 0 20px #39ff14",
+                "0 0 30px #ff006e",
+                "0 0 20px #39ff14",
+                "0 0 10px #00d4ff",
+              ],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.3,
+            }}
           >
-            <motion.span
-              className="title-text"
-              animate={{
-                textShadow: [
-                  "0 0 10px #00d4ff",
-                  "0 0 20px #39ff14",
-                  "0 0 30px #ff006e",
-                  "0 0 20px #39ff14",
-                  "0 0 10px #00d4ff",
-                ],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              {"Digital Nexus Terminal".split("").map((char, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.1,
-                    delay: 0.5 + index * 0.05,
-                    ease: "easeOut",
-                  }}
-                  style={{ display: "inline-block" }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              ))}
-            </motion.span>
-            <motion.div
-              className="title-glitch"
-              animate={{
-                opacity: [0, 1, 0],
-                x: [0, -2, 2, 0],
-                y: [0, 1, -1, 0],
-              }}
-              transition={{
-                duration: 0.2,
-                repeat: Infinity,
-                repeatDelay: 3,
-                ease: "easeInOut",
-              }}
-            >
-              Digital Nexus Terminal
-            </motion.div>
-            <motion.div
-              className="title-glitch-2"
-              animate={{
-                opacity: [0, 0.5, 0],
-                x: [0, 2, -2, 0],
-                y: [0, -1, 1, 0],
-              }}
-              transition={{
-                duration: 0.15,
-                repeat: Infinity,
-                repeatDelay: 4,
-                ease: "easeInOut",
-              }}
-            >
-              Digital Nexus Terminal
-            </motion.div>
+            {"Digital Nexus Terminal".split("").map((char, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.1,
+                  delay: 0.5 + index * 0.05,
+                }}
+                style={{ display: "inline-block" }}
+              >
+                {char}
+              </motion.span>
+            ))}
           </motion.h2>
+
           <motion.p
             className="footer-subtitle"
             initial={{ opacity: 0, y: 20 }}
@@ -335,147 +316,42 @@ const Footer: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        {/* Main Footer Content */}
+        {/* Footer Content */}
         <div className="footer-content">
-          {/* Company Information */}
+          {/* Company Info */}
           <motion.div
-            className="footer-section company-info"
+            className="footer-section"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h3 className="section-title">Split-Vision</h3>
+            <motion.h3
+              className="section-title"
+              animate={{
+                textShadow: [
+                  "0 0 10px #00d4ff",
+                  "0 0 15px #39ff14",
+                  "0 0 10px #00d4ff",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              Split-Vision
+            </motion.h3>
             <p className="company-description">
               Ihre Vision, unsere Expertise. Wir erschaffen digitale Erlebnisse,
-              die begeistern und Ergebnisse liefern.
+              die im Gedächtnis bleiben.
             </p>
-            <div className="company-details">
-              <div className="detail-item">
-                <span className="detail-icon">📍</span>
-                <span>Berlin, Deutschland</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-icon">📧</span>
-                <span>hello@split-vision.de</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-icon">📱</span>
-                <span>+49 123 456 789</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Quick Links */}
-          <motion.div
-            className="footer-section quick-links"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <h3 className="section-title">Quick Links</h3>
-            <ul className="links-list">
-              {quickLinks.map((link, index) => (
-                <motion.li
-                  key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <a href={link.href} className="footer-link">
-                    {link.name}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Services */}
-          <motion.div
-            className="footer-section services-list"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <h3 className="section-title">Services</h3>
-            <ul className="services-list">
-              {services.map((service, index) => (
-                <motion.li
-                  key={service}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <span className="service-item">{service}</span>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Newsletter */}
-          <motion.div
-            className="footer-section newsletter"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <h3 className="section-title">Stay Connected</h3>
-            <p className="newsletter-description">
-              Erhalten Sie die neuesten Updates und digitale Innovationen direkt
-              in Ihr Postfach.
-            </p>
-
-            <AnimatePresence>
-              {newsletterSuccess && (
-                <motion.div
-                  className="newsletter-success"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="success-icon">✅</div>
-                  <span>Newsletter erfolgreich abonniert!</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <form onSubmit={handleNewsletterSubmit} className="newsletter-form">
-              <div className="input-group">
-                <input
-                  type="email"
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder="Ihre E-Mail-Adresse"
-                  required
-                  className="newsletter-input"
-                />
-                <motion.button
-                  type="submit"
-                  className="newsletter-btn"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 0 20px rgba(57, 255, 20, 0.5)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Abonnieren
-                </motion.button>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-
-        {/* Social Media & Copyright */}
-        <div className="footer-bottom">
-          {/* Social Media */}
-          <motion.div
-            className="social-media"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
-          >
-            <h4 className="social-title">Follow Us</h4>
-            <div className="social-links">
+            <motion.div
+              className="social-links"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={social.name}
@@ -483,70 +359,257 @@ const Footer: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-link"
-                  style={{ borderColor: social.color }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{
                     scale: 1.2,
                     boxShadow: `0 0 20px ${social.color}40`,
                   }}
+                  whileTap={{ scale: 0.9 }}
+                  animate={{
+                    boxShadow: [
+                      `0 0 10px ${social.color}30`,
+                      `0 0 20px ${social.color}50`,
+                      `0 0 10px ${social.color}30`,
+                    ],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.2,
+                  }}
                 >
                   <span className="social-icon">{social.icon}</span>
-                  <span className="social-name">{social.name}</span>
                 </motion.a>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Copyright */}
+          {/* Quick Links */}
           <motion.div
-            className="copyright"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
+            className="footer-section"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <p className="copyright-text">
-              © 2024 Split-Vision. Alle Rechte vorbehalten. |
-              <a href="/privacy" className="footer-link">
-                {" "}
-                Datenschutz
-              </a>{" "}
-              |
-              <a href="/terms" className="footer-link">
-                {" "}
-                AGB
-              </a>{" "}
-              |
-              <a href="/imprint" className="footer-link">
-                {" "}
-                Impressum
-              </a>
+            <motion.h3
+              className="section-title"
+              animate={{
+                textShadow: [
+                  "0 0 10px #39ff14",
+                  "0 0 15px #00d4ff",
+                  "0 0 10px #39ff14",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1,
+              }}
+            >
+              Quick Links
+            </motion.h3>
+            <ul className="footer-links">
+              {quickLinks.map((link, index) => (
+                <motion.li
+                  key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                >
+                  <motion.a
+                    href={link.href}
+                    className="footer-link"
+                    whileHover={{
+                      x: 5,
+                      textShadow: "0 0 10px #39ff14",
+                    }}
+                  >
+                    {link.name}
+                  </motion.a>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Services */}
+          <motion.div
+            className="footer-section"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <motion.h3
+              className="section-title"
+              animate={{
+                textShadow: [
+                  "0 0 10px #ff006e",
+                  "0 0 15px #39ff14",
+                  "0 0 10px #ff006e",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2,
+              }}
+            >
+              Services
+            </motion.h3>
+            <ul className="footer-links">
+              {services.map((service, index) => (
+                <motion.li
+                  key={service}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                >
+                  <motion.span
+                    className="footer-link"
+                    whileHover={{
+                      x: 5,
+                      textShadow: "0 0 10px #ff006e",
+                    }}
+                  >
+                    {service}
+                  </motion.span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Newsletter */}
+          <motion.div
+            className="footer-section"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <motion.h3
+              className="section-title"
+              animate={{
+                textShadow: [
+                  "0 0 10px #9d4edd",
+                  "0 0 15px #00d4ff",
+                  "0 0 10px #9d4edd",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 3,
+              }}
+            >
+              Newsletter
+            </motion.h3>
+            <p className="newsletter-description">
+              Bleiben Sie auf dem Laufenden mit unseren neuesten Projekten und
+              Insights.
             </p>
+            <motion.form
+              className="newsletter-form"
+              onSubmit={handleNewsletterSubmit}
+              whileHover={{ scale: 1.02 }}
+            >
+              <motion.input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Ihre E-Mail Adresse"
+                className="newsletter-input"
+                whileFocus={{
+                  boxShadow: "0 0 20px rgba(0, 212, 255, 0.5)",
+                }}
+              />
+              <motion.button
+                type="submit"
+                className="newsletter-button"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 20px rgba(57, 255, 20, 0.5)",
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Abonnieren
+              </motion.button>
+            </motion.form>
+            <AnimatePresence>
+              {newsletterSuccess && (
+                <motion.div
+                  className="newsletter-success"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  ✅ Newsletter erfolgreich abonniert!
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
-      </div>
 
-      {/* Back to Top Button */}
-      <AnimatePresence>
-        {showBackToTop && (
-          <motion.button
-            className="back-to-top"
-            onClick={scrollToTop}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0 0 30px rgba(0, 212, 255, 0.7)",
-            }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <span className="back-to-top-icon">↑</span>
-            <span className="back-to-top-text">Top</span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+        {/* Footer Bottom */}
+        <motion.div
+          className="footer-bottom"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          <div className="footer-bottom-content">
+            <p className="copyright">
+              © 2024 Split-Vision. Alle Rechte vorbehalten.
+            </p>
+            <div className="footer-bottom-links">
+              <a href="#" className="footer-bottom-link">
+                Datenschutz
+              </a>
+              <a href="#" className="footer-bottom-link">
+                Impressum
+              </a>
+              <a href="#" className="footer-bottom-link">
+                AGB
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Back to Top Portal */}
+        <AnimatePresence>
+          {showBackToTop && (
+            <motion.button
+              className="back-to-top"
+              onClick={scrollToTop}
+              initial={{ opacity: 0, scale: 0, rotate: -180 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                rotate: 0,
+                boxShadow: [
+                  "0 0 20px rgba(0, 212, 255, 0.4)",
+                  "0 0 30px rgba(57, 255, 20, 0.5)",
+                  "0 0 20px rgba(0, 212, 255, 0.4)",
+                ],
+              }}
+              exit={{ opacity: 0, scale: 0, rotate: 180 }}
+              whileHover={{
+                scale: 1.1,
+                boxShadow: "0 0 30px rgba(0, 212, 255, 0.6)",
+              }}
+              whileTap={{ scale: 0.9 }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <span className="portal-icon">🚀</span>
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
     </footer>
   );
 };

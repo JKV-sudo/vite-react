@@ -272,225 +272,221 @@ const Hero: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        <div className="hero-content">
-          {/* Animated Logo */}
-          <motion.div
-            className="hero-logo"
-            variants={logoVariants}
-            whileHover="hover"
-            ref={logoRef}
-            style={{ position: "relative", display: "inline-block" }}
-          >
-            {/* RGB Split Layers */}
-            <img
-              src={logo}
-              alt="Split-Vision Logo"
-              className="hero-logo-img"
-              style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                filter: "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
-                opacity: 0.7,
-                mixBlendMode: "screen",
-                borderRadius: "50%",
-                transform: "translate(2px, 0) scale(1.01)",
-                zIndex: 2,
-              }}
-            />
-            <img
-              src={logo}
-              alt="Split-Vision Logo"
-              className="hero-logo-img"
-              style={{
-                position: "absolute",
-                borderRadius: "50%",
+        {/* Animated Logo */}
+        <motion.div
+          className="hero-logo"
+          variants={logoVariants}
+          whileHover="hover"
+          ref={logoRef}
+          style={{ position: "relative", display: "inline-block" }}
+        >
+          {/* RGB Split Layers */}
+          <img
+            src={logo}
+            alt="Split-Vision Logo"
+            className="hero-logo-img"
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              filter: "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
+              opacity: 0.7,
+              mixBlendMode: "screen",
+              borderRadius: "50%",
+              transform: "translate(2px, 0) scale(1.01)",
+              zIndex: 2,
+            }}
+          />
+          <img
+            src={logo}
+            alt="Split-Vision Logo"
+            className="hero-logo-img"
+            style={{
+              position: "absolute",
+              borderRadius: "50%",
+              left: 0,
+              top: 0,
+              filter: "drop-shadow(0 0 20px #ff0040) brightness(1.1)",
+              opacity: 0.5,
+              mixBlendMode: "screen",
+              transform: "translate(-2px, 0) scale(1.01)",
+              zIndex: 2,
+            }}
+          />
+          {/* Main Logo */}
+          <motion.img
+            src={logo}
+            alt="Split-Vision Logo"
+            className="hero-logo-img"
+            animate={{
+              filter: [
+                "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
+                "drop-shadow(0 0 30px #39ff14) brightness(1.5)",
+                "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
+              ],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{ position: "relative", zIndex: 3, borderRadius: "50%" }}
+          />
+          {/* Scanline Overlay */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+              borderRadius: "50%",
+              zIndex: 4,
+              background:
+                "repeating-linear-gradient(180deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.15) 2px, transparent 4px, transparent 8px)",
+              mixBlendMode: "overlay",
+              animation: "scanlineMove 2s linear infinite",
+            }}
+          />
+        </motion.div>
 
-                left: 0,
-                top: 0,
-                filter: "drop-shadow(0 0 20px #ff0040) brightness(1.1)",
-                opacity: 0.5,
-                mixBlendMode: "screen",
-                transform: "translate(-2px, 0) scale(1.01)",
-                zIndex: 2,
-              }}
-            />
-            {/* Main Logo */}
-            <motion.img
-              src={logo}
-              alt="Split-Vision Logo"
-              className="hero-logo-img"
+        {/* Animated Main Headline */}
+        <motion.h1 className="hero-title" variants={itemVariants}>
+          <motion.span
+            className="hero-title-main"
+            variants={titleVariants}
+            animate={{
+              textShadow: [
+                "0 0 10px #00d4ff",
+                "0 0 20px #39ff14",
+                "0 0 10px #00d4ff",
+              ],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            Split-Vision
+          </motion.span>
+          <motion.span
+            className="hero-title-sub"
+            variants={itemVariants}
+            animate={{
+              opacity: [1, 0.8, 1],
+              textShadow: [
+                "0 0 15px #39ff14",
+                "0 0 25px #39ff14",
+                "0 0 15px #39ff14",
+              ],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            Ihre Vision, unsere Expertise
+          </motion.span>
+        </motion.h1>
+
+        {/* Animated Hero Statement */}
+        <motion.p className="hero-description" variants={itemVariants}>
+          Marketing-Agentur für <strong>Web-App Entwicklung</strong>,
+          <strong> Social Media Management</strong> und{" "}
+          <strong>Drohnenaufnahmen</strong>
+        </motion.p>
+
+        {/* Animated Subtext */}
+        <motion.p className="hero-subtext" variants={itemVariants}>
+          Wir erschaffen digitale Erlebnisse, die im Gedächtnis bleiben.
+          Cutting-edge Technologie trifft auf kreative Vision.
+        </motion.p>
+
+        {/* Animated Call-to-Action Buttons */}
+        <motion.div className="hero-cta" variants={itemVariants}>
+          <motion.button
+            onClick={scrollToContact}
+            className="cta-primary"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            <motion.span
               animate={{
-                filter: [
-                  "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
-                  "drop-shadow(0 0 30px #39ff14) brightness(1.5)",
-                  "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+              Projekt starten
+            </motion.span>
+          </motion.button>
+          <motion.button
+            onClick={() => {
+              const element = document.getElementById("services");
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="cta-secondary"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            Unsere Leistungen
+          </motion.button>
+        </motion.div>
+
+        {/* Animated Key Points */}
+        <motion.div className="hero-features" variants={itemVariants}>
+          {[
+            { icon: "🖥️", text: "Web-App Entwicklung" },
+            { icon: "📱", text: "Social Media" },
+            { icon: "🚁", text: "Drohnenaufnahmen" },
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              className="feature"
+              variants={featureVariants}
+              whileHover="hover"
+              custom={index}
+              animate={{
+                boxShadow: [
+                  "0 0 20px rgba(0, 212, 255, 0.3)",
+                  "0 0 30px rgba(57, 255, 20, 0.4)",
+                  "0 0 20px rgba(0, 212, 255, 0.3)",
                 ],
               }}
               transition={{
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
+                delay: index * 0.5,
               }}
-              style={{ position: "relative", zIndex: 3, borderRadius: "50%" }}
-            />
-            {/* Scanline Overlay */}
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none",
-                borderRadius: "50%",
-
-                zIndex: 4,
-                background:
-                  "repeating-linear-gradient(180deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.15) 2px, transparent 4px, transparent 8px)",
-                mixBlendMode: "overlay",
-                animation: "scanlineMove 2s linear infinite",
-              }}
-            />
-          </motion.div>
-
-          {/* Animated Main Headline */}
-          <motion.h1 className="hero-title" variants={itemVariants}>
-            <motion.span
-              className="hero-title-main"
-              variants={titleVariants}
-              animate={{
-                textShadow: [
-                  "0 0 10px #00d4ff",
-                  "0 0 20px #39ff14",
-                  "0 0 10px #00d4ff",
-                ],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              Split-Vision
-            </motion.span>
-            <motion.span
-              className="hero-title-sub"
-              variants={itemVariants}
-              animate={{
-                opacity: [1, 0.8, 1],
-                textShadow: [
-                  "0 0 15px #39ff14",
-                  "0 0 25px #39ff14",
-                  "0 0 15px #39ff14",
-                ],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              Ihre Vision, unsere Expertise
-            </motion.span>
-          </motion.h1>
-
-          {/* Animated Hero Statement */}
-          <motion.p className="hero-description" variants={itemVariants}>
-            Marketing-Agentur für <strong>Web-App Entwicklung</strong>,
-            <strong> Social Media Management</strong> und{" "}
-            <strong>Drohnenaufnahmen</strong>
-          </motion.p>
-
-          {/* Animated Subtext */}
-          <motion.p className="hero-subtext" variants={itemVariants}>
-            Wir erschaffen digitale Erlebnisse, die im Gedächtnis bleiben.
-            Cutting-edge Technologie trifft auf kreative Vision.
-          </motion.p>
-
-          {/* Animated Call-to-Action Buttons */}
-          <motion.div className="hero-cta" variants={itemVariants}>
-            <motion.button
-              onClick={scrollToContact}
-              className="cta-primary"
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
             >
               <motion.span
+                className="feature-icon"
                 animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 5, -5, 0],
                 }}
                 transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              >
-                Projekt starten
-              </motion.span>
-            </motion.button>
-            <motion.button
-              onClick={() => {
-                const element = document.getElementById("services");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="cta-secondary"
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-            >
-              Unsere Leistungen
-            </motion.button>
-          </motion.div>
-
-          {/* Animated Key Points */}
-          <motion.div className="hero-features" variants={itemVariants}>
-            {[
-              { icon: "🖥️", text: "Web-App Entwicklung" },
-              { icon: "📱", text: "Social Media" },
-              { icon: "🚁", text: "Drohnenaufnahmen" },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="feature"
-                variants={featureVariants}
-                whileHover="hover"
-                custom={index}
-                animate={{
-                  boxShadow: [
-                    "0 0 20px rgba(0, 212, 255, 0.3)",
-                    "0 0 30px rgba(57, 255, 20, 0.4)",
-                    "0 0 20px rgba(0, 212, 255, 0.3)",
-                  ],
-                }}
-                transition={{
-                  duration: 3,
+                  duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: index * 0.5,
+                  delay: index * 0.3,
                 }}
               >
-                <motion.span
-                  className="feature-icon"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.3,
-                  }}
-                >
-                  {feature.icon}
-                </motion.span>
-                <span className="feature-text">{feature.text}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+                {feature.icon}
+              </motion.span>
+              <span className="feature-text">{feature.text}</span>
+            </motion.div>
+          ))}
+        </motion.div>
 
         {/* Animated Background Elements */}
         <motion.div className="hero-background">

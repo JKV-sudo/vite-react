@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "split-vision-website",
-  "domains": ["split-vision.de", "www.split-vision.de"],
   "builds": [
     {
       "src": "package.json",

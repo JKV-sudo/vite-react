@@ -64,11 +64,7 @@ const Services: React.FC = () => {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
-    <section
-      id="services"
-      className="services"
-      style={{ position: "relative", overflow: "hidden" }}
-    >
+    <section id="services" className="services">
       {/* Neon Particle Network Background */}
       <Particles
         id="tsparticles-services-network"
@@ -253,7 +249,6 @@ const Services: React.FC = () => {
                         random: true,
                         straight: false,
                         outModes: { default: "destroy" },
-                        // Smoother movement
                         trail: { enable: false },
                       },
                       life: {
@@ -451,78 +446,19 @@ const Services: React.FC = () => {
                             duration: 2,
                             repeat: Infinity,
                             ease: "easeInOut",
-                            delay: featureIndex * 0.2,
+                            delay: featureIndex * 0.1,
                           }}
                         >
-                          ✓
+                          ⚡
                         </motion.span>
                         {feature}
                       </motion.li>
                     ))}
                   </motion.ul>
-                  <motion.button
-                    className="service-contact-btn"
-                    whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0 10px 30px rgba(57, 255, 20, 0.4)",
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    animate={{
-                      background: [
-                        "linear-gradient(45deg, #39ff14, #00d4ff)",
-                        "linear-gradient(45deg, #00d4ff, #39ff14)",
-                        "linear-gradient(45deg, #39ff14, #00d4ff)",
-                      ],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    Beratung anfragen
-                  </motion.button>
                 </motion.div>
               </motion.div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Animated Bottom CTA */}
-        <motion.div
-          className="services-cta"
-          initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          whileHover={{
-            scale: 1.02,
-            boxShadow: "0 15px 40px rgba(0, 212, 255, 0.4)",
-          }}
-          transition={{ duration: 0.8, delay: 1.5 }}
-          viewport={{ once: true }}
-        >
-          <motion.div className="services-cta-text">
-            <h3>Bereit für Ihr nächstes Projekt?</h3>
-            <p>Lassen Sie uns gemeinsam Ihre Vision verwirklichen</p>
-          </motion.div>
-          <motion.button
-            className="services-cta-button"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              boxShadow: [
-                "0 0 20px rgba(0, 212, 255, 0.4)",
-                "0 0 30px rgba(57, 255, 20, 0.4)",
-                "0 0 20px rgba(0, 212, 255, 0.4)",
-              ],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            Kostenloses Beratungsgespräch
-          </motion.button>
         </motion.div>
       </motion.div>
     </section>
