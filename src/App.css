@@ -2635,24 +2635,45 @@ body {
   position: relative;
 }
 
+.neural-network {
+  position: relative;
+  height: 200px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.neural-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
 .neural-nodes {
   position: relative;
-  height: 100px;
-  margin-bottom: 2rem;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
 .neural-node {
   position: absolute;
   width: 12px;
   height: 12px;
-  background: var(--accent-blue);
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-green));
   border-radius: 50%;
   box-shadow: 0 0 20px var(--accent-blue);
   transform-origin: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .neural-node:nth-child(even) {
-  background: var(--accent-green);
+  background: linear-gradient(45deg, var(--accent-green), var(--accent-pink));
   box-shadow: 0 0 20px var(--accent-green);
 }
 
@@ -3121,8 +3142,12 @@ body {
     font-size: 1rem;
   }
 
+  .neural-network {
+    height: 150px;
+  }
+
   .neural-nodes {
-    height: 80px;
+    height: 150px;
   }
 
   .neural-node {

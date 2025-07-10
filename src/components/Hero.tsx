@@ -271,6 +271,7 @@ const Hero: React.FC = () => {
                 filter: "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
                 opacity: 0.7,
                 mixBlendMode: "screen",
+                borderRadius: "50%",
                 transform: "translate(2px, 0) scale(1.01)",
                 zIndex: 2,
               }}
@@ -281,6 +282,8 @@ const Hero: React.FC = () => {
               className="hero-logo-img"
               style={{
                 position: "absolute",
+                borderRadius: "50%",
+
                 left: 0,
                 top: 0,
                 filter: "drop-shadow(0 0 20px #ff0040) brightness(1.1)",
@@ -307,7 +310,8 @@ const Hero: React.FC = () => {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              style={{ position: "relative", zIndex: 3 }}
+              style={{ position: "relative", zIndex: 3,                borderRadius: "50%",
+              }}
             />
             {/* Scanline Overlay */}
             <div
@@ -318,6 +322,8 @@ const Hero: React.FC = () => {
                 width: "100%",
                 height: "100%",
                 pointerEvents: "none",
+                borderRadius: "50%",
+
                 zIndex: 4,
                 background:
                   "repeating-linear-gradient(180deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.15) 2px, transparent 4px, transparent 8px)",

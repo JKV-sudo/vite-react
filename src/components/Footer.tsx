@@ -188,20 +188,58 @@ const Footer: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="neural-nodes">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="neural-node"
-                style={{
-                  left: `${(i % 4) * 25}%`,
-                  top: `${Math.floor(i / 4) * 100}%`,
-                }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+          <div className="neural-network">
+            {/* SVG for neural connections */}
+            <svg
+              className="neural-connections"
+              viewBox="0 0 400 200"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient
+                  id="neuralGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.3" />
+                  <stop offset="50%" stopColor="#39ff14" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#ff006e" stopOpacity="0.3" />
+                </linearGradient>
+              </defs>
+              {/* Neural connections - create a network pattern */}
+              <motion.path
+                d="M 50 50 L 150 50 L 250 50 L 350 50 M 50 50 L 100 100 L 150 50 M 150 50 L 200 100 L 250 50 M 250 50 L 300 100 L 350 50 M 50 150 L 150 150 L 250 150 L 350 150 M 50 150 L 100 100 L 150 150 M 150 150 L 200 100 L 250 150 M 250 150 L 300 100 L 350 150 M 100 100 L 200 100 L 300 100"
+                stroke="url(#neuralGradient)"
+                strokeWidth="2"
+                fill="none"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 0.8 }}
+                transition={{ duration: 2, delay: 0.5 }}
               />
-            ))}
+            </svg>
+
+            {/* Neural nodes */}
+            <div className="neural-nodes">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="neural-node"
+                  style={{
+                    left: `${(i % 4) * 25 + 12.5}%`,
+                    top: `${Math.floor(i / 4) * 50 + 25}%`,
+                  }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  whileHover={{
+                    scale: 1.3,
+                    boxShadow: "0 0 20px rgba(0, 212, 255, 0.8)",
+                  }}
+                />
+              ))}
+            </div>
           </div>
           <h2 className="footer-title">Digital Nexus Terminal</h2>
           <p className="footer-subtitle">
