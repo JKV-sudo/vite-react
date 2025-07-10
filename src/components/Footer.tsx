@@ -241,10 +241,98 @@ const Footer: React.FC = () => {
               ))}
             </div>
           </div>
-          <h2 className="footer-title">Digital Nexus Terminal</h2>
-          <p className="footer-subtitle">
+          <motion.h2
+            className="footer-title"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <motion.span
+              className="title-text"
+              animate={{
+                textShadow: [
+                  "0 0 10px #00d4ff",
+                  "0 0 20px #39ff14",
+                  "0 0 30px #ff006e",
+                  "0 0 20px #39ff14",
+                  "0 0 10px #00d4ff",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              {"Digital Nexus Terminal".split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.1,
+                    delay: 0.5 + index * 0.05,
+                    ease: "easeOut",
+                  }}
+                  style={{ display: "inline-block" }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+            </motion.span>
+            <motion.div
+              className="title-glitch"
+              animate={{
+                opacity: [0, 1, 0],
+                x: [0, -2, 2, 0],
+                y: [0, 1, -1, 0],
+              }}
+              transition={{
+                duration: 0.2,
+                repeat: Infinity,
+                repeatDelay: 3,
+                ease: "easeInOut",
+              }}
+            >
+              Digital Nexus Terminal
+            </motion.div>
+            <motion.div
+              className="title-glitch-2"
+              animate={{
+                opacity: [0, 0.5, 0],
+                x: [0, 2, -2, 0],
+                y: [0, -1, 1, 0],
+              }}
+              transition={{
+                duration: 0.15,
+                repeat: Infinity,
+                repeatDelay: 4,
+                ease: "easeInOut",
+              }}
+            >
+              Digital Nexus Terminal
+            </motion.div>
+          </motion.h2>
+          <motion.p
+            className="footer-subtitle"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            animate={{
+              textShadow: [
+                "0 0 5px rgba(0, 212, 255, 0.3)",
+                "0 0 10px rgba(57, 255, 20, 0.5)",
+                "0 0 5px rgba(0, 212, 255, 0.3)",
+              ],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.8,
+            }}
+          >
             Connect with the future of digital marketing
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Main Footer Content */}

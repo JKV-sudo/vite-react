@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, anticipate } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
@@ -130,7 +130,7 @@ const Services: React.FC = () => {
         className="services-container"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8, staggerChildren: 0.3 }}
+        transition={{ duration: 1.2, staggerChildren: 0.35, ease: anticipate }}
         viewport={{ once: true, amount: 0.3 }}
       >
         {/* Animated Section Header */}
@@ -138,7 +138,7 @@ const Services: React.FC = () => {
           className="services-header"
           initial={{ y: -50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 1, delay: 0.3, ease: anticipate }}
           viewport={{ once: true }}
         >
           <motion.h2
@@ -151,7 +151,7 @@ const Services: React.FC = () => {
               ],
             }}
             transition={{
-              duration: 3,
+              duration: 3.5,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -162,7 +162,7 @@ const Services: React.FC = () => {
             className="services-subtitle"
             initial={{ y: -30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 1, delay: 0.5, ease: anticipate }}
             viewport={{ once: true }}
           >
             Drei Kernbereiche, eine Vision: Ihr digitaler Erfolg
@@ -181,16 +181,22 @@ const Services: React.FC = () => {
                 rotateY: 180,
                 scale: 1.05,
                 y: -20,
-                transition: { duration: 0.6, ease: "easeInOut" },
+                transition: {
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 12,
+                  duration: 0.7,
+                },
               }}
               onHoverStart={() => setHoveredCard(service.id)}
               onHoverEnd={() => setHoveredCard(null)}
               transition={{
-                duration: 1,
-                delay: index * 0.2,
+                duration: 1.2,
+                delay: index * 0.25,
                 type: "spring",
                 stiffness: 100,
                 damping: 15,
+                ease: anticipate,
               }}
               viewport={{ once: true, amount: 0.3 }}
               style={{
@@ -242,11 +248,13 @@ const Services: React.FC = () => {
                       },
                       move: {
                         enable: true,
-                        speed: 8,
+                        speed: 6,
                         direction: "outside",
                         random: true,
                         straight: false,
                         outModes: { default: "destroy" },
+                        // Smoother movement
+                        trail: { enable: false },
                       },
                       life: {
                         duration: { value: 1 },
@@ -279,7 +287,7 @@ const Services: React.FC = () => {
                   ],
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 4.5,
                   repeat: Infinity,
                   ease: "easeInOut",
                   delay: index * 0.7,
@@ -287,7 +295,7 @@ const Services: React.FC = () => {
                 style={{
                   transformStyle: "preserve-3d",
                   transition:
-                    "transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                    "transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                 }}
               >
                 {/* Animated Front of card */}
@@ -309,13 +317,20 @@ const Services: React.FC = () => {
                       scale: 1.3,
                       rotate: 360,
                       filter: "drop-shadow(0 0 20px #39ff14) brightness(1.5)",
+                      transition: {
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 10,
+                        duration: 1,
+                      },
                     }}
                     transition={{
-                      duration: 0.8,
+                      duration: 1.2,
                       delay: 0.5 + index * 0.1,
                       type: "spring",
                       stiffness: 200,
                       damping: 10,
+                      ease: anticipate,
                     }}
                     animate={{
                       filter: [
@@ -338,7 +353,11 @@ const Services: React.FC = () => {
                     className="service-title"
                     initial={{ y: -20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.7 + index * 0.1,
+                      ease: anticipate,
+                    }}
                     viewport={{ once: true }}
                   >
                     {service.title}
@@ -347,7 +366,11 @@ const Services: React.FC = () => {
                     className="service-description"
                     initial={{ y: -20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.8 + index * 0.1,
+                      ease: anticipate,
+                    }}
                     viewport={{ once: true }}
                   >
                     {service.description}
@@ -359,7 +382,7 @@ const Services: React.FC = () => {
                       scale: [1, 1.1, 1],
                     }}
                     transition={{
-                      duration: 2,
+                      duration: 2.5,
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
@@ -372,7 +395,7 @@ const Services: React.FC = () => {
                         color: ["#00d4ff", "#39ff14", "#00d4ff"],
                       }}
                       transition={{
-                        duration: 1.5,
+                        duration: 2,
                         repeat: Infinity,
                         ease: "easeInOut",
                       }}

@@ -19,7 +19,8 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .App {
@@ -27,7 +28,8 @@ body {
   background: #000000;
   position: relative;
   width: 100%;
-  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
 }
 
@@ -335,20 +337,23 @@ body {
   padding: 140px 0 100px;
   background: var(--bg-primary);
   position: relative;
-  overflow: hidden;
   min-height: 100vh;
   width: 100%;
+  max-width: 100vw;
   display: flex;
   align-items: center;
   z-index: 1;
+  justify-content: center;
 }
 
 .hero-container {
-  max-width: none;
-  margin: 0;
-  padding: 0 4rem;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 2rem;
   position: relative;
   z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-content {
@@ -385,7 +390,6 @@ body {
   margin-bottom: 2rem;
   position: relative;
 }
-
 .hero-title-main {
   display: block;
   font-size: 4.5rem;
@@ -671,6 +675,7 @@ body {
   background: var(--bg-secondary);
   position: relative;
   width: 100%;
+  max-width: 100vw;
 }
 
 .services::before {
@@ -699,11 +704,14 @@ body {
 }
 
 .services-container {
-  max-width: none;
-  margin: 0;
-  padding: 0 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
   position: relative;
   z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .services-header {
@@ -928,9 +936,9 @@ body {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
     45deg,
     transparent,
@@ -940,82 +948,64 @@ body {
   animation: ctaSweep 3s ease-in-out infinite;
 }
 
-@keyframes ctaSweep {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+.cta-content h3 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-family: "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
-.services-cta-text {
-  font-size: 1.5rem;
-  margin-bottom: 2.5rem;
-  font-weight: 600;
+.cta-content p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
   font-family: "Inter", sans-serif;
-  position: relative;
-  z-index: 2;
 }
 
-.services-cta-button {
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-green));
+.cta-button {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
   color: var(--bg-primary);
   border: none;
   padding: 1.25rem 3rem;
-  font-size: 1.2rem;
+  border-radius: 30px;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 700;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: "JetBrains Mono", monospace;
-  position: relative;
-  z-index: 2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
 }
 
-.services-cta-button:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+.cta-button:hover {
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.7);
+  transform: translateY(-3px);
 }
 
-/* Responsive Design - Dark Theme */
+/* Responsive Design */
 @media (max-width: 768px) {
-  .nav-desktop {
-    display: none;
+  .services-container {
+    padding: 0 1rem;
   }
 
-  .mobile-menu-button {
-    display: flex;
+  .services-title {
+    font-size: 2.5rem;
   }
 
-  .hero-title-main {
-    font-size: 2.8rem;
+  .services-filters {
+    gap: 0.5rem;
   }
 
-  .hero-title-sub {
-    font-size: 1.3rem;
-  }
-
-  .hero-description {
-    font-size: 1.1rem;
-  }
-
-  .hero-cta {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .cta-primary,
-  .cta-secondary {
-    width: 100%;
-    max-width: 350px;
-  }
-
-  .hero-features {
-    flex-direction: column;
-    align-items: center;
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
   }
 
   .services-grid {
@@ -1024,135 +1014,47 @@ body {
   }
 
   .service-card {
-    height: 450px;
+    margin: 0 1rem;
   }
 
-  .services-title {
-    font-size: 2.5rem;
+  .cta-content h3 {
+    font-size: 2rem;
   }
 
-  .services-cta {
-    padding: 3rem 2rem;
+  .cta-content p {
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding: 120px 0 80px;
+  .services {
+    padding: 4rem 0;
   }
 
-  .hero-title-main {
+  .services-title {
     font-size: 2rem;
   }
 
-  .hero-title-sub {
+  .services-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .service-content {
+    padding: 1.5rem;
+  }
+
+  .service-title {
+    font-size: 1.3rem;
+  }
+
+  .cta-content h3 {
+    font-size: 1.8rem;
+  }
+
+  .cta-button {
+    padding: 1rem 2rem;
     font-size: 1rem;
   }
-
-  .hero-description {
-    font-size: 1rem;
-  }
-
-  .services {
-    padding: 80px 0;
-  }
-
-  .service-card-front,
-  .service-card-back {
-    padding: 2rem;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .service-card {
-    height: 400px;
-  }
-}
-
-/* Custom Scrollbar - Dark Theme */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    to bottom,
-    var(--accent-blue),
-    var(--accent-green)
-  );
-  border-radius: 6px;
-  box-shadow: 0 0 10px var(--accent-blue);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  box-shadow: 0 0 20px var(--accent-blue);
-}
-
-/* Selection Colors */
-::selection {
-  background: var(--accent-blue);
-  color: var(--bg-primary);
-}
-
-::-moz-selection {
-  background: var(--accent-blue);
-  color: var(--bg-primary);
-}
-
-.floating-shape {
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
-  filter: drop-shadow(0 0 40px var(--accent-blue)) blur(1px);
-  transition: filter 0.3s;
-}
-
-@media (max-width: 900px) {
-  .floating-shape.shape-1 {
-    width: 100px !important;
-    height: 100px !important;
-    left: -60px !important;
-    top: 20px !important;
-  }
-  .floating-shape.shape-2 {
-    width: 70px !important;
-    height: 70px !important;
-    right: -40px !important;
-    bottom: 40px !important;
-  }
-  .floating-shape.shape-3 {
-    width: 50px !important;
-    height: 50px !important;
-    left: 10px !important;
-    bottom: 20px !important;
-  }
-}
-
-/* Scanline animation for glitch overlay */
-@keyframes scanlineMove {
-  0% {
-    background-position-y: 0;
-  }
-  100% {
-    background-position-y: 100px;
-  }
-}
-
-/* Ensure particles are always at the back */
-#tsparticles-neon-network {
-  z-index: -1 !important;
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none;
 }
 
 /* About Styles - Digital DNA Laboratory */
@@ -1162,6 +1064,7 @@ body {
   position: relative;
   overflow: hidden;
   min-height: 100vh;
+  max-width: 100vw;
 }
 
 /* DNA Helix Animation */
@@ -1219,11 +1122,14 @@ body {
 
 /* About Container */
 .about-container {
-  max-width: none;
-  margin: 0;
-  padding: 0 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
   position: relative;
   z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .about-header {
@@ -1528,6 +1434,7 @@ body {
   position: relative;
   padding: 6rem 0;
   overflow: hidden;
+  max-width: 100vw;
 }
 
 .portfolio::before {
@@ -1979,6 +1886,7 @@ body {
   position: relative;
   padding: 6rem 0;
   overflow: hidden;
+  max-width: 100vw;
 }
 
 .contact::before {
@@ -2584,6 +2492,7 @@ body {
   padding: 4rem 0 2rem;
   overflow: hidden;
   border-top: 2px solid var(--accent-blue);
+  max-width: 100vw;
 }
 
 .footer::before {
@@ -2686,6 +2595,40 @@ body {
   letter-spacing: 0.1em;
   font-family: "JetBrains Mono", monospace;
   position: relative;
+  overflow: hidden;
+}
+
+.footer-title .title-text {
+  position: relative;
+  z-index: 3;
+  display: block;
+}
+
+.footer-title .title-glitch,
+.footer-title .title-glitch-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "JetBrains Mono", monospace;
+  pointer-events: none;
+}
+
+.footer-title .title-glitch {
+  color: #ff006e;
+  z-index: 2;
+  mix-blend-mode: difference;
+}
+
+.footer-title .title-glitch-2 {
+  color: #39ff14;
+  z-index: 1;
+  mix-blend-mode: screen;
 }
 
 .footer-title::after {
@@ -2698,6 +2641,44 @@ body {
   height: 3px;
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
   box-shadow: 0 0 20px var(--accent-blue);
+  z-index: 4;
+  animation: titlePulse 2s ease-in-out infinite;
+}
+
+.footer-title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  animation: titleScanline 3s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes titlePulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1.2);
+  }
+}
+
+@keyframes titleScanline {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 .footer-subtitle {
@@ -3298,4 +3279,75 @@ body[style*="--animation-paused: true"] * {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Fix floating shapes overflow */
+.floating-shape {
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  filter: drop-shadow(0 0 40px var(--accent-blue)) blur(1px);
+  transition: filter 0.3s;
+  /* Prevent overflow */
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+/* Constrain floating shapes to viewport */
+.floating-shape.shape-1 {
+  left: 0 !important;
+  transform: translateX(0) !important;
+}
+
+.floating-shape.shape-2 {
+  right: 0 !important;
+  transform: translateX(0) !important;
+}
+
+.floating-shape.shape-3 {
+  left: 0 !important;
+  transform: translateX(0) !important;
+}
+
+/* Ensure hero section contains floating shapes */
+.hero {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Main element centering */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Ensure hero section is properly centered */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fix hero container centering */
+.hero-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
