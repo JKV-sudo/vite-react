@@ -1,0 +1,79 @@
+{
+  "version": 2,
+  "name": "split-vision-website",
+  "domains": ["split-vision.de", "www.split-vision.de"],
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/www.split-vision.de",
+      "destination": "https://split-vision.de",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/contact.js": {
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "VITE_SITE_URL": "https://split-vision.de",
+    "VITE_CONTACT_EMAIL": "hello@split-vision.de",
+    "VITE_PHONE_NUMBER": "+49 123 456 789"
+  }
+}
