@@ -20,7 +20,6 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  max-width: 100vw;
 }
 
 .App {
@@ -349,8 +348,6 @@ main {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  max-width: 100vw;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -690,7 +687,7 @@ main {
   background: var(--bg-secondary);
   position: relative;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
 }
 
 .services::before {
@@ -1077,9 +1074,8 @@ main {
   padding: 100px 0;
   background: var(--bg-primary);
   position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* DNA Helix Animation */
@@ -1439,17 +1435,11 @@ main {
 
 /* Portfolio Section */
 .portfolio {
-  min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    var(--bg-primary) 0%,
-    var(--bg-secondary) 50%,
-    var(--bg-primary) 100%
-  );
+  padding: 100px 0;
+  background: var(--bg-secondary);
   position: relative;
-  padding: 6rem 0;
-  overflow: hidden;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
 }
 
 .portfolio::before {
@@ -1891,17 +1881,11 @@ main {
 
 /* Contact Section */
 .contact {
-  min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    var(--bg-primary) 0%,
-    var(--bg-secondary) 50%,
-    var(--bg-primary) 100%
-  );
+  padding: 100px 0;
+  background: var(--bg-primary);
   position: relative;
-  padding: 6rem 0;
-  overflow: hidden;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
 }
 
 .contact::before {
@@ -2497,17 +2481,11 @@ main {
 
 /* Footer Section */
 .footer {
-  background: linear-gradient(
-    135deg,
-    var(--bg-primary) 0%,
-    var(--bg-secondary) 50%,
-    var(--bg-primary) 100%
-  );
+  padding: 5rem 0 2rem;
+  background: var(--bg-secondary);
   position: relative;
-  padding: 4rem 0 2rem;
-  overflow: hidden;
-  border-top: 2px solid var(--accent-blue);
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
 }
 
 .footer::before {
@@ -3304,7 +3282,6 @@ body[style*="--animation-paused: true"] * {
   filter: drop-shadow(0 0 40px var(--accent-blue)) blur(1px);
   transition: filter 0.3s;
   /* Prevent overflow */
-  max-width: 100vw;
   max-height: 100vh;
   overflow: hidden;
 }
@@ -3323,4 +3300,11 @@ body[style*="--animation-paused: true"] * {
 .floating-shape.shape-3 {
   left: 0 !important;
   transform: translateX(0) !important;
+}
+
+.hero,
+.hero-container,
+.App,
+main {
+  outline: 2px solid red !important;
 }
