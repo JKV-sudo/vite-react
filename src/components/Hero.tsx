@@ -150,9 +150,9 @@ const Hero: React.FC = () => {
       {/* Floating 3D Neon Shapes */}
       <motion.div
         className="floating-shape shape-1"
-        initial={{ x: -200, y: 100, scale: 0.8, rotate: 0, opacity: 0.7 }}
+        initial={{ x: -50, y: 100, scale: 0.8, rotate: 0, opacity: 0.7 }}
         animate={{
-          x: [-200, -180, -220, -200],
+          x: [-50, -30, -70, -50],
           y: [100, 80, 120, 100],
           scale: [0.8, 1, 0.9, 0.8],
           rotate: [0, 15, -10, 0],
@@ -188,9 +188,9 @@ const Hero: React.FC = () => {
       </motion.div>
       <motion.div
         className="floating-shape shape-2"
-        initial={{ x: 300, y: 400, scale: 1.1, rotate: 0, opacity: 0.6 }}
+        initial={{ x: 50, y: 400, scale: 1.1, rotate: 0, opacity: 0.6 }}
         animate={{
-          x: [300, 320, 280, 300],
+          x: [50, 70, 30, 50],
           y: [400, 420, 380, 400],
           scale: [1.1, 0.95, 1.2, 1.1],
           rotate: [0, -20, 10, 0],
