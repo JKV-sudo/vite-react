@@ -144,7 +144,7 @@ const Hero: React.FC = () => {
   return (
     <section id="home" className="hero">
       {/* Large RGB Split Background Logo */}
-      <div className="hero-bg-logo">
+      <div className="hero-bg-logo" style={{ zIndex: 2 }}>
         <img
           src={logo}
           alt="Split-Vision Logo BG Blue"
@@ -220,8 +220,9 @@ const Hero: React.FC = () => {
           left: 0,
           width: 180,
           height: 180,
-          zIndex: 0,
+          zIndex: 1, // above -1, below bg logo (2)
           pointerEvents: "none",
+          filter: "blur(32px) brightness(0.7)",
         }}
       >
         <svg width="180" height="180" viewBox="0 0 180 180">
@@ -258,7 +259,7 @@ const Hero: React.FC = () => {
           right: 0,
           width: 140,
           height: 140,
-          zIndex: 0,
+          zIndex: -1, // ensure behind bg logo
           pointerEvents: "none",
         }}
       >
@@ -296,7 +297,7 @@ const Hero: React.FC = () => {
           left: 0,
           width: 100,
           height: 100,
-          zIndex: 0,
+          zIndex: -1, // ensure behind bg logo
           pointerEvents: "none",
         }}
       >
