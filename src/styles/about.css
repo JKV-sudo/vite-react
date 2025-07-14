@@ -1,0 +1,313 @@
+/* About Styles - Digital DNA Laboratory */
+.about {
+  padding: 100px 0;
+  background: var(--bg-primary);
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* DNA Helix Animation */
+.dna-helix-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 600px;
+  z-index: 1;
+  opacity: 0.7;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 212, 255, 0.1) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  perspective: 1000px;
+  perspective-origin: center;
+}
+
+.dna-helix-structure {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: rotateHelix 20s linear infinite;
+}
+
+.dna-strand {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.dna-base {
+  box-shadow: 0 0 20px currentColor;
+  border-radius: 3px;
+  filter: drop-shadow(0 0 15px currentColor);
+}
+
+.dna-connection {
+  z-index: 2;
+}
+
+@keyframes rotateHelix {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* About Container */
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.about-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "JetBrains Mono", monospace;
+  position: relative;
+}
+
+.about-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  box-shadow: 0 0 20px var(--accent-blue);
+}
+
+.about-subtitle {
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: "Inter", sans-serif;
+}
+
+/* Quantum Stats Counters */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    var(--bg-card) 0%,
+    var(--bg-secondary) 100%
+  );
+  border: 2px solid var(--accent-blue);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 0 30px var(--border-glow);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.stat-card:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.3);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--accent-green);
+  margin-bottom: 0.5rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.stat-suffix {
+  color: var(--accent-blue);
+  font-size: 2rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Team Section */
+.team-section {
+  margin-bottom: 5rem;
+}
+
+.team-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-member {
+  background: linear-gradient(
+    135deg,
+    var(--bg-card) 0%,
+    var(--bg-secondary) 100%
+  );
+  border: 2px solid var(--accent-blue);
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: 0 0 30px var(--border-glow);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.team-member:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.3);
+}
+
+.avatar {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  display: block;
+  filter: drop-shadow(0 0 10px var(--accent-blue)) brightness(1.1);
+  transition: all 0.3s ease;
+}
+
+.member-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.member-role {
+  font-size: 1.1rem;
+  color: var(--accent-blue);
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.member-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-family: "Inter", sans-serif;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  margin-bottom: 3rem;
+}
+
+.testimonials-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-pod {
+  background: linear-gradient(
+    135deg,
+    var(--bg-card) 0%,
+    var(--bg-secondary) 100%
+  );
+  border: 2px solid var(--accent-pink);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 0 30px rgba(157, 78, 221, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.testimonial-pod:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.3);
+}
+
+.testimonial-text {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  font-style: italic;
+  font-family: "Inter", sans-serif;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.testimonial-author strong {
+  font-size: 1.1rem;
+  color: var(--accent-blue);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.testimonial-author span {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+}

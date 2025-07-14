@@ -1,0 +1,54 @@
+/* Reset and Base Styles - Dark Theme */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
+  max-width: 100vw !important;
+}
+
+body {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  line-height: 1.6;
+  color: #ffffff;
+  background-color: #000000;
+  overflow-x: hidden;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-card: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-blue: #00d4ff;
+  --accent-green: #39ff14;
+  --accent-pink: #ff0040;
+  --border-glow: rgba(0, 212, 255, 0.3);
+  --particle-count-multiplier: 1;
+  --animation-complexity: high;
+  --enable-heavy-animations: true;
+  --animation-paused: false;
+}
+
+.neon-glow {
+  text-shadow: 0 0 10px var(--accent-blue), 0 0 20px var(--accent-blue),
+    0 0 30px var(--accent-blue);
+}
+
+.neon-border {
+  border: 1px solid var(--accent-blue);
+  box-shadow: 0 0 10px var(--border-glow), inset 0 0 10px var(--border-glow);
+}

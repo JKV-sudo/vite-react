@@ -1,7 +1,6 @@
 import React from "react";
 import { motion, Variants, anticipate } from "framer-motion";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
-import AnimatedParticles from "./AnimatedParticles";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 
@@ -145,7 +144,6 @@ const Hero: React.FC = () => {
   return (
     <section id="home" className="hero">
       {/* Animated Matrix Particles Background */}
-      <AnimatedParticles />
 
       {/* Floating 3D Neon Shapes */}
       <motion.div
