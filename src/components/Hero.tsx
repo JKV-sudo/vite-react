@@ -332,9 +332,26 @@ const Hero: React.FC = () => {
         <motion.div
           className="hero-logo"
           variants={logoVariants}
-          whileHover="hover"
+          whileHover={{
+            scale: 1.1,
+            rotate: 5,
+            boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
+            filter:
+              "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
+            borderRadius: "50%",
+            transition: {
+              type: "spring",
+              stiffness: 120,
+              damping: 12,
+              duration: 0.5,
+            },
+          }}
           ref={logoRef}
-          style={{ position: "relative", display: "inline-block" }}
+          style={{
+            position: "relative",
+            display: "inline-block",
+            borderRadius: "50%",
+          }}
         >
           {/* RGB Split Layers */}
           <img
