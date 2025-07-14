@@ -87,77 +87,80 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
         logRects("mouseleave");
       }}
     >
-      {/* Hover Explosion Particles */}
-      {hovered && (
-        <Particles
-          id={`explosion-${service.id}`}
-          init={explosionParticlesInit}
-          options={{
-            fullScreen: { enable: false },
-            background: { color: "transparent" },
-            style: {
-              position: "absolute",
-              top: "0",
-              left: "0",
-              width: "100%",
-              height: "100%",
-              zIndex: "10",
-              pointerEvents: "none",
+      {/* Hover Explosion Particles - Always present but controlled by hover state */}
+      <Particles
+        id={`explosion-${service.id}`}
+        init={explosionParticlesInit}
+        options={{
+          fullScreen: { enable: false },
+          background: { color: "transparent" },
+          style: {
+            position: "absolute",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            zIndex: "10",
+            pointerEvents: "none",
+            opacity: hovered ? "1" : "0", // Control visibility with opacity
+            transition: "opacity 0.1s ease", // Smooth transition
+          },
+          particles: {
+            number: { value: 8, density: { enable: false } },
+            color: {
+              value: ["#00d4ff", "#39ff14", "#ff0040", "#9d4edd"],
             },
-            particles: {
-              number: { value: 20, density: { enable: false } },
-              color: {
-                value: ["#00d4ff", "#39ff14", "#ff0040", "#9d4edd"],
-              },
-              shape: { type: "circle" },
-              opacity: {
-                value: 1,
-                anim: {
-                  enable: true,
-                  speed: 2,
-                  opacity_min: 0,
-                  sync: false,
-                },
-              },
-              size: {
-                value: { min: 2, max: 8 },
-                anim: {
-                  enable: true,
-                  speed: 3,
-                  size_min: 0,
-                  sync: false,
-                },
-              },
-              move: {
+            shape: { type: "circle" },
+            opacity: {
+              value: 1,
+              anim: {
                 enable: true,
-                speed: 6,
-                direction: "outside",
-                random: true,
-                straight: false,
-                outModes: { default: "destroy" },
-                trail: { enable: false },
-              },
-              life: {
-                duration: { value: 1 },
-                count: 1,
+                speed: 3,
+                opacity_min: 0,
+                sync: false,
               },
             },
-            interactivity: {
-              events: {
-                onHover: { enable: false },
-                onClick: { enable: false },
+            size: {
+              value: { min: 1, max: 4 },
+              anim: {
+                enable: true,
+                speed: 4,
+                size_min: 0,
+                sync: false,
               },
             },
-            emitters: {
-              direction: "none",
-              rate: { quantity: 20, delay: 0 },
-              size: { width: 0, height: 0 },
-              position: { x: 50, y: 50 },
+            move: {
+              enable: true,
+              speed: 8,
+              direction: "outside",
+              random: true,
+              straight: false,
+              outModes: { default: "destroy" },
+              trail: { enable: false },
             },
-            detectRetina: true,
-          }}
-        />
-      )}
+            life: {
+              duration: { value: 0.6 },
+              count: 1,
+            },
+          },
+          interactivity: {
+            events: {
+              onHover: { enable: false },
+              onClick: { enable: false },
+            },
+          },
+          emitters: {
+            direction: "none",
+            rate: {
+              quantity: hovered ? 8 : 0, // Only emit particles when hovered
+              delay: 0,
+            },
+            size: { width: 0, height: 0 },
+            position: { x: 50, y: 50 },
+          },
+          detectRetina: false,
+        }}
+      />
       <div className="service-card-inner" ref={innerRef}>
         {/* Front of card */}
         <div className="service-card-front">
@@ -206,34 +209,34 @@ const Services: React.FC = () => {
             pointerEvents: "none",
           },
           particles: {
-            number: { value: 30, density: { enable: true, area: 1200 } },
+            number: { value: 15, density: { enable: true, area: 1500 } }, // Reduced from 30
             color: { value: ["#00d4ff", "#39ff14", "#9d4edd"] },
             shape: { type: "circle" },
             opacity: {
-              value: 0.3,
-              anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false },
+              value: 0.2, // Reduced from 0.3
+              anim: { enable: false }, // Disabled animation for performance
             },
             size: {
-              value: 3,
+              value: 2, // Reduced from 3
               random: { enable: true, minimumValue: 1 },
-              anim: { enable: true, speed: 1, size_min: 0.5, sync: false },
+              anim: { enable: false }, // Disabled animation for performance
             },
             links: {
               enable: true,
-              distance: 160,
+              distance: 180,
               color: "#00d4ff",
-              opacity: 0.2,
-              width: 1.2,
-              shadow: { enable: true, color: "#00d4ff", blur: 4 },
+              opacity: 0.15, // Reduced from 0.2
+              width: 1, // Reduced from 1.2
+              shadow: { enable: false }, // Disabled shadow for performance
             },
             move: {
               enable: true,
-              speed: 0.7,
+              speed: 0.5, // Reduced from 0.7
               direction: "none",
               random: false,
               straight: false,
               outModes: { default: "out" },
-              attract: { enable: true, rotateX: 400, rotateY: 800 },
+              attract: { enable: false }, // Disabled attract for performance
             },
           },
           interactivity: {
@@ -243,7 +246,7 @@ const Services: React.FC = () => {
               resize: true,
             },
           },
-          retina_detect: true,
+          retina_detect: false, // Disabled for performance
         }}
       />
       <div className="services-container">
