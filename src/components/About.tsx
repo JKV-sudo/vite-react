@@ -2,17 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import "../styles/about.css";
 
 const About: React.FC = () => {
   const dnaRef = useRef<HTMLDivElement>(null);
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
 
-  // DNA helix animation
-  useEffect(() => {
-    // Removed GSAP animation - now using CSS animation for unified rotation
-  }, []);
-
-  // Particle portrait effects
+  // Particle portrait effects - OPTIMIZED
   const particlesInit = async (main: any) => {
     await loadFull(main);
   };
@@ -63,137 +59,64 @@ const About: React.FC = () => {
 
   return (
     <section id="about" className="about">
-      {/* DNA Helix Background */}
+      {/* Proper DNA Helix Background */}
       <div className="dna-helix-container" ref={dnaRef}>
-        {/* DNA Helix Structure */}
         <div className="dna-helix-structure">
-          {/* First DNA Strand */}
+          {/* First DNA Strand - Left side of helix */}
           <div className="dna-strand strand-1">
             {Array.from({ length: 20 }).map((_, i) => (
-              <motion.div
+              <div
                 key={`strand1-${i}`}
-                className="dna-base"
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: `${i * 30}px`,
-                  width: "6px",
-                  height: "25px",
-                  background: i % 2 === 0 ? "#00d4ff" : "#39ff14",
-                  transformOrigin: "center",
-                  transform: `translateX(-50%) rotateX(${i * 18}deg) rotateZ(${
-                    i * 18
-                  }deg) translateX(-30px)`,
-                  boxShadow: `0 0 20px ${i % 2 === 0 ? "#00d4ff" : "#39ff14"}`,
-                  borderRadius: "3px",
-                  zIndex: 2,
-                }}
-                animate={{
-                  opacity: [0.6, 1, 0.6],
-                  scale: [0.8, 1.3, 0.8],
-                  filter: [
-                    `brightness(1) drop-shadow(0 0 10px ${
-                      i % 2 === 0 ? "#00d4ff" : "#39ff14"
-                    })`,
-                    `brightness(1.5) drop-shadow(0 0 20px ${
-                      i % 2 === 0 ? "#00d4ff" : "#39ff14"
-                    })`,
-                    `brightness(1) drop-shadow(0 0 10px ${
-                      i % 2 === 0 ? "#00d4ff" : "#39ff14"
-                    })`,
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.1,
-                  ease: "easeInOut",
-                }}
+                className={`dna-base base-${i % 2 === 0 ? "even" : "odd"}`}
+                style={
+                  {
+                    "--delay": `${i * 0.1}s`,
+                    "--angle": `${i * 18}deg`,
+                    "--height": `${i * 30}px`,
+                    "--radius": "60px",
+                  } as React.CSSProperties
+                }
               />
             ))}
           </div>
 
-          {/* Second DNA Strand */}
+          {/* Second DNA Strand - Right side of helix */}
           <div className="dna-strand strand-2">
             {Array.from({ length: 20 }).map((_, i) => (
-              <motion.div
+              <div
                 key={`strand2-${i}`}
-                className="dna-base"
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: `${i * 30}px`,
-                  width: "6px",
-                  height: "25px",
-                  background: i % 2 === 0 ? "#39ff14" : "#00d4ff",
-                  transformOrigin: "center",
-                  transform: `translateX(-50%) rotateX(${i * 18}deg) rotateZ(${
-                    i * 18 + 180
-                  }deg) translateX(30px)`,
-                  boxShadow: `0 0 20px ${i % 2 === 0 ? "#39ff14" : "#00d4ff"}`,
-                  borderRadius: "3px",
-                  zIndex: 2,
-                }}
-                animate={{
-                  opacity: [0.6, 1, 0.6],
-                  scale: [0.8, 1.3, 0.8],
-                  filter: [
-                    `brightness(1) drop-shadow(0 0 10px ${
-                      i % 2 === 0 ? "#39ff14" : "#00d4ff"
-                    })`,
-                    `brightness(1.5) drop-shadow(0 0 20px ${
-                      i % 2 === 0 ? "#39ff14" : "#00d4ff"
-                    })`,
-                    `brightness(1) drop-shadow(0 0 10px ${
-                      i % 2 === 0 ? "#39ff14" : "#00d4ff"
-                    })`,
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.1,
-                  ease: "easeInOut",
-                }}
+                className={`dna-base base-${i % 2 === 0 ? "odd" : "even"}`}
+                style={
+                  {
+                    "--delay": `${i * 0.1}s`,
+                    "--angle": `${i * 18 + 180}deg`,
+                    "--height": `${i * 30}px`,
+                    "--radius": "60px",
+                  } as React.CSSProperties
+                }
               />
             ))}
           </div>
 
-          {/* Connecting Lines */}
+          {/* Connecting Rungs - Horizontal connections between strands */}
           {Array.from({ length: 10 }).map((_, i) => (
-            <motion.div
-              key={`connection-${i}`}
-              className="dna-connection"
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: `${i * 60 + 15}px`,
-                width: "60px",
-                height: "3px",
-                background: "linear-gradient(90deg, #00d4ff, #39ff14)",
-                transform: `translateX(-50%) rotateX(${i * 18}deg) rotateZ(${
-                  i * 18
-                }deg)`,
-                boxShadow: "0 0 15px rgba(0, 212, 255, 0.8)",
-                borderRadius: "2px",
-                zIndex: 3,
-              }}
-              animate={{
-                opacity: [0.4, 1, 0.4],
-                scaleX: [0.6, 1.2, 0.6],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.2,
-                ease: "easeInOut",
-              }}
+            <div
+              key={`rung-${i}`}
+              className="dna-rung"
+              style={
+                {
+                  "--delay": `${i * 0.15}s`,
+                  "--angle": `${i * 36}deg`,
+                  "--height": `${i * 60 + 15}px`,
+                  "--radius": "60px",
+                } as React.CSSProperties
+              }
             />
           ))}
         </div>
       </div>
 
-      {/* Particle Portrait Effects */}
+      {/* Optimized Particle Background */}
       <Particles
         id="tsparticles-about-portraits"
         init={particlesInit}
@@ -210,21 +133,21 @@ const About: React.FC = () => {
             pointerEvents: "none",
           },
           particles: {
-            number: { value: 40, density: { enable: true, area: 1500 } },
+            number: { value: 20, density: { enable: true, area: 2000 } }, // Reduced from 40
             color: { value: ["#00d4ff", "#39ff14", "#9d4edd"] },
             shape: { type: "circle" },
             opacity: {
-              value: 0.4,
-              anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false },
+              value: 0.3, // Reduced from 0.4
+              anim: { enable: false }, // Disabled for performance
             },
             size: {
               value: 2,
               random: { enable: true, minimumValue: 1 },
-              anim: { enable: true, speed: 1, size_min: 0.5, sync: false },
+              anim: { enable: false }, // Disabled for performance
             },
             move: {
               enable: true,
-              speed: 0.8,
+              speed: 0.6, // Reduced from 0.8
               direction: "none",
               random: false,
               straight: false,
@@ -238,7 +161,7 @@ const About: React.FC = () => {
               resize: true,
             },
           },
-          detectRetina: true,
+          detectRetina: false, // Disabled for performance
         }}
       />
 
