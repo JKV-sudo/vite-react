@@ -54,11 +54,6 @@
       ]
     }
   ],
-  "functions": {
-    "api/contact.js": {
-      "maxDuration": 10
-    }
-  },
   "env": {
     "VITE_SITE_URL": "https://split-vision.de",
     "VITE_CONTACT_EMAIL": "hello@split-vision.de",
