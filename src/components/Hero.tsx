@@ -143,6 +143,63 @@ const Hero: React.FC = () => {
 
   return (
     <section id="home" className="hero">
+      {/* Large RGB Split Background Logo */}
+      <div className="hero-bg-logo">
+        <img
+          src={logo}
+          alt="Split-Vision Logo BG Blue"
+          className="hero-bg-logo-img"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            opacity: 0.18,
+            filter: "drop-shadow(0 0 80px #00d4ff)",
+            mixBlendMode: "screen",
+            transform: "translate(8px, 0) scale(1.04)",
+            zIndex: 1,
+          }}
+        />
+        <img
+          src={logo}
+          alt="Split-Vision Logo BG Red"
+          className="hero-bg-logo-img"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            opacity: 0.13,
+            filter: "drop-shadow(0 0 80px #ff0040)",
+            mixBlendMode: "screen",
+            transform: "translate(-8px, 0) scale(1.04)",
+            zIndex: 1,
+          }}
+        />
+        <img
+          src={logo}
+          alt="Split-Vision Logo BG Main"
+          className="hero-bg-logo-img"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            opacity: 0.22,
+            filter: "drop-shadow(0 0 80px #39ff14)",
+            mixBlendMode: "screen",
+            zIndex: 1,
+          }}
+        />
+      </div>
+
       {/* Animated Matrix Particles Background */}
 
       {/* Floating 3D Neon Shapes */}
