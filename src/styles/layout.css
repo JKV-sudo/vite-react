@@ -39,3 +39,11 @@ main {
   position: relative;
   z-index: 2;
 }
+
+.back-to-top {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 2000 !important;
+  /* Add any additional styling as needed */
+}
