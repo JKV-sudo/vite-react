@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
@@ -90,6 +90,32 @@ const particlesOptions = {
 const Portfolio: React.FC = () => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [canvasSize, setCanvasSize] = useState(() => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    return {
+      width: Math.round(width * 1.2),
+      height: Math.round(height * 1.2),
+    };
+  });
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setCanvasSize({
+        width: Math.round(width * 1.2),
+        height: Math.round(height * 1.2),
+      });
+      setIsMobile(window.innerWidth <= 700);
+    };
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
 
   // Memoize particlesInit so it doesn't change on every render
   const particlesInit = useCallback(async (main: Engine) => {
@@ -175,6 +201,9 @@ const Portfolio: React.FC = () => {
     activeCategory === "All"
       ? projects
       : projects.filter((p) => p.category === activeCategory);
+
+  // Particle count: desktop = 80, mobile = 53
+  const particleCount = isMobile ? 53 : 80;
 
   return (
     <section id="portfolio" className="portfolio">

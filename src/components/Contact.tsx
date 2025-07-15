@@ -5,76 +5,6 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 // import gsap from "gsap"; // Remove GSAP
 
-// Move particles options outside the component
-const particlesOptions = {
-  background: {
-    color: {
-      value: "transparent",
-    },
-  },
-  fpsLimit: 120,
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: "push",
-      },
-      onHover: {
-        enable: true,
-        mode: "grab",
-      },
-    },
-    modes: {
-      push: {
-        quantity: 4,
-      },
-      grab: {
-        distance: 140,
-        links: {
-          opacity: 0.5,
-        },
-      },
-    },
-  },
-  particles: {
-    color: {
-      value: ["#00d4ff", "#39ff14", "#ff006e", "#25d366"],
-    },
-    links: {
-      color: "#00d4ff",
-      distance: 150,
-      enable: true,
-      opacity: 0.4,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      direction: "none" as const,
-      outModes: { default: "out" as const },
-      random: false,
-      speed: 1.5,
-      straight: false,
-    },
-    number: {
-      density: {
-        enable: true,
-        area: 800,
-      },
-      value: 60,
-    },
-    opacity: {
-      value: 0.5,
-    },
-    shape: {
-      type: "circle",
-    },
-    size: {
-      value: { min: 1, max: 4 },
-    },
-  },
-  detectRetina: true,
-};
-
 // Framer Motion variants for unified entrance and floating
 const contentVariants: Variants = {
   hidden: {},
@@ -210,6 +140,33 @@ const Contact: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   // const floatingCardsRef = useRef<HTMLDivElement>(null); // Remove GSAP
   const isMobile = useIsMobile();
+  const [canvasSize, setCanvasSize] = useState(() => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    return {
+      width: Math.round(width * 1.2),
+      height: Math.round(height * 1.2),
+    };
+  });
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setCanvasSize({
+        width: Math.round(width * 1.2),
+        height: Math.round(height * 1.2),
+      });
+    };
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
+
+  // Particle count: desktop = 60, mobile = 40
+  const particleCount = isMobile ? 40 : 60;
 
   // Memoize particlesInit
   const particlesInit = useCallback(async (main: Engine) => {
@@ -320,7 +277,57 @@ const Contact: React.FC = () => {
       <Particles
         id="tsparticles-contact"
         init={particlesInit}
-        options={particlesOptions}
+        options={{
+          fullScreen: { enable: false },
+          background: { color: "transparent" },
+          style: {
+            position: "absolute",
+            top: `-${(canvasSize.height - window.innerHeight) / 2}px`,
+            left: `-${(canvasSize.width - window.innerWidth) / 2}px`,
+            width: `${canvasSize.width}px`,
+            height: `${canvasSize.height}px`,
+            zIndex: "0",
+            pointerEvents: "none",
+          },
+          particles: {
+            number: {
+              value: particleCount,
+              density: { enable: true, area: 800 },
+            },
+            color: { value: ["#00d4ff", "#39ff14", "#ff006e", "#25d366"] },
+            links: {
+              color: "#00d4ff",
+              distance: 150,
+              enable: true,
+              opacity: 0.4,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              direction: "none",
+              outModes: { default: "out" },
+              random: false,
+              speed: 1.5,
+              straight: false,
+            },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } },
+          },
+          interactivity: {
+            events: {
+              onClick: { enable: true, mode: "push" },
+              onHover: { enable: true, mode: "grab" },
+              resize: true,
+            },
+            modes: {
+              push: { quantity: 4 },
+              grab: { distance: 140, links: { opacity: 0.5 } },
+            },
+          },
+          detectRetina: true,
+          fpsLimit: 60,
+        }}
       />
 
       <div className="contact-container">

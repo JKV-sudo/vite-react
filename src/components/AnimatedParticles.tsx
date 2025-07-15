@@ -1,12 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
+const getViewportWithMargin = () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  return {
+    width: Math.round(width * 1.2),
+    height: Math.round(height * 1.2),
+  };
+};
+
+const isMobileDevice = () =>
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  ) || window.innerWidth <= 700;
+
 const AnimatedParticles: React.FC = () => {
+  const [canvasSize, setCanvasSize] = useState(getViewportWithMargin());
+  const [isMobile, setIsMobile] = useState(isMobileDevice());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setCanvasSize(getViewportWithMargin());
+      setIsMobile(isMobileDevice());
+    };
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
+
   // Custom neon network config - OPTIMIZED FOR PERFORMANCE
   const particlesInit = async (main: any) => {
     await loadFull(main);
   };
+
+  // Particle count: desktop = 25, mobile = 7
+  const particleCount = isMobile ? 7 : 25;
 
   return (
     <Particles
@@ -17,51 +50,59 @@ const AnimatedParticles: React.FC = () => {
         background: { color: "transparent" },
         style: {
           position: "absolute",
-          top: "0",
-          left: "0",
-          width: "100%",
-          height: "100%",
+          top: `-${(canvasSize.height - window.innerHeight) / 2}px`,
+          left: `-${(canvasSize.width - window.innerWidth) / 2}px`,
+          width: `${canvasSize.width}px`,
+          height: `${canvasSize.height}px`,
           zIndex: "-1",
         },
         particles: {
-          number: { value: 25, density: { enable: true, area: 1200 } }, // Reduced from 60
+          number: {
+            value: particleCount,
+            density: { enable: true, area: 1200 },
+          },
           color: { value: ["#00d4ff", "#39ff14", "#9d4edd"] },
           shape: { type: "circle" },
           opacity: {
-            value: 0.6, // Reduced from 0.8
-            anim: { enable: false }, // Disabled animation for performance
+            value: 0.6,
+            anim: { enable: false },
           },
           size: {
-            value: 3, // Reduced from 4
+            value: 3,
             random: { enable: true, minimumValue: 1.5 },
-            anim: { enable: false }, // Disabled animation for performance
+            anim: { enable: false },
           },
           links: {
             enable: true,
             distance: 150,
             color: "#00d4ff",
-            opacity: 0.4, // Reduced from 0.5
-            width: 1.5, // Reduced from 2
-            shadow: { enable: false }, // Disabled shadow for performance
+            opacity: 0.4,
+            width: 1.5,
+            shadow: { enable: false },
           },
           move: {
             enable: true,
-            speed: 0.8, // Reduced from 1.2
+            speed: 0.8,
             direction: "none",
             random: false,
             straight: false,
             outModes: { default: "out" },
-            attract: { enable: false }, // Disabled attract for performance
+            attract: { enable: false },
           },
         },
         interactivity: {
           events: {
-            onHover: { enable: false }, // Disabled hover for performance
-            onClick: { enable: false }, // Disabled click for performance
+            onHover: { enable: true, mode: "repulse" }, // Interactivity enabled
+            onClick: { enable: true, mode: "push" }, // Interactivity enabled
             resize: true,
           },
+          modes: {
+            repulse: { distance: 120, duration: 0.4 },
+            push: { quantity: 2 },
+          },
         },
-        retina_detect: false, // Disabled for performance
+        retina_detect: false,
+        fpsLimit: 60, // Keep 60 FPS
       }}
     />
   );

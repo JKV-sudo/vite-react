@@ -182,6 +182,9 @@ const Footer: React.FC = () => {
     });
   };
 
+  // Particle count: desktop = 60, mobile = 40
+  const particleCount = isMobile ? 40 : 60;
+
   return (
     <footer className="footer">
       {/* Particle Background */}

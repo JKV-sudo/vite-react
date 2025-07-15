@@ -190,6 +190,10 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
 };
 
 const Services: React.FC = () => {
+  const isMobile = window.innerWidth < 768; // Define isMobile here
+  // Particle count: desktop = 15, mobile = 10
+  const particleCount = isMobile ? 10 : 15;
+
   return (
     <section id="services" className="services">
       {/* Neon Particle Network Background */}
@@ -209,7 +213,10 @@ const Services: React.FC = () => {
             pointerEvents: "none",
           },
           particles: {
-            number: { value: 15, density: { enable: true, area: 1500 } }, // Reduced from 30
+            number: {
+              value: particleCount,
+              density: { enable: true, area: 1500 },
+            },
             color: { value: ["#00d4ff", "#39ff14", "#9d4edd"] },
             shape: { type: "circle" },
             opacity: {
