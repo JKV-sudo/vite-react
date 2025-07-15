@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
@@ -59,11 +60,9 @@ const particlesOptions = {
       width: 1,
     },
     move: {
-      direction: "none",
       enable: true,
-      outModes: {
-        default: "bounce",
-      },
+      direction: "none" as const,
+      outModes: { default: "out" as const },
       random: false,
       speed: 1,
       straight: false,
@@ -93,7 +92,7 @@ const Portfolio: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   // Memoize particlesInit so it doesn't change on every render
-  const particlesInit = useCallback(async (main: any) => {
+  const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
   }, []);
 

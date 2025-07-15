@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
@@ -47,11 +48,9 @@ const particlesOptions = {
       width: 1,
     },
     move: {
-      direction: "none",
       enable: true,
-      outModes: {
-        default: "bounce",
-      },
+      direction: "none" as const,
+      outModes: { default: "out" as const },
       random: false,
       speed: 1,
       straight: false,
@@ -103,11 +102,6 @@ const contentVariants: Variants = {
 const Footer: React.FC = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const isMobile = useIsMobile();
-
-  // Particle effects for footer background
-  const particlesInit = async (main: any) => {
-    await loadFull(main);
-  };
 
   // Back to top visibility
   useEffect(() => {
@@ -193,7 +187,7 @@ const Footer: React.FC = () => {
       {/* Particle Background */}
       <Particles
         id="tsparticles-footer"
-        init={useCallback(async (main) => {
+        init={useCallback(async (main: Engine) => {
           await loadFull(main);
         }, [])}
         options={particlesOptions}

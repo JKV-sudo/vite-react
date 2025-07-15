@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
@@ -47,11 +48,9 @@ const particlesOptions = {
       width: 1,
     },
     move: {
-      direction: "none",
       enable: true,
-      outModes: {
-        default: "bounce",
-      },
+      direction: "none" as const,
+      outModes: { default: "out" as const },
       random: false,
       speed: 1.5,
       straight: false,
@@ -213,7 +212,7 @@ const Contact: React.FC = () => {
   const isMobile = useIsMobile();
 
   // Memoize particlesInit
-  const particlesInit = useCallback(async (main: any) => {
+  const particlesInit = useCallback(async (main: Engine) => {
     await loadFull(main);
   }, []);
 
@@ -248,12 +247,12 @@ const Contact: React.FC = () => {
     },
   ];
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case "name":
         return value.length < 2 ? "Name must be at least 2 characters" : "";
       case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return !emailRegex.test(value) ? "Please enter a valid email" : "";
       case "message":
         return value.length < 10
@@ -369,7 +368,7 @@ const Contact: React.FC = () => {
         >
           {/* Contact Methods */}
           <div className="contact-methods">
-            {contactMethods.map((method, index) => (
+            {contactMethods.map((method) => (
               <motion.a
                 key={method.title}
                 href={method.action}
