@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import type { Engine } from "tsparticles-engine";
@@ -172,41 +172,81 @@ const About: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        {/* Quantum Stats Counters */}
+        {/* Unified Animation Parent for Stats & Testimonials */}
         <motion.div
-          className="stats-grid"
+          className="about-stats-testimonials-wrapper"
           initial="hidden"
           whileInView="visible"
           variants={{
             hidden: {},
             visible: {
               transition: {
-                staggerChildren: 0.15,
+                staggerChildren: 0.18,
                 delayChildren: 0.3,
               },
             },
           }}
           viewport={{ once: true }}
         >
-          {stats.map((stat, idx) => (
-            <CountUpStatCard
-              key={stat.label}
-              stat={stat}
-              custom={idx}
-              duration={1400}
-            />
-          ))}
+          {/* Stats Grid */}
+          <div className="stats-grid">
+            {stats.map((stat) => (
+              <CountUpStatCard key={stat.label} stat={stat} duration={1400} />
+            ))}
+          </div>
+
+          {/* Testimonials Section */}
+          <motion.div
+            className="testimonials-section"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 + stats.length * 0.18 }}
+          >
+            <motion.h3
+              className="testimonials-title"
+              animate={{
+                textShadow: [
+                  "0 0 15px #9d4edd",
+                  "0 0 25px #ff0040",
+                  "0 0 15px #9d4edd",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              Was unsere Kunden sagen
+            </motion.h3>
+            <motion.div
+              className="testimonials-grid"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.18,
+                  },
+                },
+              }}
+            >
+              {testimonials.map((testimonial, idx) => (
+                <TestimonialPod key={idx} testimonial={testimonial} />
+              ))}
+            </motion.div>
+          </motion.div>
         </motion.div>
 
         {/* Team Avatar Materializations */}
-        {/* Calculate team section delay: 0.3 + (stats.length - 1) * 0.12 + 0.7 */}
         <motion.div
           className="team-section"
           initial={{ y: 100, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{
             duration: 1,
-            delay: 0.3 + (stats.length - 1) * 0.12 + 0.7,
+            delay: 0.3 + stats.length * 0.18 + 0.8 + 0.1,
           }}
           viewport={{ once: true }}
         >
@@ -231,7 +271,7 @@ const About: React.FC = () => {
             className="team-grid"
             style={{ perspective: "1000px", gap: "3rem" }}
           >
-            {teamMembers.map((member, index) => (
+            {teamMembers.map((member) => (
               <motion.div
                 key={member.id}
                 className="team-member"
@@ -284,77 +324,6 @@ const About: React.FC = () => {
             ))}
           </div>
         </motion.div>
-
-        {/* Glowing Testimonial Pods */}
-        <motion.div
-          className="testimonials-section"
-          initial={{ y: 100, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 1.5 }}
-          viewport={{ once: true }}
-        >
-          <motion.h3
-            className="testimonials-title"
-            animate={{
-              textShadow: [
-                "0 0 15px #9d4edd",
-                "0 0 25px #ff0040",
-                "0 0 15px #9d4edd",
-              ],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            Was unsere Kunden sagen
-          </motion.h3>
-          <div className="testimonials-grid">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="testimonial-pod"
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                whileHover={{
-                  scale: 1.01,
-                  // Only rely on CSS for box-shadow
-                }}
-                transition={{
-                  duration: 0.8,
-                  delay: 1.8 + index * 0.2,
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 15,
-                }}
-                viewport={{ once: true }}
-              >
-                <motion.p
-                  className="testimonial-text"
-                  animate={{
-                    textShadow: [
-                      "0 0 5px rgba(157, 78, 221, 0.3)",
-                      "0 0 10px rgba(157, 78, 221, 0.5)",
-                      "0 0 5px rgba(157, 78, 221, 0.3)",
-                    ],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  "{testimonial.text}"
-                </motion.p>
-                <div className="testimonial-author">
-                  <strong>{testimonial.author}</strong>
-                  <span>{testimonial.company}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
@@ -362,7 +331,7 @@ const About: React.FC = () => {
 
 const statCardVariants = {
   hidden: { y: 40, opacity: 0, scale: 0.92 },
-  visible: (custom: number): TargetAndTransition => ({
+  visible: (): TargetAndTransition => ({
     y: 0,
     opacity: 1,
     scale: 1,
@@ -376,9 +345,8 @@ const statCardVariants = {
 
 const CountUpStatCard: React.FC<{
   stat: { label: string; value: number; suffix: string };
-  custom: number;
   duration?: number;
-}> = ({ stat, custom, duration = 1200 }) => {
+}> = ({ stat, duration = 1200 }) => {
   const [count, setCount] = useState(0);
   const [shouldCount, setShouldCount] = useState(false);
 
@@ -408,7 +376,6 @@ const CountUpStatCard: React.FC<{
     <motion.div
       className="stat-card"
       variants={statCardVariants}
-      custom={custom}
       initial="hidden"
       animate="visible"
       whileHover={{
@@ -426,5 +393,57 @@ const CountUpStatCard: React.FC<{
     </motion.div>
   );
 };
+
+const testimonialPodVariants: Variants = {
+  hidden: { y: 40, opacity: 0, scale: 0.92 },
+  visible: () => ({
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 90,
+      damping: 16,
+    },
+  }),
+};
+
+const TestimonialPod: React.FC<{
+  testimonial: { text: string; author: string; company: string };
+}> = ({ testimonial }) => (
+  <motion.div
+    className="testimonial-pod"
+    variants={testimonialPodVariants}
+    initial="hidden"
+    animate="visible"
+    whileHover={{
+      scale: 1.01,
+      // Only rely on CSS for box-shadow
+    }}
+    viewport={{ once: true }}
+  >
+    <motion.p
+      className="testimonial-text"
+      animate={{
+        textShadow: [
+          "0 0 5px rgba(157, 78, 221, 0.3)",
+          "0 0 10px rgba(157, 78, 221, 0.5)",
+          "0 0 5px rgba(157, 78, 221, 0.3)",
+        ],
+      }}
+      transition={{
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    >
+      "{testimonial.text}"
+    </motion.p>
+    <div className="testimonial-author">
+      <strong>{testimonial.author}</strong>
+      <span>{testimonial.company}</span>
+    </div>
+  </motion.div>
+);
 
 export default About;

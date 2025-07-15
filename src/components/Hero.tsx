@@ -4,6 +4,19 @@ import logo from "../assets/logo_eye_V2-removebg-preview.png";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 
+// Add a custom hook for mobile detection
+function useIsMobile(breakpoint = 700) {
+  const [isMobile, setIsMobile] = React.useState(
+    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
+  );
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 const Hero: React.FC = () => {
   const scrollToContact = () => {
     const element = document.getElementById("contact");
@@ -11,6 +24,7 @@ const Hero: React.FC = () => {
   };
 
   const logoRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (logoRef.current) {
@@ -332,26 +346,41 @@ const Hero: React.FC = () => {
         <motion.div
           className="hero-logo"
           variants={logoVariants}
-          whileHover={{
-            scale: 1.1,
-            rotate: 5,
-            boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
-            filter:
-              "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
-            borderRadius: "50%",
-            transition: {
-              type: "spring",
-              stiffness: 120,
-              damping: 12,
-              duration: 0.5,
-            },
-          }}
+          whileHover={
+            !isMobile
+              ? {
+                  scale: 1.1,
+                  rotate: 5,
+                  boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
+                  filter:
+                    "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
+                  borderRadius: "50%",
+                  transition: {
+                    type: "spring",
+                    stiffness: 120,
+                    damping: 12,
+                    duration: 0.5,
+                  },
+                }
+              : undefined
+          }
+          style={
+            isMobile
+              ? {
+                  scale: 1.1,
+                  rotate: 5,
+                  boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
+                  filter:
+                    "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
+                  borderRadius: "50%",
+                }
+              : {
+                  position: "relative",
+                  display: "inline-block",
+                  borderRadius: "50%",
+                }
+          }
           ref={logoRef}
-          style={{
-            position: "relative",
-            display: "inline-block",
-            borderRadius: "50%",
-          }}
         >
           {/* RGB Split Layers */}
           <img

@@ -170,6 +170,13 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* Default filter for non-hovered state */
+  filter: drop-shadow(0 0 15px #00d4ff) brightness(1.1);
+  transition: filter 0.3s;
+}
+
+.project-image.hovered {
+  filter: drop-shadow(0 0 30px #39ff14) brightness(1.3);
 }
 
 .project-icon {

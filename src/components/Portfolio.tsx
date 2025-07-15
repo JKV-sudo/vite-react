@@ -1,15 +1,101 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.92, rotateY: -10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateY: 0,
+    transition: {
+      type: "spring",
+      stiffness: 90,
+      damping: 16,
+    },
+  },
+};
+
+// Move particles options outside the component so it's not re-created on every render
+const particlesOptions = {
+  background: {
+    color: {
+      value: "transparent",
+    },
+  },
+  fpsLimit: 120,
+  interactivity: {
+    events: {
+      onClick: {
+        enable: true,
+        mode: "push",
+      },
+      onHover: {
+        enable: true,
+        mode: "repulse",
+      },
+    },
+    modes: {
+      push: {
+        quantity: 4,
+      },
+      repulse: {
+        distance: 200,
+        duration: 0.4,
+      },
+    },
+  },
+  particles: {
+    color: {
+      value: ["#00d4ff", "#39ff14", "#ff006e"],
+    },
+    links: {
+      color: "#00d4ff",
+      distance: 150,
+      enable: true,
+      opacity: 0.3,
+      width: 1,
+    },
+    move: {
+      direction: "none",
+      enable: true,
+      outModes: {
+        default: "bounce",
+      },
+      random: false,
+      speed: 1,
+      straight: false,
+    },
+    number: {
+      density: {
+        enable: true,
+        area: 800,
+      },
+      value: 80,
+    },
+    opacity: {
+      value: 0.5,
+    },
+    shape: {
+      type: "circle",
+    },
+    size: {
+      value: { min: 1, max: 5 },
+    },
+  },
+  detectRetina: true,
+};
+
 const Portfolio: React.FC = () => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  // Particle effects for portfolio background
-  const particlesInit = async (main: any) => {
+  // Memoize particlesInit so it doesn't change on every render
+  const particlesInit = useCallback(async (main: any) => {
     await loadFull(main);
-  };
+  }, []);
 
   const projects = [
     {
@@ -85,80 +171,19 @@ const Portfolio: React.FC = () => {
     "Data Visualization",
   ];
 
+  // Filtered projects
+  const filteredProjects =
+    activeCategory === "All"
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
+
   return (
     <section id="portfolio" className="portfolio">
       {/* Particle Background */}
       <Particles
         id="tsparticles-portfolio"
         init={particlesInit}
-        options={{
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: ["#00d4ff", "#39ff14", "#ff006e"],
-            },
-            links: {
-              color: "#00d4ff",
-              distance: 150,
-              enable: true,
-              opacity: 0.3,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 1,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 5 },
-            },
-          },
-          detectRetina: true,
-        }}
+        options={particlesOptions}
       />
 
       <div className="portfolio-container">
@@ -192,143 +217,159 @@ const Portfolio: React.FC = () => {
           {categories.map((category) => (
             <motion.button
               key={category}
-              className="filter-btn"
+              className={`filter-btn${
+                activeCategory === category ? " active" : ""
+              }`}
+              onClick={() => setActiveCategory(category)}
               whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 20px rgba(0, 212, 255, 0.5)",
+                scale: 1.08,
+                boxShadow: "0 0 24px rgba(0, 212, 255, 0.6)",
               }}
               whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {category}
             </motion.button>
           ))}
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid with AnimatePresence and staggered children */}
         <motion.div
           className="portfolio-grid"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
+          initial="hidden"
+          whileInView="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.16,
+                delayChildren: 0.5,
+              },
+            },
+          }}
+          viewport={{ once: true }}
         >
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              className={`portfolio-card ${project.featured ? "featured" : ""}`}
-              initial={{ scale: 0, rotateY: -90, opacity: 0 }}
-              whileInView={{ scale: 1, rotateY: 0, opacity: 1 }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 10,
-                z: 50,
-              }}
-              onHoverStart={() => setHoveredProject(project.id)}
-              onHoverEnd={() => setHoveredProject(null)}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 100,
-                damping: 15,
-              }}
-              viewport={{ once: true }}
-              style={{ perspective: 1000 }}
-            >
-              {project.featured && (
-                <motion.div
-                  className="featured-badge"
-                  animate={{
-                    boxShadow: [
-                      "0 0 20px rgba(57, 255, 20, 0.5)",
-                      "0 0 30px rgba(57, 255, 20, 0.8)",
-                      "0 0 20px rgba(57, 255, 20, 0.5)",
-                    ],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  Featured
-                </motion.div>
-              )}
-
+          <AnimatePresence initial={false}>
+            {filteredProjects.map((project) => (
               <motion.div
-                className="project-image"
-                animate={{
-                  filter:
-                    hoveredProject === project.id
-                      ? "drop-shadow(0 0 30px #39ff14) brightness(1.3)"
-                      : "drop-shadow(0 0 15px #00d4ff) brightness(1.1)",
+                key={project.id}
+                className={`portfolio-card${
+                  project.featured ? " featured" : ""
+                }`}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit={{
+                  opacity: 0,
+                  y: 40,
+                  scale: 0.92,
+                  rotateY: -10,
+                  transition: { duration: 0.3 },
                 }}
-                transition={{ duration: 0.3 }}
+                whileHover={{
+                  scale: 1.045,
+                  rotateY: 8,
+                  boxShadow:
+                    "0 8px 32px rgba(0,212,255,0.18), 0 0 0 2px #00d4ff33",
+                  borderColor: "#39ff14",
+                  zIndex: 2,
+                }}
+                onHoverStart={() => setHoveredProject(project.id)}
+                onHoverEnd={() => setHoveredProject(null)}
+                transition={{ type: "spring", stiffness: 200, damping: 18 }}
+                style={{ perspective: 1000 }}
               >
-                <span className="project-icon">{project.image}</span>
-              </motion.div>
-
-              <motion.div className="project-content">
-                <motion.h3
-                  className="project-title"
-                  animate={{
-                    textShadow:
-                      hoveredProject === project.id
-                        ? "0 0 15px #39ff14"
-                        : "0 0 5px #00d4ff",
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {project.title}
-                </motion.h3>
-                <p className="project-category">{project.category}</p>
-                <p className="project-description">{project.description}</p>
+                {project.featured && (
+                  <motion.div
+                    className="featured-badge"
+                    animate={{
+                      boxShadow: [
+                        "0 0 20px rgba(57, 255, 20, 0.5)",
+                        "0 0 30px rgba(57, 255, 20, 0.8)",
+                        "0 0 20px rgba(57, 255, 20, 0.5)",
+                      ],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    Featured
+                  </motion.div>
+                )}
 
                 <motion.div
-                  className="project-technologies"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
+                  className={`project-image${
+                    hoveredProject === project.id ? " hovered" : ""
+                  }`}
                 >
-                  {project.technologies.map((tech, techIndex) => (
-                    <motion.span
-                      key={techIndex}
-                      className="tech-tag"
-                      whileHover={{
-                        scale: 1.1,
-                        boxShadow: "0 0 10px rgba(0, 212, 255, 0.5)",
-                      }}
-                      animate={{
-                        boxShadow: [
-                          "0 0 5px rgba(0, 212, 255, 0.3)",
-                          "0 0 10px rgba(57, 255, 20, 0.4)",
-                          "0 0 5px rgba(0, 212, 255, 0.3)",
-                        ],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: techIndex * 0.1,
-                      }}
-                    >
-                      {tech}
-                    </motion.span>
-                  ))}
+                  <span className="project-icon">{project.image}</span>
                 </motion.div>
 
-                <motion.button
-                  className="project-link"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 10px 30px rgba(0, 212, 255, 0.4)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  View Project →
-                </motion.button>
+                <motion.div className="project-content">
+                  <motion.h3
+                    className="project-title"
+                    animate={{
+                      textShadow:
+                        hoveredProject === project.id
+                          ? "0 0 15px #39ff14"
+                          : "0 0 5px #00d4ff",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {project.title}
+                  </motion.h3>
+                  <p className="project-category">{project.category}</p>
+                  <p className="project-description">{project.description}</p>
+
+                  <motion.div
+                    className="project-technologies"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    {project.technologies.map((tech, techIndex) => (
+                      <motion.span
+                        key={techIndex}
+                        className="tech-tag"
+                        whileHover={{
+                          scale: 1.1,
+                          boxShadow: "0 0 10px rgba(0, 212, 255, 0.5)",
+                        }}
+                        animate={{
+                          boxShadow: [
+                            "0 0 5px rgba(0, 212, 255, 0.3)",
+                            "0 0 10px rgba(57, 255, 20, 0.4)",
+                            "0 0 5px rgba(0, 212, 255, 0.3)",
+                          ],
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: techIndex * 0.1,
+                        }}
+                      >
+                        {tech}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+
+                  <motion.button
+                    className="project-link"
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: "0 10px 30px rgba(0, 212, 255, 0.4)",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    View Project →
+                  </motion.button>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            ))}
+          </AnimatePresence>
         </motion.div>
 
         {/* Call to Action */}

@@ -1,8 +1,199 @@
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import gsap from "gsap";
+// import gsap from "gsap"; // Remove GSAP
+
+// Move particles options outside the component
+const particlesOptions = {
+  background: {
+    color: {
+      value: "transparent",
+    },
+  },
+  fpsLimit: 120,
+  interactivity: {
+    events: {
+      onClick: {
+        enable: true,
+        mode: "push",
+      },
+      onHover: {
+        enable: true,
+        mode: "grab",
+      },
+    },
+    modes: {
+      push: {
+        quantity: 4,
+      },
+      grab: {
+        distance: 140,
+        links: {
+          opacity: 0.5,
+        },
+      },
+    },
+  },
+  particles: {
+    color: {
+      value: ["#00d4ff", "#39ff14", "#ff006e", "#25d366"],
+    },
+    links: {
+      color: "#00d4ff",
+      distance: 150,
+      enable: true,
+      opacity: 0.4,
+      width: 1,
+    },
+    move: {
+      direction: "none",
+      enable: true,
+      outModes: {
+        default: "bounce",
+      },
+      random: false,
+      speed: 1.5,
+      straight: false,
+    },
+    number: {
+      density: {
+        enable: true,
+        area: 800,
+      },
+      value: 60,
+    },
+    opacity: {
+      value: 0.5,
+    },
+    shape: {
+      type: "circle",
+    },
+    size: {
+      value: { min: 1, max: 4 },
+    },
+  },
+  detectRetina: true,
+};
+
+// Framer Motion variants for unified entrance and floating
+const contentVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 90,
+      damping: 16,
+    },
+  },
+  float: {
+    y: [0, -18, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "easeInOut",
+    },
+  },
+};
+
+// Add stats array for new contact stats
+const contactStats = [
+  {
+    label: "Antwortzeit",
+    value: 24,
+    suffix: "h",
+    color: "#00d4ff",
+  },
+  {
+    label: "Kundenzufriedenheit",
+    value: 100,
+    suffix: "%",
+    color: "#39ff14",
+  },
+  {
+    label: "Projekte erfolgreich",
+    value: 150,
+    suffix: "+",
+    color: "#ff006e",
+  },
+];
+
+const statCardVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.92 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 90,
+      damping: 16,
+    },
+  },
+  float: {
+    y: [0, -10, 0],
+    transition: {
+      duration: 2.5,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "easeInOut",
+    },
+  },
+};
+
+const CountUpStat: React.FC<{ value: number; duration?: number }> = ({
+  value,
+  duration = 1200,
+}) => {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    let frame: number;
+    const start = 0;
+    const end = value;
+    const startTime = performance.now();
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const current = Math.floor(start + (end - start) * progress);
+      setCount(current);
+      if (progress < 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [value, duration]);
+  return <>{count}</>;
+};
+
+// Add a custom hook for mobile detection
+function useIsMobile(breakpoint = 700) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
+  );
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+  return isMobile;
+}
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,26 +209,12 @@ const Contact: React.FC = () => {
   const [activeField, setActiveField] = useState<string | null>(null);
 
   const formRef = useRef<HTMLFormElement>(null);
-  const floatingCardsRef = useRef<HTMLDivElement>(null);
+  // const floatingCardsRef = useRef<HTMLDivElement>(null); // Remove GSAP
+  const isMobile = useIsMobile();
 
-  // Particle effects for contact background
-  const particlesInit = async (main: any) => {
+  // Memoize particlesInit
+  const particlesInit = useCallback(async (main: any) => {
     await loadFull(main);
-  };
-
-  // Floating cards animation
-  useEffect(() => {
-    if (floatingCardsRef.current) {
-      const cards = floatingCardsRef.current.children;
-      gsap.to(cards, {
-        y: -20,
-        duration: 3,
-        stagger: 0.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut",
-      });
-    }
   }, []);
 
   const contactMethods = [
@@ -51,22 +228,22 @@ const Contact: React.FC = () => {
     {
       icon: "📱",
       title: "Phone",
-      value: "+49 123 456 789",
-      action: "tel:+49123456789",
+      value: "+49 151 220 297 69",
+      action: "tel:+4915122029769",
       color: "#39ff14",
     },
     {
       icon: "📍",
       title: "Location",
-      value: "Berlin, Germany",
+      value: "Simbach am Inn, Germany",
       action: "#",
       color: "#ff006e",
     },
     {
       icon: "💬",
       title: "WhatsApp",
-      value: "+49 123 456 789",
-      action: "https://wa.me/49123456789",
+      value: "+49 151 220 297 69",
+      action: "https://wa.me/4915122029769",
       color: "#25d366",
     },
   ];
@@ -144,76 +321,7 @@ const Contact: React.FC = () => {
       <Particles
         id="tsparticles-contact"
         init={particlesInit}
-        options={{
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "grab",
-              },
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              grab: {
-                distance: 140,
-                links: {
-                  opacity: 0.5,
-                },
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: ["#00d4ff", "#39ff14", "#ff006e", "#25d366"],
-            },
-            links: {
-              color: "#00d4ff",
-              distance: 150,
-              enable: true,
-              opacity: 0.4,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 1.5,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 60,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 4 },
-            },
-          },
-          detectRetina: true,
-        }}
+        options={particlesOptions}
       />
 
       <div className="contact-container">
@@ -251,38 +359,30 @@ const Contact: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        <div className="contact-content">
+        {/* Unified entrance for content */}
+        <motion.div
+          className="contact-content"
+          initial="hidden"
+          whileInView="visible"
+          variants={contentVariants}
+          viewport={{ once: true }}
+        >
           {/* Contact Methods */}
-          <motion.div
-            className="contact-methods"
-            initial={{ x: -100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            ref={floatingCardsRef}
-          >
+          <div className="contact-methods">
             {contactMethods.map((method, index) => (
               <motion.a
                 key={method.title}
                 href={method.action}
                 className="contact-method"
+                variants={cardVariants}
+                initial="hidden"
+                animate={["visible", "float"]}
                 whileHover={{
-                  scale: 1.05,
+                  scale: 1.07,
                   boxShadow: `0 10px 30px ${method.color}40`,
                 }}
                 whileTap={{ scale: 0.95 }}
-                animate={{
-                  boxShadow: [
-                    `0 0 20px ${method.color}30`,
-                    `0 0 30px ${method.color}50`,
-                    `0 0 20px ${method.color}30`,
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: index * 0.5,
-                }}
+                transition={{ type: "spring", stiffness: 200, damping: 18 }}
               >
                 <span className="method-icon">{method.icon}</span>
                 <div className="method-info">
@@ -291,7 +391,7 @@ const Contact: React.FC = () => {
                 </div>
               </motion.a>
             ))}
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
           <motion.div
@@ -538,74 +638,67 @@ const Contact: React.FC = () => {
               )}
             </AnimatePresence>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Contact Stats */}
         <motion.div
-          className="contact-stats"
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          className="contact-stats-modern"
+          style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            gap: isMobile ? "1.5rem" : "2.5rem",
+            margin: isMobile ? "2.5rem 0 0 0" : "4rem 0 0 0",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}
+          initial="hidden"
+          whileInView="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.18,
+                delayChildren: 0.5,
+              },
+            },
+          }}
+          viewport={{ once: true }}
         >
-          <motion.div
-            className="stat-item"
-            whileHover={{ scale: 1.1 }}
-            animate={{
-              boxShadow: [
-                "0 0 20px rgba(0, 212, 255, 0.3)",
-                "0 0 30px rgba(57, 255, 20, 0.4)",
-                "0 0 20px rgba(0, 212, 255, 0.3)",
-              ],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <span className="stat-number">24h</span>
-            <span className="stat-label">Antwortzeit</span>
-          </motion.div>
-          <motion.div
-            className="stat-item"
-            whileHover={{ scale: 1.1 }}
-            animate={{
-              boxShadow: [
-                "0 0 20px rgba(57, 255, 20, 0.3)",
-                "0 0 30px rgba(0, 212, 255, 0.4)",
-                "0 0 20px rgba(57, 255, 20, 0.3)",
-              ],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          >
-            <span className="stat-number">100%</span>
-            <span className="stat-label">Kundenzufriedenheit</span>
-          </motion.div>
-          <motion.div
-            className="stat-item"
-            whileHover={{ scale: 1.1 }}
-            animate={{
-              boxShadow: [
-                "0 0 20px rgba(255, 0, 110, 0.3)",
-                "0 0 30px rgba(0, 212, 255, 0.4)",
-                "0 0 20px rgba(255, 0, 110, 0.3)",
-              ],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2,
-            }}
-          >
-            <span className="stat-number">150+</span>
-            <span className="stat-label">Projekte erfolgreich</span>
-          </motion.div>
+          {contactStats.map((stat) => (
+            <motion.div
+              key={stat.label}
+              className="contact-stat-card"
+              variants={statCardVariants}
+              initial="hidden"
+              animate={["visible", "float"]}
+              whileHover={
+                !isMobile
+                  ? {
+                      scale: 1.08,
+                      boxShadow: `0 0 32px ${stat.color}80, 0 0 0 2px ${stat.color}55`,
+                      borderColor: stat.color,
+                    }
+                  : undefined
+              }
+              transition={{ type: "spring", stiffness: 200, damping: 18 }}
+              style={
+                isMobile
+                  ? {
+                      scale: 1.08,
+                      boxShadow: `0 0 32px ${stat.color}80, 0 0 0 2px ${stat.color}55`,
+                      borderColor: stat.color,
+                    }
+                  : undefined
+              }
+            >
+              <div className="stat-number">
+                <CountUpStat value={stat.value} />
+                <span className="stat-suffix">{stat.suffix}</span>
+              </div>
+              <div className="stat-label">{stat.label}</div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>
