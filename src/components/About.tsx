@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import type { Engine } from "tsparticles-engine";
 import "../styles/about.css";
 import DnaHelix from "./DnaHelix";
 
@@ -9,7 +10,7 @@ const About: React.FC = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
 
   // Particle portrait effects - OPTIMIZED
-  const particlesInit = async (main: any) => {
+  const particlesInit = async (main: Engine) => {
     await loadFull(main);
   };
 
@@ -76,7 +77,7 @@ const About: React.FC = () => {
             left: "0",
             width: "100%",
             height: "100%",
-            zIndex: 0,
+            zIndex: "0",
             pointerEvents: "none",
           },
           particles: {
@@ -241,7 +242,10 @@ const About: React.FC = () => {
           >
             Unser Team
           </motion.h3>
-          <div className="team-grid">
+          <div
+            className="team-grid"
+            style={{ perspective: "1000px", gap: "3rem" }}
+          >
             {teamMembers.map((member, index) => (
               <motion.div
                 key={member.id}
@@ -250,20 +254,21 @@ const About: React.FC = () => {
                 whileInView={{ rotateY: 0, opacity: 1, scale: 1 }}
                 whileHover={{
                   rotateY: 10,
-                  scale: 1.05,
-                  z: 50,
+                  scale: 1.04,
+                  zIndex: 50,
+                  transformStyle: "preserve-3d",
                 }}
                 onHoverStart={() => setHoveredAvatar(member.id)}
                 onHoverEnd={() => setHoveredAvatar(null)}
                 transition={{
-                  duration: 0.8,
-                  delay: 1.2 + index * 0.2,
+                  duration: 0.4,
+                  delay: 0.2 + index * 0.2,
                   type: "spring",
                   stiffness: 100,
                   damping: 15,
                 }}
                 viewport={{ once: true }}
-                style={{ perspective: 1000 }}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 <motion.div
                   className="avatar"
@@ -329,8 +334,8 @@ const About: React.FC = () => {
                 initial={{ scale: 0, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 whileHover={{
-                  scale: 1.02,
-                  boxShadow: "0 15px 40px rgba(157, 78, 221, 0.4)",
+                  scale: 1.01,
+                  // Only rely on CSS for box-shadow
                 }}
                 transition={{
                   duration: 0.8,
