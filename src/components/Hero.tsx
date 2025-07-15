@@ -3,6 +3,7 @@ import { motion, Variants, anticipate } from "framer-motion";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
+import DroneIcon from "./DroneIcon";
 
 // Add a custom hook for mobile detection
 function useIsMobile(breakpoint = 700) {
@@ -154,6 +155,12 @@ const Hero: React.FC = () => {
       },
     },
   };
+
+  const featureIcons = [
+    { icon: "🖥️", text: "Web-App Entwicklung" },
+    { icon: "📱", text: "Social Media" },
+    { icon: <DroneIcon size={32} />, text: "Drohnenaufnahmen" }, // Use the new DroneIcon component
+  ];
 
   return (
     <section id="home" className="hero">
@@ -573,11 +580,7 @@ const Hero: React.FC = () => {
 
         {/* Animated Key Points */}
         <motion.div className="hero-features" variants={itemVariants}>
-          {[
-            { icon: "🖥️", text: "Web-App Entwicklung" },
-            { icon: "📱", text: "Social Media" },
-            { icon: "🚁", text: "Drohnenaufnahmen" },
-          ].map((feature, index) => (
+          {featureIcons.map((feature, index) => (
             <motion.div
               key={index}
               className="feature"

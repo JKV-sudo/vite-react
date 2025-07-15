@@ -3,6 +3,7 @@ import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import DroneIcon from "./DroneIcon";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.92, rotateY: -10 },
@@ -138,7 +139,7 @@ const Portfolio: React.FC = () => {
       id: 2,
       title: "Neon City Drone Photography",
       category: "Aerial Photography",
-      image: "🚁",
+      image: <DroneIcon size={36} />, // Use the new DroneIcon component
       description: "Stunning urban landscapes captured from above",
       technologies: ["DJI Mavic", "Adobe Creative Suite", "4K Video"],
       link: "#",

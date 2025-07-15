@@ -7,6 +7,7 @@ import "../styles/about.css";
 import DnaHelix from "./DnaHelix";
 import { useEffect } from "react";
 import type { TargetAndTransition } from "framer-motion";
+import DroneIcon from "./DroneIcon";
 
 const About: React.FC = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
@@ -35,7 +36,7 @@ const About: React.FC = () => {
       id: 3,
       name: "Marcus Weber",
       role: "Drone Specialist",
-      avatar: "👨‍🚁",
+      avatar: <DroneIcon size={36} />, // Use the new DroneIcon component
       description: "Aerial photography expert & cinematographer",
     },
   ];

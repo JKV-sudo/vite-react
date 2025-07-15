@@ -2,6 +2,8 @@ import React from "react";
 import { motion, anticipate } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import { Engine } from "tsparticles-engine";
+import DroneIcon from "./DroneIcon";
 // import { Engine } from "tsparticles-engine"; // Remove this import
 
 const services = [
@@ -36,7 +38,7 @@ const services = [
   },
   {
     id: "drone",
-    icon: "🚁",
+    icon: <DroneIcon size={40} />, // Use the new DroneIcon component
     title: "Drohnenaufnahmen",
     description: "Professionelle Luftaufnahmen für Marketing und Dokumentation",
     features: [
@@ -50,7 +52,7 @@ const services = [
   },
 ];
 
-const particlesInit = async (main: any) => {
+const particlesInit = async (main: Engine) => {
   await loadFull(main);
 };
 
@@ -59,7 +61,7 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
   service,
 }) => {
   const [hovered, setHovered] = React.useState(false);
-  const explosionParticlesInit = async (main: any) => {
+  const explosionParticlesInit = async (main: Engine) => {
     await loadFull(main);
   };
   const cardRef = React.useRef<HTMLDivElement>(null);
