@@ -179,38 +179,64 @@
   bottom: 0;
 }
 
+/* Overlay for mobile menu */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+/* Slide-in mobile nav */
 .nav-mobile {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--accent-blue);
-  padding: 2rem;
+  display: flex;
   flex-direction: column;
-  gap: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+  gap: 1.5rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(10, 10, 20, 0.85);
+  z-index: 1300;
+  padding: 0 0 2rem 0;
+  align-items: stretch;
+  min-width: 100vw;
+  min-height: 100vh;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.77, 0, 0.18, 1);
+  box-shadow: 0 0 40px #00d4ff33;
+  opacity: 1;
+  pointer-events: none;
 }
 
 .nav-mobile.active {
-  display: flex;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 .nav-link-mobile {
+  font-size: 1.3rem;
+  padding: 1.5rem 0;
+  border: none;
   background: none;
-  border: 1px solid var(--accent-blue);
   color: var(--text-primary);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  display: block;
   text-align: center;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-family: "JetBrains Mono", monospace;
+}
+
+.nav-link-mobile.active,
+.nav-link-mobile:focus {
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  color: #111;
+  box-shadow: 0 0 20px var(--accent-blue);
 }
 
 .nav-link-mobile:hover {
@@ -218,4 +244,74 @@
   color: var(--bg-primary);
   box-shadow: 0 0 20px var(--border-glow);
   transform: translateY(-2px);
+}
+
+/* Desktop nav active link */
+.nav-link.active,
+.nav-link:focus {
+  color: var(--accent-green);
+  text-shadow: 0 0 12px var(--accent-green);
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-link:focus {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Hamburger focus */
+.mobile-menu-button:focus {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .header-container {
+    padding: 0 1.2rem;
+  }
+  .nav-desktop {
+    display: none;
+  }
+  .mobile-menu-button {
+    display: flex;
+    z-index: 1400;
+  }
+}
+
+@media (min-width: 901px) {
+  .nav-mobile,
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo-text {
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+  }
+  .logo {
+    height: 34px;
+  }
+  .header-container {
+    height: 60px;
+    padding: 0 0.7rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .logo-text {
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+  }
+  .logo {
+    height: 28px;
+  }
+  .header-container {
+    height: 48px;
+    padding: 0 0.3rem;
+  }
 }
