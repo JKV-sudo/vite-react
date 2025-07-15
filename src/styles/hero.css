@@ -212,3 +212,25 @@
   pointer-events: none;
   user-select: none;
 }
+
+@media (max-width: 600px) {
+  .hero-bg-logo {
+    width: 60vw;
+    height: 60vw;
+    min-width: 200px;
+    min-height: 200px;
+    max-width: 400px;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-bg-logo {
+    width: 45vw;
+    height: 45vw;
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 250px;
+    max-height: 250px;
+  }
+}
