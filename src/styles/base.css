@@ -52,3 +52,18 @@ body {
   border: 1px solid var(--accent-blue);
   box-shadow: 0 0 10px var(--border-glow), inset 0 0 10px var(--border-glow);
 }
+
+.neural-node {
+  will-change: transform;
+  transform: translateZ(0);
+  /* Consider using a lighter box-shadow or none for mobile */
+  box-shadow: 0 0 8px #00d4ff, 0 0 8px #39ff14;
+  transition: box-shadow 0.3s;
+}
+
+@media (max-width: 700px) {
+  .neural-node {
+    box-shadow: 0 0 4px #00d4ff, 0 0 4px #39ff14;
+    /* Optionally, reduce animation or effects further for mobile */
+  }
+}
