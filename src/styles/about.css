@@ -58,29 +58,31 @@
   animation: dnaPulse 4s ease-in-out infinite;
   animation-delay: var(--delay);
   top: var(--height);
+  transform: translateX(calc(-50% + var(--x))) 
+             translateZ(var(--z)) 
+             rotateY(var(--angle));
 }
 
 .dna-base.base-even {
   background: #00d4ff;
   box-shadow: 0 0 25px #00d4ff;
-  transform: translateX(-50%) rotateY(var(--angle))
-    translateZ(calc(-1 * var(--radius)));
 }
 
 .dna-base.base-odd {
   background: #39ff14;
   box-shadow: 0 0 25px #39ff14;
-  transform: translateX(-50%) rotateY(var(--angle)) translateZ(var(--radius));
 }
 
 /* DNA Rungs - Horizontal connections between strands */
 .dna-rung {
   position: absolute;
   left: 50%;
-  width: calc(2 * var(--radius));
+  width: 120px;
   height: 8px;
   background: linear-gradient(90deg, #00d4ff, #39ff14, #00d4ff);
-  transform: translateX(-50%) rotateY(var(--angle)) translateZ(0);
+  transform: translateX(calc(-50% + var(--x))) 
+             translateZ(var(--z)) 
+             rotateY(var(--angle));
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.9);
   border-radius: 4px;
   z-index: 1;

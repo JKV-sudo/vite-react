@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import "../styles/about.css";
+import DnaHelix from "./DnaHelix";
 
 const About: React.FC = () => {
-  const dnaRef = useRef<HTMLDivElement>(null);
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
 
   // Particle portrait effects - OPTIMIZED
@@ -58,65 +58,12 @@ const About: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="about">
-      {/* Proper DNA Helix Background */}
-      <div className="dna-helix-container" ref={dnaRef}>
-        <div className="dna-helix-structure">
-          {/* First DNA Strand - Left side of helix */}
-          <div className="dna-strand strand-1">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={`strand1-${i}`}
-                className={`dna-base base-${i % 2 === 0 ? "even" : "odd"}`}
-                style={
-                  {
-                    "--delay": `${i * 0.1}s`,
-                    "--angle": `${i * 18}deg`,
-                    "--height": `${i * 30}px`,
-                    "--radius": "60px",
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </div>
-
-          {/* Second DNA Strand - Right side of helix */}
-          <div className="dna-strand strand-2">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={`strand2-${i}`}
-                className={`dna-base base-${i % 2 === 0 ? "odd" : "even"}`}
-                style={
-                  {
-                    "--delay": `${i * 0.1}s`,
-                    "--angle": `${i * 18 + 180}deg`,
-                    "--height": `${i * 30}px`,
-                    "--radius": "60px",
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </div>
-
-          {/* Connecting Rungs - Horizontal connections between strands */}
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={`rung-${i}`}
-              className="dna-rung"
-              style={
-                {
-                  "--delay": `${i * 0.15}s`,
-                  "--angle": `${i * 36}deg`,
-                  "--height": `${i * 60 + 15}px`,
-                  "--radius": "60px",
-                } as React.CSSProperties
-              }
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Optimized Particle Background */}
+    <section
+      id="about"
+      className="about"
+      style={{ position: "relative", overflow: "hidden" }}
+    >
+      {/* Main background/particles (z-index 0 or 1) */}
       <Particles
         id="tsparticles-about-portraits"
         init={particlesInit}
@@ -129,7 +76,7 @@ const About: React.FC = () => {
             left: "0",
             width: "100%",
             height: "100%",
-            zIndex: "0",
+            zIndex: 0,
             pointerEvents: "none",
           },
           particles: {
@@ -165,13 +112,26 @@ const About: React.FC = () => {
         }}
       />
 
-      <motion.div
-        className="about-container"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ once: true }}
+      {/* DNA Helix (z-index 5) */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "min(90vw, 400px)",
+          height: "min(80vh, 500px)",
+          zIndex: 5,
+          pointerEvents: "none",
+          opacity: 0.35,
+          filter: "blur(1.5px)",
+        }}
       >
+        <DnaHelix />
+      </div>
+
+      {/* About content/cards (z-index 10) */}
+      <div style={{ position: "relative", zIndex: 10 }}>
         {/* Section Header */}
         <motion.div
           className="about-header"
@@ -406,7 +366,7 @@ const About: React.FC = () => {
             ))}
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
