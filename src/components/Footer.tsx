@@ -541,16 +541,13 @@ const Footer: React.FC = () => {
             <motion.button
               className="back-to-top"
               onClick={scrollToTop}
+              style={{ zIndex: 2000, position: "fixed" }}
               initial={{ opacity: 0, scale: 0, rotate: -180 }}
               animate={{
                 opacity: 1,
                 scale: 1,
                 rotate: 0,
-                boxShadow: [
-                  "0 0 20px rgba(0, 212, 255, 0.4)",
-                  "0 0 30px rgba(57, 255, 20, 0.5)",
-                  "0 0 20px rgba(0, 212, 255, 0.4)",
-                ],
+                boxShadow: "0 0 20px rgba(0, 212, 255, 0.4)",
               }}
               exit={{ opacity: 0, scale: 0, rotate: 180 }}
               whileHover={{
@@ -559,12 +556,41 @@ const Footer: React.FC = () => {
               }}
               whileTap={{ scale: 0.9 }}
               transition={{
-                duration: 2,
-                repeat: Infinity,
+                type: "spring",
+                stiffness: 120,
+                damping: 16,
+                duration: 0.7,
                 ease: "easeInOut",
               }}
             >
-              <span className="portal-icon">🚀</span>
+              <span
+                className="portal-icon"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <svg
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ display: "block", background: "transparent" }}
+                  aria-label="Scroll to top"
+                >
+                  <path
+                    d="M18 30V8M18 8L9 17M18 8L27 17"
+                    stroke="#111"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
             </motion.button>
           )}
         </AnimatePresence>

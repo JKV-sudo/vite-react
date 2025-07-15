@@ -508,7 +508,11 @@ const Hero: React.FC = () => {
         </motion.p>
 
         {/* Animated Call-to-Action Buttons */}
-        <motion.div className="hero-cta" variants={itemVariants}>
+        <motion.div
+          className="hero-cta"
+          variants={itemVariants}
+          style={{ zIndex: 10, position: "relative" }}
+        >
           <motion.button
             onClick={scrollToContact}
             className="cta-primary"
@@ -540,6 +544,30 @@ const Hero: React.FC = () => {
             whileTap="tap"
           >
             Unsere Leistungen
+          </motion.button>
+          <motion.button
+            onClick={() => {
+              const element = document.getElementById("about");
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="cta-secondary"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            Über uns
+          </motion.button>
+          <motion.button
+            onClick={() => {
+              const element = document.getElementById("portfolio");
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="cta-secondary"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            Portfolio
           </motion.button>
         </motion.div>
 
