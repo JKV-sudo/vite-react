@@ -5,6 +5,8 @@ import { loadFull } from "tsparticles";
 import type { Engine } from "tsparticles-engine";
 import "../styles/about.css";
 import DnaHelix from "./DnaHelix";
+import { useEffect } from "react";
+import type { TargetAndTransition } from "framer-motion";
 
 const About: React.FC = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
@@ -173,56 +175,39 @@ const About: React.FC = () => {
         {/* Quantum Stats Counters */}
         <motion.div
           className="stats-grid"
-          initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          initial="hidden"
+          whileInView="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.3,
+              },
+            },
+          }}
           viewport={{ once: true }}
         >
-          {stats.map((stat, index) => (
-            <motion.div
+          {stats.map((stat, idx) => (
+            <CountUpStatCard
               key={stat.label}
-              className="stat-card"
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 30px rgba(0, 212, 255, 0.3)",
-              }}
-            >
-              <motion.div
-                className="stat-number"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                animate={{
-                  textShadow: [
-                    "0 0 10px #39ff14",
-                    "0 0 20px #39ff14",
-                    "0 0 10px #39ff14",
-                  ],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                viewport={{ once: true }}
-              >
-                {stat.value}
-                <span className="stat-suffix">{stat.suffix}</span>
-              </motion.div>
-              <div className="stat-label">{stat.label}</div>
-            </motion.div>
+              stat={stat}
+              custom={idx}
+              duration={1400}
+            />
           ))}
         </motion.div>
 
         {/* Team Avatar Materializations */}
+        {/* Calculate team section delay: 0.3 + (stats.length - 1) * 0.12 + 0.7 */}
         <motion.div
           className="team-section"
           initial={{ y: 100, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{
+            duration: 1,
+            delay: 0.3 + (stats.length - 1) * 0.12 + 0.7,
+          }}
           viewport={{ once: true }}
         >
           <motion.h3
@@ -253,19 +238,18 @@ const About: React.FC = () => {
                 initial={{ rotateY: -90, opacity: 0, scale: 0.8 }}
                 whileInView={{ rotateY: 0, opacity: 1, scale: 1 }}
                 whileHover={{
-                  rotateY: 10,
-                  scale: 1.04,
+                  rotateY: 16,
+                  scale: 1.045,
                   zIndex: 50,
                   transformStyle: "preserve-3d",
                 }}
                 onHoverStart={() => setHoveredAvatar(member.id)}
                 onHoverEnd={() => setHoveredAvatar(null)}
                 transition={{
-                  duration: 0.4,
-                  delay: 0.2 + index * 0.2,
                   type: "spring",
-                  stiffness: 100,
-                  damping: 15,
+                  stiffness: 350,
+                  damping: 20,
+                  duration: 0.32,
                 }}
                 viewport={{ once: true }}
                 style={{ transformStyle: "preserve-3d" }}
@@ -373,6 +357,73 @@ const About: React.FC = () => {
         </motion.div>
       </div>
     </section>
+  );
+};
+
+const statCardVariants = {
+  hidden: { y: 40, opacity: 0, scale: 0.92 },
+  visible: (custom: number): TargetAndTransition => ({
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 90,
+      damping: 16,
+    },
+  }),
+};
+
+const CountUpStatCard: React.FC<{
+  stat: { label: string; value: number; suffix: string };
+  custom: number;
+  duration?: number;
+}> = ({ stat, custom, duration = 1200 }) => {
+  const [count, setCount] = useState(0);
+  const [shouldCount, setShouldCount] = useState(false);
+
+  useEffect(() => {
+    if (!shouldCount) return;
+    const start = 0;
+    const end = stat.value;
+    const startTime = performance.now();
+    let frame: number;
+
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const current = Math.floor(start + (end - start) * progress);
+      setCount(current);
+      if (progress < 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [shouldCount, stat.value, duration]);
+
+  return (
+    <motion.div
+      className="stat-card"
+      variants={statCardVariants}
+      custom={custom}
+      initial="hidden"
+      animate="visible"
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0 10px 30px rgba(0, 212, 255, 0.3)",
+      }}
+      onAnimationComplete={() => setShouldCount(true)}
+      viewport={{ once: true }}
+    >
+      <div className="stat-number">
+        {count}
+        <span className="stat-suffix">{stat.suffix}</span>
+      </div>
+      <div className="stat-label">{stat.label}</div>
+    </motion.div>
   );
 };
 
