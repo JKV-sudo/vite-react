@@ -1,0 +1,47 @@
+.low-perf-banner {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+  background: rgba(10, 10, 10, 0.85);
+  color: #fff;
+  padding: 1.1rem 2.5rem 1.1rem 1.5rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45), 0 0 24px #00d4ff44;
+  backdrop-filter: blur(10px) saturate(1.2);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  animation: fadeInBanner 0.4s;
+}
+
+@keyframes fadeInBanner {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.close-banner {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.close-banner:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
