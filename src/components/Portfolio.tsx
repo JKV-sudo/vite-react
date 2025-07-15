@@ -91,13 +91,8 @@ const particlesOptions = {
 const Portfolio: React.FC = () => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
   useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      setIsMobile(window.innerWidth <= 700);
-    };
+    const handleResize = () => {};
     window.addEventListener("resize", handleResize);
     window.addEventListener("orientationchange", handleResize);
     return () => {
