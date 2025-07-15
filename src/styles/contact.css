@@ -228,6 +228,7 @@
 
 .contact-form-section::before {
   content: "";
+  padding: 30px;
   position: absolute;
   top: 0;
   left: -100%;
@@ -294,6 +295,7 @@
 
 /* Form Styles */
 .contact-form {
+  padding: 3rem !important;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

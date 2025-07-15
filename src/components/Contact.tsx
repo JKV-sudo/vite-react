@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import "../styles/contact.css";
 // import gsap from "gsap"; // Remove GSAP
 
 // Framer Motion variants for unified entrance and floating

@@ -313,60 +313,58 @@
 /* Portfolio CTA */
 .portfolio-cta {
   text-align: center;
-  background: linear-gradient(
-    135deg,
-    var(--bg-card) 0%,
-    var(--bg-secondary) 100%
-  );
+  background: rgba(20, 20, 30, 0.466);
   border: 2px solid var(--accent-blue);
-  border-radius: 25px;
+  border-radius: 32px;
   padding: 4rem 2rem;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 0 40px 0 var(--accent-blue), 0 0 80px 0 var(--accent-green),
+    0 8px 32px 0 rgba(0, 0, 0, 0.45);
   position: relative;
   overflow: hidden;
+  transition: box-shadow 0.4s cubic-bezier(0.4, 2, 0.6, 1);
 }
 
 .portfolio-cta::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 212, 255, 0.1),
-    transparent
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 36px;
+  pointer-events: none;
+  background: conic-gradient(
+    var(--accent-blue),
+    var(--accent-green),
+    var(--accent-pink),
+    var(--accent-blue)
   );
-  animation: ctaSweep 3s ease-in-out infinite;
+  filter: blur(4px) brightness(1.2);
+  opacity: 0.2;
+  z-index: 0;
+  animation: neonBorderGlow 6s linear infinite;
+  border-style: none !important;
 }
 
-.cta-content h3 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  font-family: "JetBrains Mono", monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+@keyframes neonBorderGlow {
+  0% {
+    filter: blur(8px) brightness(1.2);
+  }
+  50% {
+    filter: blur(12px) brightness(1.5);
+  }
+  100% {
+    filter: blur(8px) brightness(1.2);
+  }
 }
 
-.cta-content p {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: "Inter", sans-serif;
-}
-
-.cta-button {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+.portfolio-cta .cta-button {
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
   color: var(--bg-primary);
   border: none;
-  padding: 1.25rem 3rem;
+  gap: 1rem;
+  padding: 1.5rem 3rem;
   border-radius: 30px;
   font-family: "JetBrains Mono", monospace;
   font-weight: 700;
@@ -374,11 +372,18 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+  transition: box-shadow 0.3s, transform 0.2s;
+  box-shadow: 0 0 25px var(--accent-blue), 0 0 40px var(--accent-green);
+  position: relative;
+  z-index: 1;
+  animation: neonPulse 2.5s infinite alternate;
 }
 
-.cta-button:hover {
-  box-shadow: 0 0 40px rgba(57, 255, 20, 0.7);
-  transform: translateY(-3px);
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 25px var(--accent-blue), 0 0 40px var(--accent-green);
+  }
+  100% {
+    box-shadow: 0 0 50px var(--accent-green), 0 0 80px var(--accent-blue);
+  }
 }

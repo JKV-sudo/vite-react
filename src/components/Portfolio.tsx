@@ -4,6 +4,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import DroneIcon from "./DroneIcon";
+import "../styles/portfolio.css";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.92, rotateY: -10 },
