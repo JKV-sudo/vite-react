@@ -1,13 +1,108 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import gsap from "gsap";
 
+// Memoized particles options for footer
+const particlesOptions = {
+  background: {
+    color: {
+      value: "transparent",
+    },
+  },
+  fpsLimit: 120,
+  interactivity: {
+    events: {
+      onClick: {
+        enable: true,
+        mode: "push",
+      },
+      onHover: {
+        enable: true,
+        mode: "grab",
+      },
+    },
+    modes: {
+      push: {
+        quantity: 3,
+      },
+      grab: {
+        distance: 120,
+        links: {
+          opacity: 0.4,
+        },
+      },
+    },
+  },
+  particles: {
+    color: {
+      value: ["#00d4ff", "#39ff14", "#ff006e", "#9d4edd"],
+    },
+    links: {
+      color: "#00d4ff",
+      distance: 120,
+      enable: true,
+      opacity: 0.3,
+      width: 1,
+    },
+    move: {
+      direction: "none",
+      enable: true,
+      outModes: {
+        default: "bounce",
+      },
+      random: false,
+      speed: 1,
+      straight: false,
+    },
+    number: {
+      density: {
+        enable: true,
+        area: 600,
+      },
+      value: 60,
+    },
+    opacity: {
+      value: 0.5,
+    },
+    shape: {
+      type: "circle",
+    },
+    size: {
+      value: { min: 1, max: 4 },
+    },
+  },
+  detectRetina: true,
+};
+
+// Add a custom hook for mobile detection
+function useIsMobile(breakpoint = 700) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
+  );
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+// Framer Motion variants for unified entrance
+const contentVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.3,
+    },
+  },
+};
+
 const Footer: React.FC = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterSuccess, setNewsletterSuccess] = useState(false);
+  const isMobile = useIsMobile();
 
   // Particle effects for footer background
   const particlesInit = async (main: any) => {
@@ -86,15 +181,6 @@ const Footer: React.FC = () => {
     "Digital Marketing",
   ];
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newsletterEmail) {
-      setNewsletterSuccess(true);
-      setNewsletterEmail("");
-      setTimeout(() => setNewsletterSuccess(false), 5000);
-    }
-  };
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -107,218 +193,157 @@ const Footer: React.FC = () => {
       {/* Particle Background */}
       <Particles
         id="tsparticles-footer"
-        init={particlesInit}
-        options={{
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "grab",
-              },
-            },
-            modes: {
-              push: {
-                quantity: 3,
-              },
-              grab: {
-                distance: 120,
-                links: {
-                  opacity: 0.4,
-                },
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: ["#00d4ff", "#39ff14", "#ff006e", "#9d4edd"],
-            },
-            links: {
-              color: "#00d4ff",
-              distance: 120,
-              enable: true,
-              opacity: 0.3,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 1,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 600,
-              },
-              value: 60,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 4 },
-            },
-          },
-          detectRetina: true,
-        }}
+        init={useCallback(async (main) => {
+          await loadFull(main);
+        }, [])}
+        options={particlesOptions}
       />
 
       <div className="footer-container">
-        {/* Neural Network Header */}
+        {/* Unified entrance for content */}
         <motion.div
-          className="neural-network-header"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          className="footer-content"
+          initial="hidden"
+          whileInView="visible"
+          variants={contentVariants}
+          viewport={{ once: true }}
         >
-          <div className="neural-network">
-            {/* SVG for neural connections */}
-            <svg
-              className="neural-connections"
-              viewBox="0 0 400 200"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient
-                  id="neuralGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor="#00d4ff" />
-                  <stop offset="50%" stopColor="#39ff14" />
-                  <stop offset="100%" stopColor="#ff006e" />
-                </linearGradient>
-              </defs>
-              {/* Neural connections */}
-              <path
-                d="M50,50 L150,30 L250,70 L350,50 M50,100 L150,80 L250,120 L350,100 M50,150 L150,130 L250,170 L350,150"
-                stroke="url(#neuralGradient)"
-                strokeWidth="2"
-                fill="none"
-                opacity="0.6"
-                className="neural-path"
-              />
-            </svg>
-            {/* Neural nodes */}
-            {Array.from({ length: 12 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="neural-node"
-                style={{
-                  position: "absolute",
-                  left: `${50 + (i % 4) * 100}px`,
-                  top: `${50 + Math.floor(i / 4) * 50}px`,
-                  width: "8px",
-                  height: "8px",
-                  background:
-                    i % 3 === 0
-                      ? "#00d4ff"
-                      : i % 3 === 1
-                      ? "#39ff14"
-                      : "#ff006e",
-                  borderRadius: "50%",
-                  boxShadow: `0 0 10px ${
-                    i % 3 === 0
-                      ? "#00d4ff"
-                      : i % 3 === 1
-                      ? "#39ff14"
-                      : "#ff006e"
-                  }`,
-                }}
-                animate={{
-                  scale: [1, 1.5, 1],
-                  opacity: [0.6, 1, 0.6],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                  ease: "easeInOut",
-                }}
-              />
-            ))}
-          </div>
-
-          <motion.h2
-            className="footer-title"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            animate={{
-              textShadow: [
-                "0 0 10px #00d4ff",
-                "0 0 20px #39ff14",
-                "0 0 30px #ff006e",
-                "0 0 20px #39ff14",
-                "0 0 10px #00d4ff",
-              ],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 0.3,
-            }}
+          {/* Neural Network Header */}
+          <motion.div
+            className="neural-network-header"
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
           >
-            {"Digital Nexus Terminal".split("").map((char, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.1,
-                  delay: 0.5 + index * 0.05,
-                }}
-                style={{ display: "inline-block" }}
+            <div className="neural-network">
+              {/* SVG for neural connections */}
+              <svg
+                className="neural-connections"
+                viewBox="0 0 400 200"
+                preserveAspectRatio="none"
               >
-                {char}
-              </motion.span>
-            ))}
-          </motion.h2>
+                <defs>
+                  <linearGradient
+                    id="neuralGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#00d4ff" />
+                    <stop offset="50%" stopColor="#39ff14" />
+                    <stop offset="100%" stopColor="#ff006e" />
+                  </linearGradient>
+                </defs>
+                {/* Neural connections */}
+                <path
+                  d="M50,50 L150,30 L250,70 L350,50 M50,100 L150,80 L250,120 L350,100 M50,150 L150,130 L250,170 L350,150"
+                  stroke="url(#neuralGradient)"
+                  strokeWidth="2"
+                  fill="none"
+                  opacity="0.6"
+                  className="neural-path"
+                />
+              </svg>
+              {/* Neural nodes */}
+              {Array.from({ length: 12 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="neural-node"
+                  style={{
+                    position: "absolute",
+                    left: `${50 + (i % 4) * 100}px`,
+                    top: `${50 + Math.floor(i / 4) * 50}px`,
+                    width: "8px",
+                    height: "8px",
+                    background:
+                      i % 3 === 0
+                        ? "#00d4ff"
+                        : i % 3 === 1
+                        ? "#39ff14"
+                        : "#ff006e",
+                    borderRadius: "50%",
+                    boxShadow: `0 0 10px ${
+                      i % 3 === 0
+                        ? "#00d4ff"
+                        : i % 3 === 1
+                        ? "#39ff14"
+                        : "#ff006e"
+                    }`,
+                  }}
+                  animate={{
+                    scale: [1, 1.5, 1],
+                    opacity: [0.6, 1, 0.6],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+            </div>
 
-          <motion.p
-            className="footer-subtitle"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            animate={{
-              textShadow: [
-                "0 0 5px rgba(0, 212, 255, 0.3)",
-                "0 0 10px rgba(57, 255, 20, 0.5)",
-                "0 0 5px rgba(0, 212, 255, 0.3)",
-              ],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 0.8,
-            }}
-          >
-            Connect with the future of digital marketing
-          </motion.p>
-        </motion.div>
+            <motion.h2
+              className="footer-title"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              animate={{
+                textShadow: [
+                  "0 0 10px #00d4ff",
+                  "0 0 20px #39ff14",
+                  "0 0 30px #ff006e",
+                  "0 0 20px #39ff14",
+                  "0 0 10px #00d4ff",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.3,
+              }}
+            >
+              {"Digital Nexus Terminal".split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.1,
+                    delay: 0.5 + index * 0.05,
+                  }}
+                  style={{ display: "inline-block" }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </motion.h2>
 
-        {/* Footer Content */}
-        <div className="footer-content">
-          {/* Company Info */}
+            <motion.p
+              className="footer-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              animate={{
+                textShadow: [
+                  "0 0 5px rgba(0, 212, 255, 0.3)",
+                  "0 0 10px rgba(57, 255, 20, 0.5)",
+                  "0 0 5px rgba(0, 212, 255, 0.3)",
+                ],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.8,
+              }}
+            >
+              Connect with the future of digital marketing
+            </motion.p>
+          </motion.div>
+
+          {/* Footer Content */}
           <motion.div
             className="footer-section"
             initial={{ opacity: 0, x: -50 }}
@@ -346,6 +371,7 @@ const Footer: React.FC = () => {
               Ihre Vision, unsere Expertise. Wir erschaffen digitale Erlebnisse,
               die im Gedächtnis bleiben.
             </p>
+            {/* Social Links */}
             <motion.div
               className="social-links"
               initial={{ opacity: 0 }}
@@ -359,10 +385,14 @@ const Footer: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-link"
-                  whileHover={{
-                    scale: 1.2,
-                    boxShadow: `0 0 20px ${social.color}40`,
-                  }}
+                  whileHover={
+                    !isMobile
+                      ? {
+                          scale: 1.2,
+                          boxShadow: `0 0 20px ${social.color}40`,
+                        }
+                      : undefined
+                  }
                   whileTap={{ scale: 0.9 }}
                   animate={{
                     boxShadow: [
@@ -370,6 +400,12 @@ const Footer: React.FC = () => {
                       `0 0 20px ${social.color}50`,
                       `0 0 10px ${social.color}30`,
                     ],
+                    ...(isMobile
+                      ? {
+                          scale: 1.2,
+                          boxShadow: `0 0 20px ${social.color}40`,
+                        }
+                      : {}),
                   }}
                   transition={{
                     duration: 3,
@@ -478,78 +514,7 @@ const Footer: React.FC = () => {
               ))}
             </ul>
           </motion.div>
-
-          {/* Newsletter */}
-          <motion.div
-            className="footer-section"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <motion.h3
-              className="section-title"
-              animate={{
-                textShadow: [
-                  "0 0 10px #9d4edd",
-                  "0 0 15px #00d4ff",
-                  "0 0 10px #9d4edd",
-                ],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 3,
-              }}
-            >
-              Newsletter
-            </motion.h3>
-            <p className="newsletter-description">
-              Bleiben Sie auf dem Laufenden mit unseren neuesten Projekten und
-              Insights.
-            </p>
-            <motion.form
-              className="newsletter-form"
-              onSubmit={handleNewsletterSubmit}
-              whileHover={{ scale: 1.02 }}
-            >
-              <motion.input
-                type="email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="Ihre E-Mail Adresse"
-                className="newsletter-input"
-                whileFocus={{
-                  boxShadow: "0 0 20px rgba(0, 212, 255, 0.5)",
-                }}
-              />
-              <motion.button
-                type="submit"
-                className="newsletter-button"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 0 20px rgba(57, 255, 20, 0.5)",
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Abonnieren
-              </motion.button>
-            </motion.form>
-            <AnimatePresence>
-              {newsletterSuccess && (
-                <motion.div
-                  className="newsletter-success"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  ✅ Newsletter erfolgreich abonniert!
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
+        </motion.div>
 
         {/* Footer Bottom */}
         <motion.div
