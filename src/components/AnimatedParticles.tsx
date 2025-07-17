@@ -33,6 +33,12 @@ const AnimatedParticles: React.FC = () => {
     // Check if particles should be disabled
     const checkDisabledState = () => {
       const isDisabled = localStorage.getItem("disableParticles") === "true";
+      console.log(
+        "[AnimatedParticles] localStorage.disableParticles:",
+        localStorage.getItem("disableParticles"),
+        "| enabled:",
+        !isDisabled
+      );
       setEnabled(!isDisabled);
     };
 
