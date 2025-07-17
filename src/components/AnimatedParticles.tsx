@@ -30,14 +30,36 @@ const AnimatedParticles: React.FC = () => {
   const [perfTier, setPerfTier] = useState<"high" | "medium" | "low">("high");
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      typeof window.__disableParticles === "function"
-    ) {
-      if (window.__disableParticles()) {
-        setEnabled(false);
+    // Check if particles should be disabled
+    const checkDisabledState = () => {
+      const isDisabled = localStorage.getItem("disableParticles") === "true";
+      setEnabled(!isDisabled);
+    };
+
+    // Initial check
+    checkDisabledState();
+
+    // Listen for storage changes (in case it's updated from another tab/window)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "disableParticles") {
+        checkDisabledState();
       }
-    }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also check periodically in case the function is set up after this component mounts
+    const interval = setInterval(() => {
+      if (typeof window.__disableParticles === "function") {
+        const isDisabled = window.__disableParticles();
+        setEnabled(!isDisabled);
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
