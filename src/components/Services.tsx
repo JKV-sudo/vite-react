@@ -52,7 +52,6 @@ const services = [
 const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
   service,
 }) => {
-  const [hovered, setHovered] = React.useState(false);
   const cardRef = React.useRef<HTMLDivElement>(null);
   const innerRef = React.useRef<HTMLDivElement>(null);
 
@@ -70,11 +69,9 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
       className="service-card"
       ref={cardRef}
       onMouseEnter={() => {
-        setHovered(true);
         logRects("mouseenter");
       }}
       onMouseLeave={() => {
-        setHovered(false);
         logRects("mouseleave");
       }}
     >
@@ -107,10 +104,6 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
 };
 
 const Services: React.FC = () => {
-  const isMobile = window.innerWidth < 768; // Define isMobile here
-  // Particle count: desktop = 15, mobile = 10
-  const particleCount = isMobile ? 10 : 15;
-
   return (
     <section id="services" className="services">
       <div className="services-container">
