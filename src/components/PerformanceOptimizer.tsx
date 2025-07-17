@@ -16,7 +16,6 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
     useState(false);
   const lowPerfTriggeredRef = React.useRef(false);
   const lowFpsDurationRef = React.useRef(0);
-  const lastFpsCheckRef = React.useRef(performance.now());
 
   // Helper to check if particles should be disabled
   window.__disableParticles = () => {
@@ -71,7 +70,7 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
         } else {
           lowFpsDurationRef.current = 0;
         }
-        if (lowFpsDurationRef.current >= 3 && !window.__disableParticles()) {
+        if (lowFpsDurationRef.current >= 3 && !window.__disableParticles?.()) {
           // Disable particles for this session
           localStorage.setItem("disableParticles", "true");
           setShowParticlesDisabledBanner(true);
