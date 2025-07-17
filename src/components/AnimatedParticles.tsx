@@ -23,10 +23,22 @@ function getPerformanceTier() {
 }
 
 const AnimatedParticles: React.FC = () => {
+  const [enabled, setEnabled] = useState(true);
   const [canvasSize, setCanvasSize] = useState(getViewportWithMargin());
   const [particleCount, setParticleCount] = useState(25);
   const [showBanner, setShowBanner] = useState(false);
   const [perfTier, setPerfTier] = useState<"high" | "medium" | "low">("high");
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      typeof window.__disableParticles === "function"
+    ) {
+      if (window.__disableParticles()) {
+        setEnabled(false);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,6 +73,8 @@ const AnimatedParticles: React.FC = () => {
   const particlesInit = async (main: any) => {
     await loadFull(main);
   };
+
+  if (!enabled) return null;
 
   return (
     <>

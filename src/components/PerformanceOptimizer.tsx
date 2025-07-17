@@ -11,6 +11,18 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
   const [isLowPower, setIsLowPower] = useState(false);
   const [fps, setFps] = useState(60);
   const [showPerformanceInfo, setShowPerformanceInfo] = useState(false);
+  const [showLowPerfBanner, setShowLowPerfBanner] = useState(false);
+  const [showParticlesDisabledBanner, setShowParticlesDisabledBanner] = useState(false);
+  const lowPerfTriggeredRef = React.useRef(false);
+  const lowFpsDurationRef = React.useRef(0);
+  const lastFpsCheckRef = React.useRef(performance.now());
+
+  // Helper to check if particles should be disabled
+  window.__disableParticles = () => {
+    return (
+      localStorage.getItem('disableParticles') === 'true'
+    );
+  };
 
   useEffect(() => {
     // Detect mobile device
@@ -38,7 +50,7 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
       }
     };
 
-    // FPS monitoring
+    // FPS monitoring (extended for particles disable)
     let frameCount = 0;
     let lastTime = performance.now();
 
@@ -47,11 +59,24 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
       const currentTime = performance.now();
 
       if (currentTime - lastTime >= 1000) {
-        setFps(Math.round((frameCount * 1000) / (currentTime - lastTime)));
+        const currentFps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+        setFps(currentFps);
         frameCount = 0;
         lastTime = currentTime;
-      }
 
+        // Track low FPS duration for particles disabling
+        if (currentFps < 20) {
+          lowFpsDurationRef.current += 1;
+        } else {
+          lowFpsDurationRef.current = 0;
+        }
+        if (lowFpsDurationRef.current >= 3 && !window.__disableParticles()) {
+          // Disable particles for this session
+          localStorage.setItem('disableParticles', 'true');
+          setShowParticlesDisabledBanner(true);
+          setTimeout(() => setShowParticlesDisabledBanner(false), 3000);
+        }
+      }
       requestAnimationFrame(measureFPS);
     };
 
@@ -62,22 +87,27 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
     // Performance optimization based on device capabilities
     const optimizePerformance = () => {
       const root = document.documentElement;
-
-      if (isMobile || isLowPower || fps < 30) {
-        // Reduce particle counts and animation complexity
+      const isLowPerf = isMobile || isLowPower || fps < 30;
+      if (isLowPerf) {
         root.style.setProperty("--particle-count-multiplier", "0.3");
         root.style.setProperty("--animation-complexity", "low");
         root.style.setProperty("--enable-heavy-animations", "false");
+        // Show banner only once per low-perf activation
+        if (!lowPerfTriggeredRef.current) {
+          setShowLowPerfBanner(true);
+          lowPerfTriggeredRef.current = true;
+          setTimeout(() => setShowLowPerfBanner(false), 3000);
+        }
       } else if (fps < 50) {
-        // Medium optimization
         root.style.setProperty("--particle-count-multiplier", "0.6");
         root.style.setProperty("--animation-complexity", "medium");
         root.style.setProperty("--enable-heavy-animations", "true");
+        lowPerfTriggeredRef.current = false;
       } else {
-        // Full performance
         root.style.setProperty("--particle-count-multiplier", "1");
         root.style.setProperty("--animation-complexity", "high");
         root.style.setProperty("--enable-heavy-animations", "true");
+        lowPerfTriggeredRef.current = false;
       }
     };
 
@@ -129,7 +159,58 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
   return (
     <>
       {children}
-
+      {/* Low Performance Banner */}
+      {showLowPerfBanner && (
+        <div
+          style={{
+            position: "fixed",
+            left: "50%",
+            bottom: "5%",
+            transform: "translateX(-50%)",
+            background: "rgba(0,0,0,0.92)",
+            color: "#39ff14",
+            borderRadius: "16px",
+            padding: "1rem 2.5rem",
+            fontWeight: 700,
+            fontSize: "1.1rem",
+            boxShadow: "0 4px 32px #00d4ff55",
+            zIndex: 9999,
+            textAlign: "center",
+            pointerEvents: "none",
+            userSelect: "none",
+            letterSpacing: "0.02em",
+            maxWidth: "90vw",
+          }}
+        >
+          Low device detected: Performance mode activated
+        </div>
+      )}
+      {/* Particles Disabled Banner */}
+      {showParticlesDisabledBanner && (
+        <div
+          style={{
+            position: "fixed",
+            left: "50%",
+            bottom: "12%",
+            transform: "translateX(-50%)",
+            background: "rgba(0,0,0,0.92)",
+            color: "#ff0040",
+            borderRadius: "16px",
+            padding: "1rem 2.5rem",
+            fontWeight: 700,
+            fontSize: "1.1rem",
+            boxShadow: "0 4px 32px #ff004055",
+            zIndex: 9999,
+            textAlign: "center",
+            pointerEvents: "none",
+            userSelect: "none",
+            letterSpacing: "0.02em",
+            maxWidth: "90vw",
+          }}
+        >
+          Particle network disabled for better performance
+        </div>
+      )}
       {/* Performance Info Overlay */}
       {showPerformanceInfo && (
         <div className="performance-info">

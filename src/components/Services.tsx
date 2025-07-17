@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, anticipate } from "framer-motion";
 import DroneIcon from "./DroneIcon";
+import { useInView } from "react-intersection-observer";
 
 const services = [
   {
@@ -104,51 +105,54 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
 };
 
 const Services: React.FC = () => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
-    <section id="services" className="services">
-      <div className="services-container">
-        {/* Animated Section Header */}
-        <motion.div
-          className="services-header"
-          initial={{ y: -50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: anticipate }}
-          viewport={{ once: true }}
-        >
-          <motion.h2
-            className="services-title"
-            animate={{
-              textShadow: [
-                "0 0 20px #00d4ff",
-                "0 0 30px #39ff14",
-                "0 0 20px #00d4ff",
-              ],
-            }}
-            transition={{
-              duration: 3.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            Unsere Leistungen
-          </motion.h2>
-          <motion.p
-            className="services-subtitle"
-            initial={{ y: -30, opacity: 0 }}
+    <section id="services" className="services" ref={ref}>
+      {inView && (
+        <div className="services-container">
+          {/* Animated Section Header */}
+          <motion.div
+            className="services-header"
+            initial={{ y: -50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5, ease: anticipate }}
+            transition={{ duration: 1, delay: 0.3, ease: anticipate }}
             viewport={{ once: true }}
           >
-            Drei Kernbereiche, eine Vision: Ihr digitaler Erfolg
-          </motion.p>
-        </motion.div>
-        {/* Services Grid */}
-        <div className="services-grid">
-          {services.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
+            <motion.h2
+              className="services-title"
+              animate={{
+                textShadow: [
+                  "0 0 20px #00d4ff",
+                  "0 0 30px #39ff14",
+                  "0 0 20px #00d4ff",
+                ],
+              }}
+              transition={{
+                duration: 3.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              Unsere Leistungen
+            </motion.h2>
+            <motion.p
+              className="services-subtitle"
+              initial={{ y: -30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5, ease: anticipate }}
+              viewport={{ once: true }}
+            >
+              Drei Kernbereiche, eine Vision: Ihr digitaler Erfolg
+            </motion.p>
+          </motion.div>
+          {/* Services Grid */}
+          <div className="services-grid">
+            {services.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

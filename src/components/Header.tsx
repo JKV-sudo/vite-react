@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
+import logoWebp from "../assets/logo_eye_V2-removebg-preview.webp";
+import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
 import { motion, AnimatePresence } from "framer-motion";
 import "../styles/header.css";
 
@@ -87,18 +89,24 @@ const Header: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <img
-            src={logo}
-            alt="Split-Vision Logo"
-            className="logo"
-            tabIndex={0}
-            onClick={scrollToTop}
-            onKeyDown={(e) =>
-              (e.key === "Enter" || e.key === " ") && scrollToTop()
-            }
-            style={{ cursor: "pointer" }}
-            aria-label="Scroll to top"
-          />
+          <picture>
+            <source srcSet={logoAvif} type="image/avif" />
+            <source srcSet={logoWebp} type="image/webp" />
+            <img
+              src={logo}
+              alt="Split-Vision Logo"
+              className="logo"
+              tabIndex={0}
+              onClick={scrollToTop}
+              onKeyDown={(e) =>
+                (e.key === "Enter" || e.key === " ") && scrollToTop()
+              }
+              style={{ cursor: "pointer" }}
+              aria-label="Scroll to top"
+              width={48}
+              height={48}
+            />
+          </picture>
           <span className="logo-text">Split-Vision</span>
         </motion.div>
 

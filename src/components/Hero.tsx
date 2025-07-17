@@ -1,9 +1,12 @@
 import React from "react";
 import { motion, Variants, anticipate } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import DroneIcon from "./DroneIcon";
+import logoWebp from "../assets/logo_eye_V2-removebg-preview.webp";
+import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
 
 // Add a custom hook for mobile detection
 function useIsMobile(breakpoint = 700) {
@@ -26,6 +29,7 @@ const Hero: React.FC = () => {
 
   const logoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
     if (logoRef.current) {
@@ -163,185 +167,208 @@ const Hero: React.FC = () => {
   ];
 
   return (
-    <section id="home" className="hero">
-      {/* Large RGB Split Background Logo */}
-      <div className="hero-bg-logo" style={{ zIndex: 2 }}>
-        <img
-          src={logo}
-          alt="Split-Vision Logo BG Blue"
-          className="hero-bg-logo-img"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            opacity: 0.18,
-            filter: "drop-shadow(0 0 80px #00d4ff)",
-            mixBlendMode: "screen",
-            transform: "translate(8px, 0) scale(1.04)",
-            zIndex: 1,
-          }}
-        />
-        <img
-          src={logo}
-          alt="Split-Vision Logo BG Red"
-          className="hero-bg-logo-img"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            opacity: 0.13,
-            filter: "drop-shadow(0 0 80px #ff0040)",
-            mixBlendMode: "screen",
-            transform: "translate(-8px, 0) scale(1.04)",
-            zIndex: 1,
-          }}
-        />
-        <img
-          src={logo}
-          alt="Split-Vision Logo BG Main"
-          className="hero-bg-logo-img"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            opacity: 0.22,
-            filter: "drop-shadow(0 0 80px #39ff14)",
-            mixBlendMode: "screen",
-            zIndex: 1,
-          }}
-        />
-      </div>
+    <section id="home" className="hero" ref={ref}>
+      {/* Lazy render heavy elements only when in view */}
+      {inView && (
+        <>
+          {/* Large RGB Split Background Logo */}
+          <div className="hero-bg-logo" style={{ zIndex: 2 }}>
+            <picture>
+              <source srcSet={logoAvif} type="image/avif" />
+              <source srcSet={logoWebp} type="image/webp" />
+              <img
+                src={logo} // TODO: Replace with WebP/AVIF for optimization
+                alt="Split-Vision Logo BG Blue"
+                className="hero-bg-logo-img"
+                width={800}
+                height={800}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  opacity: 0.18,
+                  filter: "drop-shadow(0 0 80px #00d4ff)",
+                  mixBlendMode: "screen",
+                  transform: "translate(8px, 0) scale(1.04)",
+                  zIndex: 1,
+                }}
+              />
+            </picture>
+            <picture>
+              <source srcSet={logoAvif} type="image/avif" />
+              <source srcSet={logoWebp} type="image/webp" />
+              <img
+                src={logo} // TODO: Replace with WebP/AVIF for optimization
+                alt="Split-Vision Logo BG Red"
+                className="hero-bg-logo-img"
+                width={800}
+                height={800}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  opacity: 0.13,
+                  filter: "drop-shadow(0 0 80px #ff0040)",
+                  mixBlendMode: "screen",
+                  transform: "translate(-8px, 0) scale(1.04)",
+                  zIndex: 1,
+                }}
+              />
+            </picture>
+            <picture>
+              <source srcSet={logoAvif} type="image/avif" />
+              <source srcSet={logoWebp} type="image/webp" />
+              <img
+                src={logo} // TODO: Replace with WebP/AVIF for optimization
+                alt="Split-Vision Logo BG Main"
+                className="hero-bg-logo-img"
+                width={800}
+                height={800}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  opacity: 0.22,
+                  filter: "drop-shadow(0 0 80px #39ff14)",
+                  mixBlendMode: "screen",
+                  zIndex: 1,
+                }}
+              />
+            </picture>
+          </div>
 
-      {/* Animated Matrix Particles Background */}
+          {/* Animated Matrix Particles Background */}
 
-      {/* Floating 3D Neon Shapes */}
-      <motion.div
-        className="floating-shape shape-1"
-        initial={{ x: -50, y: 100, scale: 0.8, rotate: 0, opacity: 0.7 }}
-        animate={{
-          x: [-50, -30, -70, -50],
-          y: [100, 80, 120, 100],
-          scale: [0.8, 1, 0.9, 0.8],
-          rotate: [0, 15, -10, 0],
-          opacity: [0.7, 1, 0.8, 0.7],
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: 180,
-          height: 180,
-          zIndex: 1, // above -1, below bg logo (2)
-          pointerEvents: "none",
-          filter: "blur(32px) brightness(0.7)",
-        }}
-      >
-        <svg width="180" height="180" viewBox="0 0 180 180">
-          <polygon
-            points="90,10 170,60 140,170 40,170 10,60"
-            fill="url(#neon1)"
-            filter="url(#blur1)"
-          />
-          <defs>
-            <linearGradient id="neon1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#00d4ff" />
-              <stop offset="100%" stopColor="#39ff14" />
-            </linearGradient>
-            <filter id="blur1">
-              <feGaussianBlur stdDeviation="4" />
-            </filter>
-          </defs>
-        </svg>
-      </motion.div>
-      <motion.div
-        className="floating-shape shape-2"
-        initial={{ x: 50, y: 400, scale: 1.1, rotate: 0, opacity: 0.6 }}
-        animate={{
-          x: [50, 70, 30, 50],
-          y: [400, 420, 380, 400],
-          scale: [1.1, 0.95, 1.2, 1.1],
-          rotate: [0, -20, 10, 0],
-          opacity: [0.6, 0.9, 0.7, 0.6],
-        }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          width: 140,
-          height: 140,
-          zIndex: -1, // ensure behind bg logo
-          pointerEvents: "none",
-        }}
-      >
-        <svg width="140" height="140" viewBox="0 0 140 140">
-          <polygon
-            points="70,10 130,50 110,130 30,130 10,50"
-            fill="url(#neon2)"
-            filter="url(#blur2)"
-          />
-          <defs>
-            <linearGradient id="neon2" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#9d4edd" />
-              <stop offset="100%" stopColor="#00d4ff" />
-            </linearGradient>
-            <filter id="blur2">
-              <feGaussianBlur stdDeviation="6" />
-            </filter>
-          </defs>
-        </svg>
-      </motion.div>
-      <motion.div
-        className="floating-shape shape-3"
-        initial={{ x: 0, y: 500, scale: 0.7, rotate: 0, opacity: 0.5 }}
-        animate={{
-          x: [0, 40, -40, 0],
-          y: [500, 520, 480, 500],
-          scale: [0.7, 1, 0.8, 0.7],
-          rotate: [0, 30, -15, 0],
-          opacity: [0.5, 0.8, 0.6, 0.5],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: 100,
-          height: 100,
-          zIndex: -1, // ensure behind bg logo
-          pointerEvents: "none",
-        }}
-      >
-        <svg width="100" height="100" viewBox="0 0 100 100">
-          <polygon
-            points="50,10 90,40 75,90 25,90 10,40"
-            fill="url(#neon3)"
-            filter="url(#blur3)"
-          />
-          <defs>
-            <linearGradient id="neon3" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#ff0040" />
-              <stop offset="100%" stopColor="#39ff14" />
-            </linearGradient>
-            <filter id="blur3">
-              <feGaussianBlur stdDeviation="3" />
-            </filter>
-          </defs>
-        </svg>
-      </motion.div>
+          {/* Floating 3D Neon Shapes */}
+          <motion.div
+            className="floating-shape shape-1"
+            initial={{ x: -50, y: 100, scale: 0.8, rotate: 0, opacity: 0.7 }}
+            animate={{
+              x: [-50, -30, -70, -50],
+              y: [100, 80, 120, 100],
+              scale: [0.8, 1, 0.9, 0.8],
+              rotate: [0, 15, -10, 0],
+              opacity: [0.7, 1, 0.8, 0.7],
+            }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: 180,
+              height: 180,
+              zIndex: 1, // above -1, below bg logo (2)
+              pointerEvents: "none",
+              filter: "blur(32px) brightness(0.7)",
+            }}
+          >
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              <polygon
+                points="90,10 170,60 140,170 40,170 10,60"
+                fill="url(#neon1)"
+                filter="url(#blur1)"
+              />
+              <defs>
+                <linearGradient id="neon1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#00d4ff" />
+                  <stop offset="100%" stopColor="#39ff14" />
+                </linearGradient>
+                <filter id="blur1">
+                  <feGaussianBlur stdDeviation="4" />
+                </filter>
+              </defs>
+            </svg>
+          </motion.div>
+          <motion.div
+            className="floating-shape shape-2"
+            initial={{ x: 50, y: 400, scale: 1.1, rotate: 0, opacity: 0.6 }}
+            animate={{
+              x: [50, 70, 30, 50],
+              y: [400, 420, 380, 400],
+              scale: [1.1, 0.95, 1.2, 1.1],
+              rotate: [0, -20, 10, 0],
+              opacity: [0.6, 0.9, 0.7, 0.6],
+            }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              width: 140,
+              height: 140,
+              zIndex: -1, // ensure behind bg logo
+              pointerEvents: "none",
+            }}
+          >
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <polygon
+                points="70,10 130,50 110,130 30,130 10,50"
+                fill="url(#neon2)"
+                filter="url(#blur2)"
+              />
+              <defs>
+                <linearGradient id="neon2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#9d4edd" />
+                  <stop offset="100%" stopColor="#00d4ff" />
+                </linearGradient>
+                <filter id="blur2">
+                  <feGaussianBlur stdDeviation="6" />
+                </filter>
+              </defs>
+            </svg>
+          </motion.div>
+          <motion.div
+            className="floating-shape shape-3"
+            initial={{ x: 0, y: 500, scale: 0.7, rotate: 0, opacity: 0.5 }}
+            animate={{
+              x: [0, 40, -40, 0],
+              y: [500, 520, 480, 500],
+              scale: [0.7, 1, 0.8, 0.7],
+              rotate: [0, 30, -15, 0],
+              opacity: [0.5, 0.8, 0.6, 0.5],
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: 100,
+              height: 100,
+              zIndex: -1, // ensure behind bg logo
+              pointerEvents: "none",
+            }}
+          >
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <polygon
+                points="50,10 90,40 75,90 25,90 10,40"
+                fill="url(#neon3)"
+                filter="url(#blur3)"
+              />
+              <defs>
+                <linearGradient id="neon3" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#ff0040" />
+                  <stop offset="100%" stopColor="#39ff14" />
+                </linearGradient>
+                <filter id="blur3">
+                  <feGaussianBlur stdDeviation="3" />
+                </filter>
+              </defs>
+            </svg>
+          </motion.div>
 
-      {/* Matrix Background */}
-      <div className="matrix-bg"></div>
+          {/* Matrix Background */}
+          <div className="matrix-bg"></div>
+        </>
+      )}
 
       <motion.div
         className="hero-container"
@@ -390,38 +417,46 @@ const Hero: React.FC = () => {
           ref={logoRef}
         >
           {/* RGB Split Layers */}
-          <img
-            src={logo}
-            alt="Split-Vision Logo"
-            className="hero-logo-img"
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              filter: "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
-              opacity: 0.7,
-              mixBlendMode: "screen",
-              borderRadius: "50%",
-              transform: "translate(2px, 0) scale(1.01)",
-              zIndex: 2,
-            }}
-          />
-          <img
-            src={logo}
-            alt="Split-Vision Logo"
-            className="hero-logo-img"
-            style={{
-              position: "absolute",
-              borderRadius: "50%",
-              left: 0,
-              top: 0,
-              filter: "drop-shadow(0 0 20px #ff0040) brightness(1.1)",
-              opacity: 0.5,
-              mixBlendMode: "screen",
-              transform: "translate(-2px, 0) scale(1.01)",
-              zIndex: 2,
-            }}
-          />
+          <picture>
+            <source srcSet={logoAvif} type="image/avif" />
+            <source srcSet={logoWebp} type="image/webp" />
+            <img
+              src={logo}
+              alt="Split-Vision Logo"
+              className="hero-logo-img"
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                filter: "drop-shadow(0 0 20px #00d4ff) brightness(1.3)",
+                opacity: 0.7,
+                mixBlendMode: "screen",
+                borderRadius: "50%",
+                transform: "translate(2px, 0) scale(1.01)",
+                zIndex: 2,
+              }}
+            />
+          </picture>
+          <picture>
+            <source srcSet={logoAvif} type="image/avif" />
+            <source srcSet={logoWebp} type="image/webp" />
+            <img
+              src={logo}
+              alt="Split-Vision Logo"
+              className="hero-logo-img"
+              style={{
+                position: "absolute",
+                borderRadius: "50%",
+                left: 0,
+                top: 0,
+                filter: "drop-shadow(0 0 20px #ff0040) brightness(1.1)",
+                opacity: 0.5,
+                mixBlendMode: "screen",
+                transform: "translate(-2px, 0) scale(1.01)",
+                zIndex: 2,
+              }}
+            />
+          </picture>
           {/* Main Logo */}
           <motion.img
             src={logo}

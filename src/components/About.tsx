@@ -5,9 +5,11 @@ import DnaHelix from "./DnaHelix";
 import { useEffect } from "react";
 import type { TargetAndTransition } from "framer-motion";
 import DroneIcon from "./DroneIcon";
+import { useInView } from "react-intersection-observer";
 
 const About: React.FC = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   // Particle portrait effects - OPTIMIZED
   // Remove the particlesInit function
@@ -59,30 +61,30 @@ const About: React.FC = () => {
   return (
     <section
       id="about"
+      ref={ref}
       className="about"
       style={{ position: "relative", overflow: "hidden" }}
     >
       {/* Main background/particles (z-index 0 or 1) */}
-      {/* Remove any <Particles ... /> elements if present */}
-
-      {/* DNA Helix (z-index 5) */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "min(90vw, 400px)",
-          height: "min(80vh, 500px)",
-          zIndex: 5,
-          pointerEvents: "none",
-          opacity: 0.35,
-          filter: "blur(1.5px)",
-        }}
-      >
-        <DnaHelix />
-      </div>
-
+      {/* Lazy render DnaHelix only when in view */}
+      {inView && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "min(90vw, 400px)",
+            height: "min(80vh, 500px)",
+            zIndex: 5,
+            pointerEvents: "none",
+            opacity: 0.35,
+            filter: "blur(1.5px)",
+          }}
+        >
+          <DnaHelix />
+        </div>
+      )}
       {/* About content/cards (z-index 10) */}
       <div style={{ position: "relative", zIndex: 10 }}>
         {/* Section Header */}

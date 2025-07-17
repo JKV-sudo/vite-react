@@ -1,12 +1,14 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Services from "./components/Services";
-import About from "./components/About";
-import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import PerformanceOptimizer from "./components/PerformanceOptimizer";
+import { Suspense, lazy } from "react";
 import "./App.css";
+
+const About = lazy(() => import("./components/About"));
+const Services = lazy(() => import("./components/Services"));
+const Portfolio = lazy(() => import("./components/Portfolio"));
 
 function App() {
   return (
@@ -15,9 +17,15 @@ function App() {
         <Header />
         <main>
           <Hero />
-          <Services />
-          <About />
-          <Portfolio />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Services />
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <About />
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Portfolio />
+          </Suspense>
           <Contact />
         </main>
         <Footer />
