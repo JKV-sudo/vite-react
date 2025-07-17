@@ -1,8 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 import DroneIcon from "./DroneIcon";
 import "../styles/portfolio.css";
 
@@ -22,72 +19,6 @@ const cardVariants: Variants = {
 };
 
 // Move particles options outside the component so it's not re-created on every render
-const particlesOptions = {
-  background: {
-    color: {
-      value: "transparent",
-    },
-  },
-  fpsLimit: 120,
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: "push",
-      },
-      onHover: {
-        enable: true,
-        mode: "repulse",
-      },
-    },
-    modes: {
-      push: {
-        quantity: 4,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
-      },
-    },
-  },
-  particles: {
-    color: {
-      value: ["#00d4ff", "#39ff14", "#ff006e"],
-    },
-    links: {
-      color: "#00d4ff",
-      distance: 150,
-      enable: true,
-      opacity: 0.3,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      direction: "none" as const,
-      outModes: { default: "out" as const },
-      random: false,
-      speed: 1,
-      straight: false,
-    },
-    number: {
-      density: {
-        enable: true,
-        area: 800,
-      },
-      value: 80,
-    },
-    opacity: {
-      value: 0.5,
-    },
-    shape: {
-      type: "circle",
-    },
-    size: {
-      value: { min: 1, max: 5 },
-    },
-  },
-  detectRetina: true,
-};
 
 const Portfolio: React.FC = () => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
@@ -103,9 +34,6 @@ const Portfolio: React.FC = () => {
   }, []);
 
   // Memoize particlesInit so it doesn't change on every render
-  const particlesInit = useCallback(async (main: Engine) => {
-    await loadFull(main);
-  }, []);
 
   const projects = [
     {
@@ -190,11 +118,6 @@ const Portfolio: React.FC = () => {
   return (
     <section id="portfolio" className="portfolio">
       {/* Particle Background */}
-      <Particles
-        id="tsparticles-portfolio"
-        init={particlesInit}
-        options={particlesOptions}
-      />
 
       <div className="portfolio-container">
         <div className="portfolio-header">

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { motion, Variants } from "framer-motion";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import type { Engine } from "tsparticles-engine";
 import "../styles/about.css";
 import DnaHelix from "./DnaHelix";
 import { useEffect } from "react";
@@ -13,9 +10,7 @@ const About: React.FC = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
 
   // Particle portrait effects - OPTIMIZED
-  const particlesInit = async (main: Engine) => {
-    await loadFull(main);
-  };
+  // Remove the particlesInit function
 
   const teamMembers = [
     {
@@ -68,53 +63,7 @@ const About: React.FC = () => {
       style={{ position: "relative", overflow: "hidden" }}
     >
       {/* Main background/particles (z-index 0 or 1) */}
-      <Particles
-        id="tsparticles-about-portraits"
-        init={particlesInit}
-        options={{
-          fullScreen: { enable: false },
-          background: { color: "transparent" },
-          style: {
-            position: "absolute",
-            top: "0",
-            left: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "0",
-            pointerEvents: "none",
-          },
-          particles: {
-            number: { value: 20, density: { enable: true, area: 2000 } }, // Reduced from 40
-            color: { value: ["#00d4ff", "#39ff14", "#9d4edd"] },
-            shape: { type: "circle" },
-            opacity: {
-              value: 0.3, // Reduced from 0.4
-              anim: { enable: false }, // Disabled for performance
-            },
-            size: {
-              value: 2,
-              random: { enable: true, minimumValue: 1 },
-              anim: { enable: false }, // Disabled for performance
-            },
-            move: {
-              enable: true,
-              speed: 0.6, // Reduced from 0.8
-              direction: "none",
-              random: false,
-              straight: false,
-              outModes: { default: "out" },
-            },
-          },
-          interactivity: {
-            events: {
-              onHover: { enable: false },
-              onClick: { enable: false },
-              resize: true,
-            },
-          },
-          detectRetina: false, // Disabled for performance
-        }}
-      />
+      {/* Remove any <Particles ... /> elements if present */}
 
       {/* DNA Helix (z-index 5) */}
       <div

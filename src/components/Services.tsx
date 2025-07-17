@@ -1,10 +1,6 @@
 import React from "react";
 import { motion, anticipate } from "framer-motion";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import { Engine } from "tsparticles-engine";
 import DroneIcon from "./DroneIcon";
-// import { Engine } from "tsparticles-engine"; // Remove this import
 
 const services = [
   {
@@ -52,18 +48,11 @@ const services = [
   },
 ];
 
-const particlesInit = async (main: Engine) => {
-  await loadFull(main);
-};
-
 // ServiceCard component for clarity and separation
 const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
   service,
 }) => {
   const [hovered, setHovered] = React.useState(false);
-  const explosionParticlesInit = async (main: Engine) => {
-    await loadFull(main);
-  };
   const cardRef = React.useRef<HTMLDivElement>(null);
   const innerRef = React.useRef<HTMLDivElement>(null);
 
@@ -89,80 +78,6 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
         logRects("mouseleave");
       }}
     >
-      {/* Hover Explosion Particles - Always present but controlled by hover state */}
-      <Particles
-        id={`explosion-${service.id}`}
-        init={explosionParticlesInit}
-        options={{
-          fullScreen: { enable: false },
-          background: { color: "transparent" },
-          style: {
-            position: "absolute",
-            top: "0",
-            left: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "10",
-            pointerEvents: "none",
-            opacity: hovered ? "1" : "0", // Control visibility with opacity
-            transition: "opacity 0.1s ease", // Smooth transition
-          },
-          particles: {
-            number: { value: 8, density: { enable: false } },
-            color: {
-              value: ["#00d4ff", "#39ff14", "#ff0040", "#9d4edd"],
-            },
-            shape: { type: "circle" },
-            opacity: {
-              value: 1,
-              anim: {
-                enable: true,
-                speed: 3,
-                opacity_min: 0,
-                sync: false,
-              },
-            },
-            size: {
-              value: { min: 1, max: 4 },
-              anim: {
-                enable: true,
-                speed: 4,
-                size_min: 0,
-                sync: false,
-              },
-            },
-            move: {
-              enable: true,
-              speed: 8,
-              direction: "outside",
-              random: true,
-              straight: false,
-              outModes: { default: "destroy" },
-              trail: { enable: false },
-            },
-            life: {
-              duration: { value: 0.6 },
-              count: 1,
-            },
-          },
-          interactivity: {
-            events: {
-              onHover: { enable: false },
-              onClick: { enable: false },
-            },
-          },
-          emitters: {
-            direction: "none",
-            rate: {
-              quantity: hovered ? 8 : 0, // Only emit particles when hovered
-              delay: 0,
-            },
-            size: { width: 0, height: 0 },
-            position: { x: 50, y: 50 },
-          },
-          detectRetina: false,
-        }}
-      />
       <div className="service-card-inner" ref={innerRef}>
         {/* Front of card */}
         <div className="service-card-front">
@@ -198,66 +113,6 @@ const Services: React.FC = () => {
 
   return (
     <section id="services" className="services">
-      {/* Neon Particle Network Background */}
-      <Particles
-        id="tsparticles-services-network"
-        init={particlesInit}
-        options={{
-          fullScreen: { enable: false },
-          background: { color: "transparent" },
-          style: {
-            position: "absolute",
-            top: "0",
-            left: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "0",
-            pointerEvents: "none",
-          },
-          particles: {
-            number: {
-              value: particleCount,
-              density: { enable: true, area: 1500 },
-            },
-            color: { value: ["#00d4ff", "#39ff14", "#9d4edd"] },
-            shape: { type: "circle" },
-            opacity: {
-              value: 0.2, // Reduced from 0.3
-              anim: { enable: false }, // Disabled animation for performance
-            },
-            size: {
-              value: 2, // Reduced from 3
-              random: { enable: true, minimumValue: 1 },
-              anim: { enable: false }, // Disabled animation for performance
-            },
-            links: {
-              enable: true,
-              distance: 180,
-              color: "#00d4ff",
-              opacity: 0.15, // Reduced from 0.2
-              width: 1, // Reduced from 1.2
-              shadow: { enable: false }, // Disabled shadow for performance
-            },
-            move: {
-              enable: true,
-              speed: 0.5, // Reduced from 0.7
-              direction: "none",
-              random: false,
-              straight: false,
-              outModes: { default: "out" },
-              attract: { enable: false }, // Disabled attract for performance
-            },
-          },
-          interactivity: {
-            events: {
-              onHover: { enable: false },
-              onClick: { enable: false },
-              resize: true,
-            },
-          },
-          retina_detect: false, // Disabled for performance
-        }}
-      />
       <div className="services-container">
         {/* Animated Section Header */}
         <motion.div
