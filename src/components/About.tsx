@@ -4,7 +4,6 @@ import "../styles/about.css";
 import DnaHelix from "./DnaHelix";
 import { useEffect } from "react";
 import type { TargetAndTransition } from "framer-motion";
-import DroneIcon from "./DroneIcon";
 import { useInView } from "react-intersection-observer";
 
 const About: React.FC = () => {
