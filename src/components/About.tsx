@@ -8,35 +8,10 @@ import DroneIcon from "./DroneIcon";
 import { useInView } from "react-intersection-observer";
 
 const About: React.FC = () => {
-  const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   // Particle portrait effects - OPTIMIZED
   // Remove the particlesInit function
-
-  const teamMembers = [
-    {
-      id: 1,
-      name: "Alex Chen",
-      role: "Lead Developer",
-      avatar: "👨‍💻",
-      description: "Full-stack wizard with 8+ years in React & Node.js",
-    },
-    {
-      id: 2,
-      name: "Sarah Müller",
-      role: "Creative Director",
-      avatar: "👩‍🎨",
-      description: "Visionary designer crafting digital experiences",
-    },
-    {
-      id: 3,
-      name: "Marcus Weber",
-      role: "Drone Specialist",
-      avatar: <DroneIcon size={36} />, // Use the new DroneIcon component
-      description: "Aerial photography expert & cinematographer",
-    },
-  ];
 
   const stats = [
     { label: "Projekte", value: 15, suffix: "+" },
