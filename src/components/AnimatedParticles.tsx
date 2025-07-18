@@ -23,6 +23,7 @@ function getPerformanceTier() {
 }
 
 const AnimatedParticles: React.FC = () => {
+  console.log("[AnimatedParticles] Component mounted/rendered");
   const [enabled, setEnabled] = useState(true);
   const [canvasSize, setCanvasSize] = useState(getViewportWithMargin());
   const [particleCount, setParticleCount] = useState(25);
@@ -30,11 +31,10 @@ const AnimatedParticles: React.FC = () => {
   const [perfTier, setPerfTier] = useState<"high" | "medium" | "low">("high");
 
   useEffect(() => {
-    // Check if particles should be disabled
     const checkDisabledState = () => {
       const isDisabled = localStorage.getItem("disableParticles") === "true";
       console.log(
-        "[AnimatedParticles] localStorage.disableParticles:",
+        "[AnimatedParticles] Checking flag - localStorage:",
         localStorage.getItem("disableParticles"),
         "| enabled:",
         !isDisabled
@@ -42,31 +42,24 @@ const AnimatedParticles: React.FC = () => {
       setEnabled(!isDisabled);
     };
 
-    // Initial check
     checkDisabledState();
 
-    // Listen for storage changes (in case it's updated from another tab/window)
+    // Listen for storage changes (cross-tab)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "disableParticles") {
         checkDisabledState();
       }
     };
-
     window.addEventListener("storage", handleStorageChange);
 
-    // Also check periodically in case the function is set up after this component mounts
-    const interval = setInterval(() => {
-      if (typeof window.__disableParticles === "function") {
-        const isDisabled = window.__disableParticles();
-        setEnabled(!isDisabled);
-      }
-    }, 1000);
+    // Also check every 500ms for robustness (in case set in same tab)
+    const interval = setInterval(checkDisabledState, 500);
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       clearInterval(interval);
     };
-  }, []);
+  }, []); // No dependency array: runs after every render
 
   useEffect(() => {
     const handleResize = () => {

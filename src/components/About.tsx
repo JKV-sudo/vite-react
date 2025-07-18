@@ -39,9 +39,9 @@ const About: React.FC = () => {
   ];
 
   const stats = [
-    { label: "Projekte", value: 150, suffix: "+" },
-    { label: "Kunden", value: 80, suffix: "+" },
-    { label: "Erfahrung", value: 5, suffix: " Jahre" },
+    { label: "Projekte", value: 15, suffix: "+" },
+    { label: "Kunden", value: 8, suffix: "+" },
+    { label: "Erfahrung", value: 1, suffix: " Jahr" },
     { label: "Technologien", value: 25, suffix: "+" },
   ];
 
@@ -192,7 +192,7 @@ const About: React.FC = () => {
         </motion.div>
 
         {/* Team Avatar Materializations */}
-        <motion.div
+        {/*<motion.div
           className="team-section"
           initial={{ y: 100, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -275,7 +275,7 @@ const About: React.FC = () => {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </motion.div>*/}
       </div>
     </section>
   );

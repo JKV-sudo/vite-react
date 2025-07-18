@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 
 interface PerformanceOptimizerProps {
   children: React.ReactNode;
 }
+
+// Create context for particles state
+interface ParticlesContextType {
+  enabled: boolean;
+}
+
+const ParticlesContext = createContext<ParticlesContextType>({ enabled: true });
+
+// Hook to use particles context
+export const useParticles = () => useContext(ParticlesContext);
 
 const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
   children,
@@ -14,6 +24,7 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
   const [showLowPerfBanner, setShowLowPerfBanner] = useState(false);
   const [showParticlesDisabledBanner, setShowParticlesDisabledBanner] =
     useState(false);
+  const [particlesEnabled, setParticlesEnabled] = useState(true);
   const lowPerfTriggeredRef = React.useRef(false);
   const lowFpsDurationRef = React.useRef(0);
 
@@ -22,8 +33,22 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
     return localStorage.getItem("disableParticles") === "true";
   };
 
+  // Particles state management
   useEffect(() => {
-    // Detect mobile device
+    const checkDisabled = () => {
+      setParticlesEnabled(localStorage.getItem("disableParticles") !== "true");
+    };
+    checkDisabled();
+    window.addEventListener("storage", checkDisabled);
+    const interval = setInterval(checkDisabled, 500);
+    return () => {
+      window.removeEventListener("storage", checkDisabled);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Detect mobile device
+  useEffect(() => {
     const checkMobile = () => {
       const mobile =
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -31,8 +56,11 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
         );
       setIsMobile(mobile);
     };
+    checkMobile();
+  }, []);
 
-    // Detect low power mode (iOS)
+  // Detect low power mode (iOS)
+  useEffect(() => {
     const checkLowPower = () => {
       if (typeof (navigator as any).getBattery === "function") {
         (navigator as any)
@@ -47,12 +75,34 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
           );
       }
     };
+    if (typeof (navigator as any).getBattery === "function") {
+      (navigator as any)
+        .getBattery()
+        .then(
+          (battery: {
+            addEventListener: (type: string, listener: () => void) => void;
+          }) => {
+            battery.addEventListener("levelchange", checkLowPower);
+            battery.addEventListener("chargingchange", checkLowPower);
+          }
+        );
+    }
+  }, []);
 
-    // FPS monitoring (extended for particles disable)
+  // FPS monitoring (extended for particles disable) - RUNS ONCE ON MOUNT
+  useEffect(() => {
     let frameCount = 0;
     let lastTime = performance.now();
 
     const measureFPS = () => {
+      if (document.visibilityState !== "visible") {
+        // Skip FPS check if not visible
+        frameCount = 0;
+        lastTime = performance.now();
+        requestAnimationFrame(measureFPS);
+        return;
+      }
+
       frameCount++;
       const currentTime = performance.now();
 
@@ -70,22 +120,32 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
         } else {
           lowFpsDurationRef.current = 0;
         }
-        if (lowFpsDurationRef.current >= 3 && !window.__disableParticles?.()) {
-          // Disable particles for this session
-          localStorage.setItem("disableParticles", "true");
-          setShowParticlesDisabledBanner(true);
-          setTimeout(() => setShowParticlesDisabledBanner(false), 3000);
-          lowFpsDurationRef.current = 0; // Reset so it doesn't trigger again
+
+        if (lowFpsDurationRef.current >= 1) {
+          // Lowered for testing
+          const alreadyDisabled =
+            localStorage.getItem("disableParticles") === "true";
+          if (!alreadyDisabled) {
+            localStorage.setItem("disableParticles", "true");
+            console.log(
+              "[PerformanceOptimizer] DISABLING PARTICLES, FPS:",
+              currentFps,
+              "| localStorage set to true"
+            );
+            setShowParticlesDisabledBanner(true);
+            setTimeout(() => setShowParticlesDisabledBanner(false), 3000);
+          }
+          lowFpsDurationRef.current = 0;
         }
       }
       requestAnimationFrame(measureFPS);
     };
-
-    checkMobile();
-    checkLowPower();
     measureFPS();
+    return () => {};
+  }, []);
 
-    // Performance optimization based on device capabilities
+  // Performance optimization based on device capabilities
+  useEffect(() => {
     const optimizePerformance = () => {
       const root = document.documentElement;
       const isLowPerf = isMobile || isLowPower || fps < 30;
@@ -113,22 +173,10 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
     };
 
     optimizePerformance();
+  }, [isMobile, isLowPower, fps]);
 
-    // Listen for battery changes
-    if (typeof (navigator as any).getBattery === "function") {
-      (navigator as any)
-        .getBattery()
-        .then(
-          (battery: {
-            addEventListener: (type: string, listener: () => void) => void;
-          }) => {
-            battery.addEventListener("levelchange", checkLowPower);
-            battery.addEventListener("chargingchange", checkLowPower);
-          }
-        );
-    }
-
-    // Listen for visibility changes to pause animations when tab is not visible
+  // Listen for visibility changes to pause animations when tab is not visible
+  useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
         document.body.style.setProperty("--animation-paused", "true");
@@ -142,7 +190,7 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isMobile, isLowPower, fps]);
+  }, []);
 
   // Performance info toggle (hold Ctrl+Shift+P)
   useEffect(() => {
@@ -159,7 +207,9 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
 
   return (
     <>
-      {children}
+      <ParticlesContext.Provider value={{ enabled: particlesEnabled }}>
+        {children}
+      </ParticlesContext.Provider>
       {/* Low Performance Banner */}
       {showLowPerfBanner && (
         <div
