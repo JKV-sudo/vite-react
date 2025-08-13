@@ -7,6 +7,9 @@ import SplashScreen from "./components/SplashScreen";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getConfig } from "./components/ConfigPanel";
+import heroLogoPng from "./assets/logo_eye_V2-removebg-preview.png";
+import heroLogoWebp from "./assets/logo_eye_V2-removebg-preview.webp";
+import heroLogoAvif from "./assets/logo_eye_V2-removebg-preview.avif";
 import "./App.css";
 
 const About = lazy(() => import("./components/About"));
@@ -15,11 +18,7 @@ const Portfolio = lazy(() => import("./components/Portfolio"));
 
 function App() {
   const [config, setConfig] = useState(getConfig());
-  const [showSplash, setShowSplash] = useState(() => {
-    const isDev = import.meta.env.DEV;
-    if (isDev) return true; // Always show in dev for easy testing
-    return typeof window !== "undefined" && !sessionStorage.getItem("sv_seen");
-  });
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     const checkConfig = () => {
@@ -36,11 +35,48 @@ function App() {
 
   useEffect(() => {
     if (!showSplash) return;
-    const timer = setTimeout(() => {
-      sessionStorage.setItem("sv_seen", "1");
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const decodeImage = (src: string) =>
+      new Promise<void>((resolve) => {
+        const img = new Image();
+        img.src = src;
+        (img as any)
+          .decode?.()
+          .then(() => resolve())
+          .catch(() => resolve());
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+      });
+
+    const preload = async () => {
+      const MIN_MS = 1200;
+      const MAX_MS = 3000;
+      const start = performance.now();
+
+      const fontsReady = (document as any).fonts?.ready ?? Promise.resolve();
+
+      const dynImports = Promise.allSettled([
+        import("gsap"),
+        import("tsparticles"),
+      ]);
+
+      const images = Promise.allSettled([
+        decodeImage(heroLogoPng),
+        decodeImage(heroLogoWebp),
+        decodeImage(heroLogoAvif),
+      ]);
+
+      await Promise.race([
+        Promise.allSettled([fontsReady, images, dynImports]),
+        wait(MAX_MS),
+      ]);
+
+      const elapsed = performance.now() - start;
+      if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
       setShowSplash(false);
-    }, 1800);
-    return () => clearTimeout(timer);
+    };
+
+    preload();
   }, [showSplash]);
 
   const appClasses = ["App", !config.heavyShadows ? "config-heavy-shadows" : ""]
