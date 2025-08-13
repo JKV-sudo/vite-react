@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import "../styles/contact.css";
+import { PerfContext } from "./PerformanceOptimizer";
 // import gsap from "gsap"; // Remove GSAP
 
 // Framer Motion variants for unified entrance and floating
@@ -138,6 +139,8 @@ const Contact: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   // const floatingCardsRef = useRef<HTMLDivElement>(null); // Remove GSAP
   const isMobile = useIsMobile();
+  const { heavyAnimations } = React.useContext(PerfContext);
+  const enableAnimations = heavyAnimations;
   // Remove all state, effects, and JSX related to Particles canvas/background in the Contact component
 
   // Memoize particlesInit
@@ -297,7 +300,7 @@ const Contact: React.FC = () => {
                 className="contact-method-card"
                 variants={cardVariants}
                 initial="hidden"
-                animate={["visible", "float"]}
+                animate={enableAnimations ? ["visible", "float"] : "visible"}
                 whileHover={{
                   scale: 1.07,
                   boxShadow: `0 10px 30px ${method.color}40`,
@@ -326,31 +329,39 @@ const Contact: React.FC = () => {
               ref={formRef}
               className="contact-form"
               onSubmit={handleSubmit}
-              animate={{
-                boxShadow: [
-                  "0 0 30px rgba(0, 212, 255, 0.2)",
-                  "0 0 40px rgba(57, 255, 20, 0.3)",
-                  "0 0 30px rgba(0, 212, 255, 0.2)",
-                ],
-              }}
+              animate={
+                enableAnimations
+                  ? {
+                      boxShadow: [
+                        "0 0 30px rgba(0, 212, 255, 0.2)",
+                        "0 0 40px rgba(57, 255, 20, 0.3)",
+                        "0 0 30px rgba(0, 212, 255, 0.2)",
+                      ],
+                    }
+                  : undefined
+              }
               transition={{
-                duration: 4,
-                repeat: Infinity,
+                duration: enableAnimations ? 4 : 0,
+                repeat: enableAnimations ? Infinity : 0,
                 ease: "easeInOut",
               }}
             >
               <motion.h3
                 className="form-title"
-                animate={{
-                  textShadow: [
-                    "0 0 10px #39ff14",
-                    "0 0 20px #39ff14",
-                    "0 0 10px #39ff14",
-                  ],
-                }}
+                animate={
+                  enableAnimations
+                    ? {
+                        textShadow: [
+                          "0 0 10px #39ff14",
+                          "0 0 20px #39ff14",
+                          "0 0 10px #39ff14",
+                        ],
+                      }
+                    : undefined
+                }
                 transition={{
-                  duration: 2,
-                  repeat: Infinity,
+                  duration: enableAnimations ? 2 : 0,
+                  repeat: enableAnimations ? Infinity : 0,
                   ease: "easeInOut",
                 }}
               >
@@ -520,28 +531,32 @@ const Contact: React.FC = () => {
                   boxShadow: "0 10px 30px rgba(57, 255, 20, 0.4)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                animate={{
-                  background: isSubmitting
-                    ? "linear-gradient(45deg, #666, #888)"
-                    : [
-                        "linear-gradient(45deg, #39ff14, #00d4ff)",
-                        "linear-gradient(45deg, #00d4ff, #39ff14)",
-                        "linear-gradient(45deg, #39ff14, #00d4ff)",
-                      ],
-                }}
+                animate={
+                  enableAnimations
+                    ? {
+                        background: isSubmitting
+                          ? "linear-gradient(45deg, #666, #888)"
+                          : [
+                              "linear-gradient(45deg, #39ff14, #00d4ff)",
+                              "linear-gradient(45deg, #00d4ff, #39ff14)",
+                              "linear-gradient(45deg, #39ff14, #00d4ff)",
+                            ],
+                      }
+                    : undefined
+                }
                 transition={{
-                  duration: isSubmitting ? 0.3 : 3,
-                  repeat: isSubmitting ? 0 : Infinity,
+                  duration: isSubmitting ? 0.3 : enableAnimations ? 3 : 0,
+                  repeat: isSubmitting ? 0 : enableAnimations ? Infinity : 0,
                   ease: "easeInOut",
                 }}
               >
                 {isSubmitting ? (
                   <motion.div
                     className="loading-spinner"
-                    animate={{ rotate: 360 }}
+                    animate={enableAnimations ? { rotate: 360 } : undefined}
                     transition={{
-                      duration: 1,
-                      repeat: Infinity,
+                      duration: enableAnimations ? 1 : 0,
+                      repeat: enableAnimations ? Infinity : 0,
                       ease: "linear",
                     }}
                   />
