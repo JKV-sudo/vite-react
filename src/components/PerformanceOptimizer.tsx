@@ -42,7 +42,15 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
   );
   const [fps, setFps] = useState(60);
   const [fpsAvg, setFpsAvg] = useState(60);
-  const [tier, setTier] = useState<PerfTier>("medium");
+  const [tier, setTier] = useState<PerfTier>(() => {
+    if (typeof window !== "undefined") {
+      const stored = sessionStorage.getItem("sv_tier");
+      if (stored === "low" || stored === "medium" || stored === "high") {
+        return stored as PerfTier;
+      }
+    }
+    return "medium";
+  });
   const [showPerformanceInfo, setShowPerformanceInfo] = useState(false);
   const [showLowPerfBanner, setShowLowPerfBanner] = useState(false);
   const [particlesOverride, setParticlesOverride] = useState(
@@ -228,6 +236,9 @@ const PerformanceOptimizer: React.FC<PerformanceOptimizerProps> = ({
     if (tier !== decidedTier) {
       setTier(decidedTier);
       lastChangeRef.current = now;
+      try {
+        sessionStorage.setItem("sv_tier", decidedTier);
+      } catch {}
       if (decidedTier === "low" && !lowPerfTriggeredRef.current) {
         setShowLowPerfBanner(true);
         lowPerfTriggeredRef.current = true;

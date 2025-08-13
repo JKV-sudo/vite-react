@@ -499,6 +499,8 @@ const Hero: React.FC = () => {
               ease: "easeInOut",
             }}
             style={{ position: "relative", zIndex: 3, borderRadius: "50%" }}
+            loading="eager"
+            decoding="async"
           />
           {/* Scanline Overlay */}
           <div

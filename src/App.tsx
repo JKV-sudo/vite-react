@@ -49,8 +49,9 @@ function App() {
       });
 
     const preload = async () => {
-      const MIN_MS = 1200;
-      const MAX_MS = 3000;
+      const firstVisit = !sessionStorage.getItem("sv_seen");
+      const MIN_MS = firstVisit ? 1500 : 600;
+      const MAX_MS = firstVisit ? 3000 : 1500;
       const start = performance.now();
 
       const fontsReady = (document as any).fonts?.ready ?? Promise.resolve();
@@ -66,13 +67,16 @@ function App() {
         decodeImage(heroLogoAvif),
       ]);
 
+      // Optional future: add API prefetch into the array
+      const dataPrefetch = Promise.resolve();
       await Promise.race([
-        Promise.allSettled([fontsReady, images, dynImports]),
+        Promise.allSettled([fontsReady, images, dynImports, dataPrefetch]),
         wait(MAX_MS),
       ]);
 
       const elapsed = performance.now() - start;
       if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
+      sessionStorage.setItem("sv_seen", "1");
       setShowSplash(false);
     };
 
