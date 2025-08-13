@@ -27,6 +27,12 @@ body {
   margin-right: auto;
 }
 
+/* Progressive rendering for offscreen sections */
+section:not(:first-of-type) {
+  content-visibility: auto;
+  contain-intrinsic-size: 600px 800px;
+}
+
 :root {
   --bg-primary: #000000;
   --bg-secondary: #111111;

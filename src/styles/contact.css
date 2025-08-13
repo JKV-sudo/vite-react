@@ -89,8 +89,26 @@
 .contact-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  margin-bottom: 5rem;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 64px 0;
+  }
+  .contact-methods,
+  .contact-form-section {
+    padding: 1.25rem;
+  }
+  .contact-content {
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
 }
 
 /* Contact Methods */

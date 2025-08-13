@@ -3,7 +3,6 @@ import Hero from "./components/Hero";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import PerformanceOptimizer from "./components/PerformanceOptimizer";
-import ConfigPanel from "./components/ConfigPanel";
 import SplashScreen from "./components/SplashScreen";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -50,7 +49,6 @@ function App() {
 
   return (
     <PerformanceOptimizer>
-      <ConfigPanel />
       <AnimatePresence>
         {showSplash ? (
           <motion.div
