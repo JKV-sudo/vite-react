@@ -3,10 +3,11 @@ import { motion, Variants, anticipate } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
 import { useRef, useEffect } from "react";
-import gsap from "gsap";
 import DroneIcon from "./DroneIcon";
 import logoWebp from "../assets/logo_eye_V2-removebg-preview.webp";
 import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
+import { getConfig } from "./ConfigPanel";
+import { PerfContext } from "./PerformanceOptimizer";
 
 // Add a custom hook for mobile detection
 function useIsMobile(breakpoint = 700) {
@@ -22,6 +23,9 @@ function useIsMobile(breakpoint = 700) {
 }
 
 const Hero: React.FC = () => {
+  const config = getConfig();
+  const { heavyAnimations } = React.useContext(PerfContext);
+  const enableAnimations = config.heroAnimations && heavyAnimations;
   const scrollToContact = () => {
     const element = document.getElementById("contact");
     element?.scrollIntoView({ behavior: "smooth" });
@@ -32,132 +36,152 @@ const Hero: React.FC = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
-    if (logoRef.current) {
-      // GSAP holographic entrance
-      gsap.fromTo(
-        logoRef.current,
-        {
-          filter: "blur(20px) brightness(0.2)",
-          opacity: 0,
-          scale: 0.7,
-          rotateY: 60,
-        },
-        {
-          filter: "blur(0px) brightness(1)",
-          opacity: 1,
-          scale: 1,
-          rotateY: 0,
-          duration: 2.2,
+    let ctx: any;
+    const run = async () => {
+      if (!enableAnimations || !logoRef.current) return;
+      const { default: gsap } = await import("gsap");
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          logoRef.current,
+          {
+            filter: "blur(20px) brightness(0.2)",
+            opacity: 0,
+            scale: 0.7,
+            rotateY: 60,
+          },
+          {
+            filter: "blur(0px) brightness(1)",
+            opacity: 1,
+            scale: 1,
+            rotateY: 0,
+            duration: 2.2,
+            ease: "power2.inOut",
+          }
+        );
+        gsap.to(logoRef.current, {
+          keyframes: [
+            { x: -2, filter: "contrast(1.5) brightness(1.2)", duration: 0.08 },
+            { x: 2, filter: "contrast(1.2) brightness(1.4)", duration: 0.08 },
+            { x: 0, filter: "contrast(1) brightness(1)", duration: 0.08 },
+          ],
+          repeat: -1,
+          repeatDelay: 2.5,
+          yoyo: true,
           ease: "power2.inOut",
-        }
-      );
-      // Glitch flicker
-      gsap.to(logoRef.current, {
-        keyframes: [
-          { x: -2, filter: "contrast(1.5) brightness(1.2)", duration: 0.08 },
-          { x: 2, filter: "contrast(1.2) brightness(1.4)", duration: 0.08 },
-          { x: 0, filter: "contrast(1) brightness(1)", duration: 0.08 },
-        ],
-        repeat: -1,
-        repeatDelay: 2.5,
-        yoyo: true,
-        ease: "power2.inOut",
-        delay: 2.3,
+          delay: 2.3,
+        });
       });
-    }
-  }, []);
+    };
+    run();
+    return () => ctx?.revert?.();
+  }, [enableAnimations]);
 
   // Framer Motion animation variants
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        delayChildren: 0.4,
-        staggerChildren: 0.25,
-        duration: 1.2,
-        ease: anticipate,
-      },
+      transition: enableAnimations
+        ? {
+            delayChildren: 0.4,
+            staggerChildren: 0.25,
+            duration: 1.2,
+            ease: anticipate,
+          }
+        : { duration: 0 },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: enableAnimations ? 50 : 0, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 1, ease: anticipate },
+      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
     },
   };
 
   const logoVariants: Variants = {
-    hidden: { scale: 0, rotate: -180, opacity: 0 },
+    hidden: {
+      scale: enableAnimations ? 0 : 1,
+      rotate: enableAnimations ? -180 : 0,
+      opacity: 0,
+    },
     visible: {
       scale: 1,
       rotate: 0,
       opacity: 1,
-      transition: { duration: 1.2, ease: anticipate },
-    },
-    hover: {
-      scale: 1.1,
-      rotate: 5,
-      boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
       transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 12,
-        duration: 0.5,
+        duration: enableAnimations ? 1.2 : 0,
+        ease: anticipate,
       },
     },
+    hover: enableAnimations
+      ? {
+          scale: 1.1,
+          rotate: 5,
+          boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
+          transition: {
+            type: "spring",
+            stiffness: 120,
+            damping: 12,
+            duration: 0.5,
+          },
+        }
+      : {},
   };
 
   const titleVariants: Variants = {
-    hidden: { x: -100, opacity: 0 },
+    hidden: { x: config.heroAnimations ? -100 : 0, opacity: 0 },
     visible: {
       x: 0,
       opacity: 1,
-      transition: { duration: 1, ease: anticipate },
+      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
     },
   };
 
   const buttonVariants: Variants = {
-    hidden: { scale: 0, opacity: 0 },
+    hidden: { scale: config.heroAnimations ? 0 : 1, opacity: 0 },
     visible: {
       scale: 1,
       opacity: 1,
-      transition: { duration: 1, ease: anticipate },
+      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
     },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 0 25px rgba(0, 212, 255, 0.6)",
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 12,
-        duration: 0.5,
-      },
-    },
-    tap: { scale: 0.97, transition: { duration: 0.2 } },
+    hover: enableAnimations
+      ? {
+          scale: 1.05,
+          boxShadow: "0 0 25px rgba(0, 212, 255, 0.6)",
+          transition: {
+            type: "spring",
+            stiffness: 120,
+            damping: 12,
+            duration: 0.5,
+          },
+        }
+      : {},
+    tap: enableAnimations ? { scale: 0.97, transition: { duration: 0.2 } } : {},
   };
 
   const featureVariants: Variants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: config.heroAnimations ? 30 : 0, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 1, ease: anticipate },
+      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
     },
-    hover: {
-      y: -5,
-      scale: 1.05,
-      boxShadow: "0 10px 30px rgba(57, 255, 20, 0.3)",
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 12,
-        duration: 0.5,
-      },
-    },
+    hover: enableAnimations
+      ? {
+          y: -5,
+          scale: 1.05,
+          boxShadow: "0 10px 30px rgba(57, 255, 20, 0.3)",
+          transition: {
+            type: "spring",
+            stiffness: 120,
+            damping: 12,
+            duration: 0.5,
+          },
+        }
+      : {},
   };
 
   const featureIcons = [
@@ -622,31 +646,36 @@ const Hero: React.FC = () => {
               variants={featureVariants}
               whileHover="hover"
               custom={index}
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(0, 212, 255, 0.3)",
-                  "0 0 30px rgba(57, 255, 20, 0.4)",
-                  "0 0 20px rgba(0, 212, 255, 0.3)",
-                ],
-              }}
+              animate={
+                enableAnimations
+                  ? {
+                      boxShadow: [
+                        "0 0 20px rgba(0, 212, 255, 0.3)",
+                        "0 0 30px rgba(57, 255, 20, 0.4)",
+                        "0 0 20px rgba(0, 212, 255, 0.3)",
+                      ],
+                    }
+                  : undefined
+              }
               transition={{
-                duration: 3,
-                repeat: Infinity,
+                duration: enableAnimations ? 3 : 0,
+                repeat: enableAnimations ? Infinity : 0,
                 ease: "easeInOut",
-                delay: index * 0.5,
+                delay: enableAnimations ? index * 0.5 : 0,
               }}
             >
               <motion.span
                 className="feature-icon"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 5, -5, 0],
-                }}
+                animate={
+                  enableAnimations
+                    ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }
+                    : undefined
+                }
                 transition={{
-                  duration: 2,
-                  repeat: Infinity,
+                  duration: enableAnimations ? 2 : 0,
+                  repeat: enableAnimations ? Infinity : 0,
                   ease: "easeInOut",
-                  delay: index * 0.3,
+                  delay: enableAnimations ? index * 0.3 : 0,
                 }}
               >
                 {feature.icon}

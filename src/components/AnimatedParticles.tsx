@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import "./AnimatedParticlesBanner.css";
+import { getConfig } from "./ConfigPanel";
 
 const getViewportWithMargin = () => {
   const width = window.innerWidth;
@@ -31,35 +32,26 @@ const AnimatedParticles: React.FC = () => {
   const [perfTier, setPerfTier] = useState<"high" | "medium" | "low">("high");
 
   useEffect(() => {
-    const checkDisabledState = () => {
-      const isDisabled = localStorage.getItem("disableParticles") === "true";
+    const checkConfig = () => {
+      const config = getConfig();
       console.log(
-        "[AnimatedParticles] Checking flag - localStorage:",
-        localStorage.getItem("disableParticles"),
+        "[AnimatedParticles] Checking config - particles:",
+        config.particles,
         "| enabled:",
-        !isDisabled
+        config.particles
       );
-      setEnabled(!isDisabled);
+      setEnabled(config.particles);
     };
 
-    checkDisabledState();
+    checkConfig();
 
-    // Listen for storage changes (cross-tab)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "disableParticles") {
-        checkDisabledState();
-      }
-    };
-    window.addEventListener("storage", handleStorageChange);
-
-    // Also check every 500ms for robustness (in case set in same tab)
-    const interval = setInterval(checkDisabledState, 500);
+    // Check config every 500ms for changes
+    const interval = setInterval(checkConfig, 500);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
       clearInterval(interval);
     };
-  }, []); // No dependency array: runs after every render
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {

@@ -2,9 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import type { Engine } from "tsparticles-engine";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import gsap from "gsap";
-import { useParticles } from "./PerformanceOptimizer";
+// gsap dynamically imported when needed
+import { useParticles, PerfContext } from "./PerformanceOptimizer";
 
 // Memoized particles options for footer
 const particlesOptions = {
@@ -114,6 +113,8 @@ const Footer: React.FC = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const isMobile = useIsMobile();
   const { enabled } = useParticles();
+  const { heavyAnimations } = React.useContext(PerfContext);
+  const enableAnimations = heavyAnimations;
 
   // Back to top visibility
   useEffect(() => {
@@ -127,15 +128,24 @@ const Footer: React.FC = () => {
 
   // Neural network animation
   useEffect(() => {
-    gsap.to(".neural-node", {
-      scale: 1.2,
-      duration: 2,
-      stagger: 0.3,
-      repeat: -1,
-      yoyo: true,
-      ease: "power2.inOut",
-    });
-  }, []);
+    let ctx: any;
+    const run = async () => {
+      if (!enableAnimations) return;
+      const { default: gsap } = await import("gsap");
+      ctx = gsap.context(() => {
+        gsap.to(".neural-node", {
+          scale: 1.2,
+          duration: 2,
+          stagger: 0.3,
+          repeat: -1,
+          yoyo: true,
+          ease: "power2.inOut",
+        });
+      });
+    };
+    run();
+    return () => ctx?.revert?.();
+  }, [enableAnimations]);
 
   const socialLinks = [
     {
@@ -171,7 +181,7 @@ const Footer: React.FC = () => {
   ];
 
   const quickLinks = [
-    { name: "Home", href: "#hero" },
+    { name: "Home", href: "#home" },
     { name: "Services", href: "#services" },
     { name: "About", href: "#about" },
     { name: "Portfolio", href: "#portfolio" },
@@ -200,6 +210,7 @@ const Footer: React.FC = () => {
       <ConditionalParticles
         id="tsparticles-footer"
         init={useCallback(async (main: Engine) => {
+          const { loadFull } = await import("tsparticles");
           await loadFull(main);
         }, [])}
         options={particlesOptions}
@@ -499,7 +510,7 @@ const Footer: React.FC = () => {
                   rel="noopener noreferrer"
                   className="social-link"
                   whileHover={
-                    !isMobile
+                    !isMobile && enableAnimations
                       ? {
                           scale: 1.2,
                           boxShadow: `0 0 20px ${social.color}40`,
@@ -507,22 +518,26 @@ const Footer: React.FC = () => {
                       : undefined
                   }
                   whileTap={{ scale: 0.9 }}
-                  animate={{
-                    boxShadow: [
-                      `0 0 10px ${social.color}30`,
-                      `0 0 20px ${social.color}50`,
-                      `0 0 10px ${social.color}30`,
-                    ],
-                    ...(isMobile
+                  animate={
+                    enableAnimations
                       ? {
-                          scale: 1.2,
-                          boxShadow: `0 0 20px ${social.color}40`,
+                          boxShadow: [
+                            `0 0 10px ${social.color}30`,
+                            `0 0 20px ${social.color}50`,
+                            `0 0 10px ${social.color}30`,
+                          ],
+                          ...(isMobile
+                            ? {
+                                scale: 1.2,
+                                boxShadow: `0 0 20px ${social.color}40`,
+                              }
+                            : {}),
                         }
-                      : {}),
-                  }}
+                      : undefined
+                  }
                   transition={{
-                    duration: 3,
-                    repeat: Infinity,
+                    duration: enableAnimations ? 3 : 0,
+                    repeat: enableAnimations ? Infinity : 0,
                     ease: "easeInOut",
                     delay: index * 0.2,
                   }}

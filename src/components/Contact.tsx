@@ -40,7 +40,7 @@ const cardVariants: Variants = {
 // Add stats array for new contact stats
 const contactStats = [
   {
-    label: "Antwortzeit",
+    label: "Antwortzeit max.",
     value: 24,
     suffix: "h",
     color: "#00d4ff",
@@ -53,7 +53,7 @@ const contactStats = [
   },
   {
     label: "Projekte erfolgreich",
-    value: 150,
+    value: 15,
     suffix: "+",
     color: "#ff006e",
   },
@@ -294,7 +294,7 @@ const Contact: React.FC = () => {
               <motion.a
                 key={method.title}
                 href={method.action}
-                className="contact-method"
+                className="contact-method-card"
                 variants={cardVariants}
                 initial="hidden"
                 animate={["visible", "float"]}
@@ -304,9 +304,10 @@ const Contact: React.FC = () => {
                 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 200, damping: 18 }}
+                style={{ borderColor: method.color }}
               >
                 <span className="method-icon">{method.icon}</span>
-                <div className="method-info">
+                <div className="method-content">
                   <h3>{method.title}</h3>
                   <p>{method.value}</p>
                 </div>
@@ -316,7 +317,7 @@ const Contact: React.FC = () => {
 
           {/* Contact Form */}
           <motion.div
-            className="contact-form-container"
+            className="contact-form-section"
             initial={{ x: 100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -362,19 +363,23 @@ const Contact: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    onFocus={() => setActiveField("name")}
-                    onBlur={() => setActiveField(null)}
-                    className={`form-input ${
+                  <div
+                    className={`input-container ${
                       activeField === "name" ? "active" : ""
                     } ${errors.name ? "error" : ""}`}
-                    placeholder="Ihr Name"
-                    required
-                  />
+                  >
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      onFocus={() => setActiveField("name")}
+                      onBlur={() => setActiveField(null)}
+                      placeholder="Ihr Name"
+                      required
+                    />
+                    <span className="input-border" />
+                  </div>
                   {errors.name && (
                     <motion.span
                       className="error-message"
@@ -391,19 +396,23 @@ const Contact: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onFocus={() => setActiveField("email")}
-                    onBlur={() => setActiveField(null)}
-                    className={`form-input ${
+                  <div
+                    className={`input-container ${
                       activeField === "email" ? "active" : ""
                     } ${errors.email ? "error" : ""}`}
-                    placeholder="Ihre E-Mail"
-                    required
-                  />
+                  >
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onFocus={() => setActiveField("email")}
+                      onBlur={() => setActiveField(null)}
+                      placeholder="Ihre E-Mail"
+                      required
+                    />
+                    <span className="input-border" />
+                  </div>
                   {errors.email && (
                     <motion.span
                       className="error-message"
@@ -422,18 +431,22 @@ const Contact: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    onFocus={() => setActiveField("company")}
-                    onBlur={() => setActiveField(null)}
-                    className={`form-input ${
+                  <div
+                    className={`input-container ${
                       activeField === "company" ? "active" : ""
                     }`}
-                    placeholder="Firmenname (optional)"
-                  />
+                  >
+                    <input
+                      type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                      onFocus={() => setActiveField("company")}
+                      onBlur={() => setActiveField(null)}
+                      placeholder="Firmenname (optional)"
+                    />
+                    <span className="input-border" />
+                  </div>
                 </motion.div>
 
                 <motion.div
@@ -441,23 +454,27 @@ const Contact: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <select
-                    name="project"
-                    value={formData.project}
-                    onChange={handleInputChange}
-                    onFocus={() => setActiveField("project")}
-                    onBlur={() => setActiveField(null)}
-                    className={`form-input ${
+                  <div
+                    className={`input-container ${
                       activeField === "project" ? "active" : ""
                     }`}
                   >
-                    <option value="">Projekttyp wählen</option>
-                    <option value="webapp">Web-App Entwicklung</option>
-                    <option value="social">Social Media Management</option>
-                    <option value="drone">Drohnenaufnahmen</option>
-                    <option value="branding">Branding & Design</option>
-                    <option value="other">Sonstiges</option>
-                  </select>
+                    <select
+                      name="project"
+                      value={formData.project}
+                      onChange={handleInputChange}
+                      onFocus={() => setActiveField("project")}
+                      onBlur={() => setActiveField(null)}
+                    >
+                      <option value="">Projekttyp wählen</option>
+                      <option value="webapp">Web-App Entwicklung</option>
+                      <option value="social">Social Media Management</option>
+                      <option value="drone">Drohnenaufnahmen</option>
+                      <option value="branding">Branding & Design</option>
+                      <option value="other">Sonstiges</option>
+                    </select>
+                    <span className="input-border" />
+                  </div>
                 </motion.div>
               </div>
 
@@ -466,19 +483,23 @@ const Contact: React.FC = () => {
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  onFocus={() => setActiveField("message")}
-                  onBlur={() => setActiveField(null)}
-                  className={`form-input ${
+                <div
+                  className={`input-container ${
                     activeField === "message" ? "active" : ""
                   } ${errors.message ? "error" : ""}`}
-                  placeholder="Beschreiben Sie Ihr Projekt..."
-                  rows={5}
-                  required
-                />
+                >
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    onFocus={() => setActiveField("message")}
+                    onBlur={() => setActiveField(null)}
+                    placeholder="Beschreiben Sie Ihr Projekt..."
+                    rows={5}
+                    required
+                  />
+                  <span className="input-border" />
+                </div>
                 {errors.message && (
                   <motion.span
                     className="error-message"
@@ -492,7 +513,7 @@ const Contact: React.FC = () => {
 
               <motion.button
                 type="submit"
-                className="submit-button"
+                className="submit-btn"
                 disabled={isSubmitting}
                 whileHover={{
                   scale: 1.05,
@@ -553,7 +574,7 @@ const Contact: React.FC = () => {
                   >
                     ✅
                   </motion.div>
-                  <h3>Nachricht gesendet!</h3>
+                  <h4>Nachricht gesendet!</h4>
                   <p>Wir melden uns innerhalb von 24 Stunden bei Ihnen.</p>
                 </motion.div>
               )}

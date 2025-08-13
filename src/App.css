@@ -80,6 +80,7 @@ main {
   --accent-green: #39ff14;
   --accent-pink: #ff0040;
   --border-glow: rgba(0, 212, 255, 0.3);
+  --enable-heavy-shadows: true;
 }
 
 /* Neon Glow Utilities */
@@ -3014,6 +3015,17 @@ main {
   --animation-paused: false;
 }
 
+/* Config-based shadow control */
+.config-heavy-shadows .hero-bg-logo-img,
+.config-heavy-shadows .neon-glow,
+.config-heavy-shadows .neon-border,
+.config-heavy-shadows .floating-shape,
+.config-heavy-shadows .neural-node {
+  filter: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
 /* Animation pause when tab is not visible */
 body[style*="--animation-paused: true"] * {
   animation-play-state: paused !important;
@@ -3043,4 +3055,273 @@ body[style*="--animation-paused: true"] * {
   max-width: 100vw !important;
   left: 0;
   right: 0;
+}
+
+/* Splash Screen */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, #000a 0%, #000 60%),
+    linear-gradient(180deg, #000 0%, #020712 100%);
+  z-index: 20000;
+}
+
+.splash-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(0, 212, 255, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(circle at 80% 70%, rgba(57, 255, 20, 0.06), transparent 40%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+  mask-image: radial-gradient(circle at center, black 50%, transparent 75%);
+  opacity: 0.7;
+}
+
+.splash-ring {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(0, 212, 255, 0),
+    rgba(0, 212, 255, 0.8),
+    rgba(57, 255, 20, 0.9),
+    rgba(0, 212, 255, 0.8),
+    rgba(0, 212, 255, 0)
+  );
+  filter: blur(10px) brightness(1.1);
+  opacity: 0.8;
+}
+
+.splash-orbit {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+}
+
+.orbit-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 16px currentColor;
+}
+.orbit-dot.dot1 {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent-blue);
+  background: currentColor;
+}
+.orbit-dot.dot2 {
+  bottom: -5px;
+  left: 10%;
+  color: var(--accent-green);
+  background: currentColor;
+}
+.orbit-dot.dot3 {
+  top: 30%;
+  right: -5px;
+  color: #9d4edd;
+  background: currentColor;
+}
+
+.splash-logo-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px #00d4ff55, 0 0 80px #39ff1444;
+  overflow: hidden;
+}
+
+.splash-logo-layer {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+.splash-logo-layer.layer-blue {
+  left: 0;
+  top: 0;
+  transform: translate(4px, 0) scale(1.02);
+  filter: drop-shadow(0 0 20px #00d4ff) brightness(1.3);
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+.splash-logo-layer.layer-green {
+  left: 0;
+  top: 0;
+  transform: translate(-4px, 0) scale(1.02);
+  filter: drop-shadow(0 0 20px #39ff14) brightness(1.2);
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+.splash-logo-layer.layer-main {
+  position: relative;
+  z-index: 2;
+}
+
+.splash-logo-anim {
+  position: relative;
+}
+
+.splash-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: linear-gradient(180deg, transparent, #00d4ff22, transparent);
+  mix-blend-mode: screen;
+}
+
+.splash-shimmer {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  width: 30%;
+  transform: skewX(-20deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.splash-text {
+  margin-top: 20px;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.splash-wordmark {
+  margin-top: 16px;
+  font-family: "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-primary);
+  text-shadow: 0 0 14px #00d4ff, 0 0 10px #39ff14;
+}
+
+.splash-progress-wrap {
+  position: absolute;
+  bottom: 18%;
+  left: 10%;
+  right: 10%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 212, 255, 0.3);
+  overflow: hidden;
+}
+
+.splash-progress {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  box-shadow: 0 0 18px #00d4ff99;
+}
+
+/* Sparks */
+.splash-sparks {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+}
+.spark {
+  position: absolute;
+  width: 2px;
+  height: 10px;
+  background: linear-gradient(180deg, #fff, transparent);
+  opacity: 0.6;
+  filter: drop-shadow(0 0 6px #00d4ff);
+  transform-origin: center -40px;
+  animation: sparkFly 1.4s linear infinite;
+}
+
+@keyframes sparkFly {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(260deg) translateY(-120px);
+    opacity: 0;
+  }
+}
+
+.spark-1 {
+  top: 50%;
+  left: 50%;
+  animation-delay: 0s;
+}
+.spark-2 {
+  top: 60%;
+  left: 40%;
+  animation-delay: 0.1s;
+}
+.spark-3 {
+  top: 40%;
+  left: 60%;
+  animation-delay: 0.2s;
+}
+.spark-4 {
+  top: 55%;
+  left: 35%;
+  animation-delay: 0.25s;
+}
+.spark-5 {
+  top: 45%;
+  left: 65%;
+  animation-delay: 0.3s;
+}
+.spark-6 {
+  top: 50%;
+  left: 30%;
+  animation-delay: 0.35s;
+}
+.spark-7 {
+  top: 50%;
+  left: 70%;
+  animation-delay: 0.4s;
+}
+.spark-8 {
+  top: 35%;
+  left: 50%;
+  animation-delay: 0.45s;
+}
+.spark-9 {
+  top: 65%;
+  left: 50%;
+  animation-delay: 0.5s;
+}
+.spark-10 {
+  top: 50%;
+  left: 20%;
+  animation-delay: 0.55s;
 }

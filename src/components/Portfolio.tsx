@@ -3,6 +3,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import DroneIcon from "./DroneIcon";
 import "../styles/portfolio.css";
 import { useInView } from "react-intersection-observer";
+import { PerfContext } from "./PerformanceOptimizer";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.92, rotateY: -10 },
@@ -25,6 +26,8 @@ const Portfolio: React.FC = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const { heavyAnimations } = React.useContext(PerfContext);
+  const enableAnimations = heavyAnimations;
   useEffect(() => {
     const handleResize = () => {};
     window.addEventListener("resize", handleResize);
@@ -158,10 +161,14 @@ const Portfolio: React.FC = () => {
                     activeCategory === category ? " active" : ""
                   }`}
                   onClick={() => setActiveCategory(category)}
-                  whileHover={{
-                    scale: 1.08,
-                    boxShadow: "0 0 24px rgba(0, 212, 255, 0.6)",
-                  }}
+                  whileHover={
+                    enableAnimations
+                      ? {
+                          scale: 1.08,
+                          boxShadow: "0 0 24px rgba(0, 212, 255, 0.6)",
+                        }
+                      : undefined
+                  }
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
@@ -203,14 +210,18 @@ const Portfolio: React.FC = () => {
                       rotateY: -10,
                       transition: { duration: 0.3 },
                     }}
-                    whileHover={{
-                      scale: 1.045,
-                      rotateY: 8,
-                      boxShadow:
-                        "0 8px 32px rgba(0,212,255,0.18), 0 0 0 2px #00d4ff33",
-                      borderColor: "#39ff14",
-                      zIndex: 2,
-                    }}
+                    whileHover={
+                      enableAnimations
+                        ? {
+                            scale: 1.045,
+                            rotateY: 8,
+                            boxShadow:
+                              "0 8px 32px rgba(0,212,255,0.18), 0 0 0 2px #00d4ff33",
+                            borderColor: "#39ff14",
+                            zIndex: 2,
+                          }
+                        : undefined
+                    }
                     onHoverStart={() => setHoveredProject(project.id)}
                     onHoverEnd={() => setHoveredProject(null)}
                     transition={{ type: "spring", stiffness: 200, damping: 18 }}
@@ -219,16 +230,20 @@ const Portfolio: React.FC = () => {
                     {project.featured && (
                       <motion.div
                         className="featured-badge"
-                        animate={{
-                          boxShadow: [
-                            "0 0 20px rgba(57, 255, 20, 0.5)",
-                            "0 0 30px rgba(57, 255, 20, 0.8)",
-                            "0 0 20px rgba(57, 255, 20, 0.5)",
-                          ],
-                        }}
+                        animate={
+                          enableAnimations
+                            ? {
+                                boxShadow: [
+                                  "0 0 20px rgba(57, 255, 20, 0.5)",
+                                  "0 0 30px rgba(57, 255, 20, 0.8)",
+                                  "0 0 20px rgba(57, 255, 20, 0.5)",
+                                ],
+                              }
+                            : undefined
+                        }
                         transition={{
-                          duration: 2,
-                          repeat: Infinity,
+                          duration: enableAnimations ? 2 : 0,
+                          repeat: enableAnimations ? Infinity : 0,
                           ease: "easeInOut",
                         }}
                       >
@@ -247,12 +262,16 @@ const Portfolio: React.FC = () => {
                     <motion.div className="project-content">
                       <motion.h3
                         className="project-title"
-                        animate={{
-                          textShadow:
-                            hoveredProject === project.id
-                              ? "0 0 15px #39ff14"
-                              : "0 0 5px #00d4ff",
-                        }}
+                        animate={
+                          enableAnimations
+                            ? {
+                                textShadow:
+                                  hoveredProject === project.id
+                                    ? "0 0 15px #39ff14"
+                                    : "0 0 5px #00d4ff",
+                              }
+                            : undefined
+                        }
                         transition={{ duration: 0.3 }}
                       >
                         {project.title}
@@ -272,22 +291,31 @@ const Portfolio: React.FC = () => {
                           <motion.span
                             key={techIndex}
                             className="tech-tag"
-                            whileHover={{
-                              scale: 1.1,
-                              boxShadow: "0 0 10px rgba(0, 212, 255, 0.5)",
-                            }}
-                            animate={{
-                              boxShadow: [
-                                "0 0 5px rgba(0, 212, 255, 0.3)",
-                                "0 0 10px rgba(57, 255, 20, 0.4)",
-                                "0 0 5px rgba(0, 212, 255, 0.3)",
-                              ],
-                            }}
+                            whileHover={
+                              enableAnimations
+                                ? {
+                                    scale: 1.1,
+                                    boxShadow:
+                                      "0 0 10px rgba(0, 212, 255, 0.5)",
+                                  }
+                                : undefined
+                            }
+                            animate={
+                              enableAnimations
+                                ? {
+                                    boxShadow: [
+                                      "0 0 5px rgba(0, 212, 255, 0.3)",
+                                      "0 0 10px rgba(57, 255, 20, 0.4)",
+                                      "0 0 5px rgba(0, 212, 255, 0.3)",
+                                    ],
+                                  }
+                                : undefined
+                            }
                             transition={{
-                              duration: 3,
-                              repeat: Infinity,
+                              duration: enableAnimations ? 3 : 0,
+                              repeat: enableAnimations ? Infinity : 0,
                               ease: "easeInOut",
-                              delay: techIndex * 0.1,
+                              delay: enableAnimations ? techIndex * 0.1 : 0,
                             }}
                           >
                             {tech}
