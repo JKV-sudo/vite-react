@@ -11,6 +11,7 @@ const navLinks = [
   { id: "about", label: "Über uns" },
   { id: "portfolio", label: "Portfolio" },
   { id: "contact", label: "Kontakt" },
+  { id: "techstack", label: "Tech Stack" },
 ];
 
 const Header: React.FC = () => {

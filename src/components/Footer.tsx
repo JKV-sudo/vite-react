@@ -1,79 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
-import type { Engine } from "tsparticles-engine";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import Particles from "react-tsparticles";
 // gsap dynamically imported when needed
-import { useParticles, PerfContext } from "./PerformanceOptimizer";
+import { PerfContext } from "./PerformanceOptimizer";
 
-// Memoized particles options for footer
-const particlesOptions = {
-  background: {
-    color: {
-      value: "transparent",
-    },
-  },
-  fpsLimit: 120,
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: "push",
-      },
-      onHover: {
-        enable: true,
-        mode: "grab",
-      },
-    },
-    modes: {
-      push: {
-        quantity: 3,
-      },
-      grab: {
-        distance: 120,
-        links: {
-          opacity: 0.4,
-        },
-      },
-    },
-  },
-  particles: {
-    color: {
-      value: ["#00d4ff", "#39ff14", "#ff006e", "#9d4edd"],
-    },
-    links: {
-      color: "#00d4ff",
-      distance: 120,
-      enable: true,
-      opacity: 0.3,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      direction: "none" as const,
-      outModes: { default: "out" as const },
-      random: false,
-      speed: 1,
-      straight: false,
-    },
-    number: {
-      density: {
-        enable: true,
-        area: 600,
-      },
-      value: 60,
-    },
-    opacity: {
-      value: 0.5,
-    },
-    shape: {
-      type: "circle",
-    },
-    size: {
-      value: { min: 1, max: 4 },
-    },
-  },
-  detectRetina: true,
-};
+// Particle options removed while background is disabled
 
 // Add a custom hook for mobile detection
 function useIsMobile(breakpoint = 700) {
@@ -99,20 +29,11 @@ const contentVariants: Variants = {
   },
 };
 
-const ConditionalParticles: React.FC<{
-  id: string;
-  init: (main: Engine) => Promise<void>;
-  options: typeof particlesOptions;
-}> = ({ id, init, options }) => {
-  const { enabled } = useParticles();
-  if (!enabled) return null;
-  return <Particles id={id} init={init} options={options} />;
-};
+// Particle background disabled for now
 
 const Footer: React.FC = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const isMobile = useIsMobile();
-  const { enabled } = useParticles();
   const { heavyAnimations } = React.useContext(PerfContext);
   const enableAnimations = heavyAnimations;
 

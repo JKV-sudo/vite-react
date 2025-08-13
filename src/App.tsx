@@ -15,6 +15,7 @@ import "./App.css";
 const About = lazy(() => import("./components/About"));
 const Services = lazy(() => import("./components/Services"));
 const Portfolio = lazy(() => import("./components/Portfolio"));
+import TechStack from "./components/TechStack";
 
 function App() {
   const [config, setConfig] = useState(getConfig());
@@ -119,6 +120,9 @@ function App() {
                 </Suspense>
                 <Suspense fallback={<div>Loading...</div>}>
                   <About />
+                </Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <TechStack />
                 </Suspense>
                 <Suspense fallback={<div>Loading...</div>}>
                   <Portfolio />
