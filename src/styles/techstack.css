@@ -3,6 +3,55 @@
   position: relative;
 }
 
+.techstack-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-blob {
+  position: absolute;
+  width: 40vw;
+  height: 40vw;
+  max-width: 520px;
+  max-height: 520px;
+  border-radius: 50%;
+  filter: blur(48px);
+  opacity: 0.18;
+}
+
+.blob-blue {
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(
+    closest-side,
+    rgba(0, 212, 255, 0.6),
+    rgba(0, 212, 255, 0)
+  );
+}
+
+.blob-green {
+  bottom: -8%;
+  right: 10%;
+  background: radial-gradient(
+    closest-side,
+    rgba(57, 255, 20, 0.5),
+    rgba(57, 255, 20, 0)
+  );
+}
+
+.blob-pink {
+  top: 20%;
+  right: -10%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 0, 110, 0.45),
+    rgba(255, 0, 110, 0)
+  );
+}
+
 .techstack-container {
   max-width: 1100px;
   margin: 0 auto;

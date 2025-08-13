@@ -327,6 +327,58 @@ const TechStack: React.FC = () => {
     <section id="tech" className="techstack" ref={ref}>
       <div className="techstack-container">
         <motion.div
+          className="techstack-bg"
+          aria-hidden
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          animate={enableAnimations ? { y: [0, -8, 0] } : undefined}
+          transition={{
+            duration: 12,
+            repeat: enableAnimations ? Infinity : 0,
+            ease: "easeInOut",
+          }}
+        >
+          <motion.div
+            className="bg-blob blob-blue"
+            animate={
+              enableAnimations
+                ? { x: [0, 12, -6, 0], y: [0, -6, 8, 0] }
+                : undefined
+            }
+            transition={{
+              duration: 18,
+              repeat: enableAnimations ? Infinity : 0,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="bg-blob blob-green"
+            animate={
+              enableAnimations
+                ? { x: [0, -10, 6, 0], y: [0, 8, -6, 0] }
+                : undefined
+            }
+            transition={{
+              duration: 16,
+              repeat: enableAnimations ? Infinity : 0,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="bg-blob blob-pink"
+            animate={
+              enableAnimations
+                ? { x: [0, 8, -8, 0], y: [0, -10, 10, 0] }
+                : undefined
+            }
+            transition={{
+              duration: 20,
+              repeat: enableAnimations ? Infinity : 0,
+              ease: "easeInOut",
+            }}
+          />
+        </motion.div>
+        <motion.div
           className="techstack-header"
           initial={{ y: -40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
