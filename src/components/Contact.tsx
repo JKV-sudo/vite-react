@@ -245,7 +245,11 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="contact">
+    <section
+      id="contact"
+      className="contact"
+      data-preview-image="/images/previews/contact.svg"
+    >
       {/* Particle Background */}
 
       <div className="contact-container">

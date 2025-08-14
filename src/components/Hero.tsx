@@ -8,6 +8,7 @@ import logoWebp from "../assets/logo_eye_V2-removebg-preview.webp";
 import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
 import { getConfig } from "./ConfigPanel";
 import { PerfContext } from "./PerformanceOptimizer";
+import { useNavigation } from "../hooks/useNavigation";
 
 // Add a custom hook for mobile detection
 function useIsMobile(breakpoint = 700) {
@@ -26,17 +27,14 @@ const Hero: React.FC = () => {
   const config = getConfig();
   const { heavyAnimations } = React.useContext(PerfContext);
   const enableAnimations = config.heroAnimations && heavyAnimations;
-  const scrollToContact = () => {
-    const element = document.getElementById("contact");
-    element?.scrollIntoView({ behavior: "smooth" });
-  };
+  const { navigateToSection } = useNavigation();
 
   const logoRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
-    let ctx: any;
+    let ctx: ReturnType<typeof import("gsap").gsap.context> | undefined;
     const run = async () => {
       if (!enableAnimations || !logoRef.current) return;
       const { default: gsap } = await import("gsap");
@@ -190,8 +188,16 @@ const Hero: React.FC = () => {
     { icon: <DroneIcon size={32} />, text: "Drohnenaufnahmen" }, // Use the new DroneIcon component
   ];
 
+  console.log("[Hero] Component rendering");
+
   return (
-    <section id="home" className="hero" ref={ref}>
+    <section
+      id="home"
+      className="hero"
+      ref={ref}
+      data-preview-image="/images/previews/home.svg"
+      // style={{ border: "3px solid blue" }} // Removed debug styling
+    >
       {/* Lazy render heavy elements only when in view */}
       {inView && (
         <>
@@ -582,7 +588,7 @@ const Hero: React.FC = () => {
           style={{ zIndex: 10, position: "relative" }}
         >
           <motion.button
-            onClick={scrollToContact}
+            onClick={() => navigateToSection("contact")}
             className="cta-primary"
             variants={buttonVariants}
             whileHover="hover"
@@ -602,10 +608,7 @@ const Hero: React.FC = () => {
             </motion.span>
           </motion.button>
           <motion.button
-            onClick={() => {
-              const element = document.getElementById("services");
-              element?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => navigateToSection("services")}
             className="cta-secondary"
             variants={buttonVariants}
             whileHover="hover"
@@ -614,10 +617,7 @@ const Hero: React.FC = () => {
             Unsere Leistungen
           </motion.button>
           <motion.button
-            onClick={() => {
-              const element = document.getElementById("about");
-              element?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => navigateToSection("about")}
             className="cta-secondary"
             variants={buttonVariants}
             whileHover="hover"
@@ -626,10 +626,7 @@ const Hero: React.FC = () => {
             Über uns
           </motion.button>
           <motion.button
-            onClick={() => {
-              const element = document.getElementById("portfolio");
-              element?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => navigateToSection("portfolio")}
             className="cta-secondary"
             variants={buttonVariants}
             whileHover="hover"

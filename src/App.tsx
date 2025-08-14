@@ -1,21 +1,16 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
 import PerformanceOptimizer from "./components/PerformanceOptimizer";
 import SplashScreen from "./components/SplashScreen";
-import { Suspense, lazy, useEffect, useState } from "react";
+import GuidedApp from "./components/GuidedApp";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getConfig } from "./components/ConfigPanel";
 import heroLogoPng from "./assets/logo_eye_V2-removebg-preview.png";
 import heroLogoWebp from "./assets/logo_eye_V2-removebg-preview.webp";
 import heroLogoAvif from "./assets/logo_eye_V2-removebg-preview.avif";
 import "./App.css";
-
-const About = lazy(() => import("./components/About"));
-const Services = lazy(() => import("./components/Services"));
-const Portfolio = lazy(() => import("./components/Portfolio"));
-import TechStack from "./components/TechStack";
+import ThreeTransitionProvider from "./components/ThreeTransition";
+import SnapshotPreloader from "./components/SnapshotPreloader";
+import { NavigationProvider } from "./components/NavigationProvider";
 
 function App() {
   const [config, setConfig] = useState(getConfig());
@@ -41,12 +36,15 @@ function App() {
       new Promise<void>((resolve) => {
         const img = new Image();
         img.src = src;
-        (img as any)
-          .decode?.()
-          .then(() => resolve())
-          .catch(() => resolve());
-        img.onload = () => resolve();
-        img.onerror = () => resolve();
+        if (typeof (img as HTMLImageElement).decode === "function") {
+          (img as HTMLImageElement)
+            .decode()
+            .then(() => resolve())
+            .catch(() => resolve());
+        } else {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+        }
       });
 
     const preload = async () => {
@@ -55,7 +53,9 @@ function App() {
       const MAX_MS = firstVisit ? 3000 : 1500;
       const start = performance.now();
 
-      const fontsReady = (document as any).fonts?.ready ?? Promise.resolve();
+      const fontsReady: Promise<unknown> =
+        (document as unknown as { fonts?: { ready: Promise<unknown> } }).fonts
+          ?.ready ?? Promise.resolve();
 
       const dynImports = Promise.allSettled([
         import("gsap"),
@@ -90,50 +90,38 @@ function App() {
 
   return (
     <PerformanceOptimizer>
-      <AnimatePresence>
-        {showSplash ? (
-          <motion.div
-            key="splash"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: "blur(10px)", scale: 1.04 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            style={{ position: "relative", zIndex: 20000 }}
-          >
-            <SplashScreen />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="app"
-            initial={{ opacity: 0, filter: "blur(12px)", scale: 0.98 }}
-            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            style={{ position: "relative", zIndex: 1 }}
-          >
-            <div className={appClasses}>
-              <Header />
-              <main>
-                <Hero />
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Services />
-                </Suspense>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <About />
-                </Suspense>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <TechStack />
-                </Suspense>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Portfolio />
-                </Suspense>
-                <Contact />
-              </main>
-              <Footer />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <ThreeTransitionProvider>
+        <NavigationProvider>
+          <AnimatePresence>
+            {showSplash ? (
+              <motion.div
+                key="splash"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, filter: "blur(10px)", scale: 1.04 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                style={{ position: "relative", zIndex: 20000 }}
+              >
+                <SplashScreen />
+                <SnapshotPreloader />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="app"
+                initial={{ opacity: 0, filter: "blur(12px)", scale: 0.98 }}
+                animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                style={{ position: "relative", zIndex: 1 }}
+              >
+                <div className={appClasses}>
+                  <GuidedApp />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </NavigationProvider>
+      </ThreeTransitionProvider>
     </PerformanceOptimizer>
   );
 }

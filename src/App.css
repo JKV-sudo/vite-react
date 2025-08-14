@@ -3057,7 +3057,7 @@ body[style*="--animation-paused: true"] * {
   right: 0;
 }
 
-/* Splash Screen */
+/* Splash Screen - Performance Optimized */
 .splash-screen {
   position: fixed;
   inset: 0;
@@ -3068,6 +3068,11 @@ body[style*="--animation-paused: true"] * {
   background: radial-gradient(circle at 50% 50%, #000a 0%, #000 60%),
     linear-gradient(180deg, #000 0%, #020712 100%);
   z-index: 20000;
+  /* GPU acceleration */
+  will-change: auto;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .splash-bg {
@@ -3101,6 +3106,11 @@ body[style*="--animation-paused: true"] * {
   );
   filter: blur(10px) brightness(1.1);
   opacity: 0.8;
+  /* Performance optimizations */
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .splash-orbit {
@@ -3154,6 +3164,11 @@ body[style*="--animation-paused: true"] * {
   width: 130px;
   height: 130px;
   border-radius: 50%;
+  /* Performance optimizations */
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .splash-logo-layer.layer-blue {
   left: 0;
@@ -3324,4 +3339,58 @@ body[style*="--animation-paused: true"] * {
   top: 50%;
   left: 20%;
   animation-delay: 0.55s;
+}
+
+/* Performance optimizations for reduced motion and low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .splash-ring,
+  .splash-orbit,
+  .splash-scanline,
+  .splash-shimmer,
+  .splash-sparks .spark {
+    animation: none !important;
+  }
+
+  .splash-logo-layer {
+    will-change: auto !important;
+  }
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+  .splash-ring {
+    filter: blur(6px) brightness(1.05); /* Reduced blur */
+  }
+
+  .splash-logo-layer.layer-blue,
+  .splash-logo-layer.layer-green {
+    opacity: 0.6; /* Reduced opacity */
+    filter: drop-shadow(0 0 12px currentColor) brightness(1.1); /* Simplified filter */
+  }
+
+  .splash-sparks {
+    display: none; /* Hide sparks on mobile */
+  }
+}
+
+/* Low-memory device optimizations */
+@media (max-width: 480px) {
+  .splash-bg {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #020712 100%
+    ); /* Simplified background */
+  }
+
+  .splash-ring {
+    width: 200px;
+    height: 200px;
+    filter: blur(4px); /* Further reduced blur */
+  }
+
+  .splash-orbit {
+    width: 180px;
+    height: 180px;
+  }
 }

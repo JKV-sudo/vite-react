@@ -37,7 +37,8 @@ const About: React.FC = () => {
       id="about"
       ref={ref}
       className="about"
-      style={{ position: "relative", overflow: "hidden" }}
+      data-preview-image="/images/previews/about.svg"
+      // style={{ position: "relative", overflow: "hidden" }} // Removed for guided mode
     >
       {/* Main background/particles (z-index 0 or 1) */}
       {/* Lazy render DnaHelix only when in view */}

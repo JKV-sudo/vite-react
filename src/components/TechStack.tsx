@@ -324,7 +324,12 @@ const TechStack: React.FC = () => {
   const enableAnimations = heavyAnimations;
 
   return (
-    <section id="tech" className="techstack" ref={ref}>
+    <section
+      id="tech"
+      className="techstack"
+      ref={ref}
+      data-preview-image="/images/previews/tech.svg"
+    >
       <div className="techstack-container">
         <motion.div
           className="techstack-bg"

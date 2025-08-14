@@ -1,0 +1,322 @@
+/* Guided Experience Styles */
+
+/* Allow scrolling and ensure full viewport sections */
+.guided-app {
+  min-height: 100vh; /* Allow content to expand */
+  width: 100vw;
+  overflow: auto; /* Allow scrolling when content is taller */
+  position: relative;
+}
+
+/* Override all container max-widths for guided experience */
+body.guided-mode * {
+  max-width: none !important;
+}
+
+body.guided-mode .App {
+  max-width: none !important;
+  width: 100vw !important;
+}
+
+/* Ensure all containers, sections, and wrappers take full width */
+body.guided-mode .section-wrapper,
+body.guided-mode .section-wrapper main,
+body.guided-mode .section-wrapper section,
+body.guided-mode .hero-container,
+body.guided-mode .services-container,
+body.guided-mode .about-container,
+body.guided-mode .portfolio-container,
+body.guided-mode .tech-container,
+body.guided-mode .contact-container,
+body.guided-mode .techstack-container,
+body.guided-mode .footer-container {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important; /* Remove container padding that causes issues */
+}
+
+/* Allow body to scroll in guided mode */
+body.guided-mode {
+  overflow: auto; /* Allow scrolling */
+  min-height: 100vh; /* Allow content to expand */
+}
+
+/* Section transitions */
+.section-wrapper {
+  min-height: 100vh; /* Allow content to expand */
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  overflow: visible; /* Let parent handle scrolling */
+  position: relative;
+}
+
+/* Smooth scrolling within sections if needed */
+.section-wrapper main {
+  flex: 1; /* Take remaining space after header and footer */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto; /* Let flex handle the height */
+  overflow: visible; /* Allow content to show */
+}
+
+/* Ensure sections fit viewport and take full width */
+.section-wrapper section {
+  min-height: 100%; /* Take full height of parent main */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0; /* Remove default padding in guided mode */
+  margin: 0; /* Remove margins */
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible; /* Allow content to show */
+}
+
+/* Override specific section styles to ensure full height in guided mode */
+body.guided-mode .hero,
+body.guided-mode .services,
+body.guided-mode .about,
+body.guided-mode .portfolio,
+body.guided-mode .tech-stack,
+body.guided-mode .contact {
+  min-height: 100% !important; /* Take 100% of parent main, not viewport */
+  height: 100% !important; /* Ensure full height usage */
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important; /* Remove all default padding that causes cutoff */
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  overflow: visible !important; /* Allow content to show fully */
+}
+
+/* Force full width for all section content */
+.section-wrapper main > * {
+  width: 100%;
+}
+
+/* Ensure content containers within sections also take full height */
+body.guided-mode .hero-container,
+body.guided-mode .services-container,
+body.guided-mode .about-container,
+body.guided-mode .portfolio-container,
+body.guided-mode .tech-container,
+body.guided-mode .contact-container {
+  min-height: 100% !important;
+  width: 100% !important;
+  max-width: none !important; /* Remove max-width constraints */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 1rem !important; /* Minimal padding to prevent cutoff */
+  margin: 0 !important;
+  overflow: visible !important; /* Ensure content isn't hidden */
+  position: relative !important; /* Ensure proper stacking */
+}
+
+/* Fix for specific component content */
+body.guided-mode .hero-content,
+body.guided-mode .services-content,
+body.guided-mode .about-content,
+body.guided-mode .portfolio-content,
+body.guided-mode .contact-content {
+  width: 100% !important;
+  max-width: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 !important; /* Take up remaining space */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove any default component padding that might interfere */
+body.guided-mode section {
+  padding: 0 !important; /* Remove all padding that causes cutoff */
+  overflow: visible !important; /* Ensure content shows fully */
+  max-width: none !important; /* Remove width constraints */
+}
+
+/* Ensure inner content fills available space */
+body.guided-mode .hero > *,
+body.guided-mode .services > *,
+body.guided-mode .about > *,
+body.guided-mode .portfolio > *,
+body.guided-mode .tech-stack > *,
+body.guided-mode .contact > * {
+  width: 100% !important;
+  flex: 1 !important;
+  max-width: none !important; /* Remove width constraints */
+  overflow: visible !important; /* Allow content to show */
+  margin: 0 !important; /* Remove conflicting margins */
+}
+
+/* Specific fix for common content wrappers that might have overflow issues */
+body.guided-mode .hero-content,
+body.guided-mode .services-grid,
+body.guided-mode .about-content,
+body.guided-mode .portfolio-grid,
+body.guided-mode .contact-content {
+  overflow: visible !important;
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 1rem !important; /* Minimal padding for content readability */
+}
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+  .section-wrapper {
+    width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
+    overflow: visible; /* Allow content to show */
+  }
+
+  .section-wrapper main {
+    flex: 1; /* Let flex handle height distribution */
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    overflow: visible;
+  }
+
+  .section-wrapper section {
+    min-height: 100%; /* Take full height of parent main */
+    width: 100vw;
+    padding: 0; /* Remove padding in guided mode */
+    margin: 0;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  /* Mobile-specific section height fixes */
+  body.guided-mode .hero,
+  body.guided-mode .services,
+  body.guided-mode .about,
+  body.guided-mode .portfolio,
+  body.guided-mode .tech-stack,
+  body.guided-mode .contact {
+    min-height: 100% !important; /* Take full height of parent main */
+    height: 100% !important;
+    padding: 0 !important; /* Remove padding on mobile too */
+    overflow: visible !important;
+  }
+
+  /* Mobile container fixes */
+  body.guided-mode .hero-container,
+  body.guided-mode .services-container,
+  body.guided-mode .about-container,
+  body.guided-mode .portfolio-container,
+  body.guided-mode .tech-container,
+  body.guided-mode .contact-container {
+    padding: 0.5rem !important; /* Minimal padding on mobile */
+    min-height: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure no content is cut off on mobile */
+  body.guided-mode {
+    width: 100vw;
+    max-width: 100vw;
+    overflow: auto; /* Allow scrolling */
+  }
+}
+
+/* Loading animation improvements */
+.section-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0a0c, #1a1a2e);
+  z-index: 1000;
+}
+
+/* Enhanced animations for section transitions */
+.section-enter {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  filter: blur(10px);
+}
+
+.section-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition: all 0.6s ease-in-out;
+}
+
+.section-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.section-exit-active {
+  opacity: 0;
+  transform: translateY(-50px) scale(1.05);
+  filter: blur(10px);
+  transition: all 0.6s ease-in-out;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .section-wrapper section {
+    min-height: 100%; /* Take full height of parent main */
+    padding: 0; /* Remove padding in guided mode */
+    overflow: visible;
+  }
+
+  .section-wrapper {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevent text selection during transitions */
+.guided-app.transitioning {
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Smallest mobile screens (320px-480px) - 48px header */
+@media (max-width: 480px) {
+  /* Ultra-mobile section height fixes */
+  body.guided-mode .hero,
+  body.guided-mode .services,
+  body.guided-mode .about,
+  body.guided-mode .portfolio,
+  body.guided-mode .tech-stack,
+  body.guided-mode .contact {
+    min-height: 100% !important; /* Take full height of parent main */
+    height: 100% !important;
+  }
+
+  .section-wrapper main {
+    flex: 1 !important; /* Let flex handle height */
+    overflow: visible !important;
+  }
+
+  .section-wrapper section {
+    min-height: 100% !important; /* Take full height of parent main */
+    overflow: visible !important;
+  }
+}
+
+/* Re-enable interactions after transition */
+.guided-app.transitioning * {
+  pointer-events: auto;
+}

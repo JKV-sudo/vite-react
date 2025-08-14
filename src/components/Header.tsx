@@ -1,58 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigation } from "../hooks/useNavigation";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
 import logoWebp from "../assets/logo_eye_V2-removebg-preview.webp";
 import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
 import { motion, AnimatePresence } from "framer-motion";
 import "../styles/header.css";
 
-const navLinks = [
-  { id: "home", label: "Home" },
-  { id: "services", label: "Leistungen" },
-  { id: "about", label: "Über uns" },
-  { id: "portfolio", label: "Portfolio" },
-  { id: "contact", label: "Kontakt" },
-  { id: "techstack", label: "Tech Stack" },
-];
-
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const menuRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLButtonElement>(null);
 
-  // Scroll to section
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: "smooth" });
+  const { activeSection, navigateToSection, navigateToHome, sections } =
+    useNavigation();
+
+  // Navigate to section with 3D transition
+  const handleNavigation = (sectionId: string) => {
+    console.log(`[Header] handleNavigation called with: ${sectionId}`);
+    navigateToSection(
+      sectionId as
+        | "home"
+        | "services"
+        | "about"
+        | "portfolio"
+        | "tech"
+        | "contact"
+    );
     setIsMenuOpen(false);
   };
 
-  // Scroll to top on logo click
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  // Handle logo click
+  const handleLogoClick = () => {
+    console.log(`[Header] handleLogoClick called`);
+    navigateToHome();
     setIsMenuOpen(false);
   };
-
-  // Active link highlight on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      let found = false;
-      for (const link of navLinks) {
-        const el = document.getElementById(link.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 120 && rect.bottom > 120) {
-            setActiveSection(link.id);
-            found = true;
-            break;
-          }
-        }
-      }
-      if (!found) setActiveSection("home");
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Prevent background scroll when menu is open
   useEffect(() => {
@@ -98,12 +80,12 @@ const Header: React.FC = () => {
               alt="Split-Vision Logo"
               className="logo"
               tabIndex={0}
-              onClick={scrollToTop}
+              onClick={handleLogoClick}
               onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") && scrollToTop()
+                (e.key === "Enter" || e.key === " ") && handleLogoClick()
               }
               style={{ cursor: "pointer" }}
-              aria-label="Scroll to top"
+              aria-label="Navigate to home"
               width={48}
               height={48}
             />
@@ -119,16 +101,16 @@ const Header: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          {navLinks.map((link) => (
+          {sections.map((section) => (
             <button
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
+              key={section.id}
+              onClick={() => handleNavigation(section.id)}
               className={`nav-link${
-                activeSection === link.id ? " active" : ""
+                activeSection === section.id ? " active" : ""
               }`}
-              aria-current={activeSection === link.id ? "page" : undefined}
+              aria-current={activeSection === section.id ? "page" : undefined}
             >
-              {link.label}
+              {section.label}
             </button>
           ))}
         </motion.nav>
@@ -219,18 +201,18 @@ const Header: React.FC = () => {
               }}
             />
           </div>
-          {navLinks.map((link, i) => (
+          {sections.map((section, i) => (
             <button
-              key={link.id}
+              key={section.id}
               ref={i === 0 ? firstLinkRef : undefined}
-              onClick={() => scrollToSection(link.id)}
+              onClick={() => handleNavigation(section.id)}
               className={`nav-link-mobile${
-                activeSection === link.id ? " active" : ""
+                activeSection === section.id ? " active" : ""
               }`}
-              aria-current={activeSection === link.id ? "page" : undefined}
+              aria-current={activeSection === section.id ? "page" : undefined}
               tabIndex={isMenuOpen ? 0 : -1}
             >
-              {link.label}
+              {section.label}
             </button>
           ))}
         </nav>

@@ -105,9 +105,16 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
 };
 
 const Services: React.FC = () => {
+  console.log("[Services] Component rendering");
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
-    <section id="services" className="services" ref={ref}>
+    <section
+      id="services"
+      className="services"
+      ref={ref}
+      data-preview-image="/images/previews/services.svg"
+      style={{ border: "3px solid lime" }} // Debug: Green border to identify Services
+    >
       {inView && (
         <div className="services-container">
           {/* Animated Section Header */}

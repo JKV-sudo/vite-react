@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import DroneIcon from "./DroneIcon";
+import { useNavigation } from "../hooks/useNavigation";
 import "../styles/portfolio.css";
 import { useInView } from "react-intersection-observer";
 import { PerfContext } from "./PerformanceOptimizer";
@@ -26,6 +27,7 @@ const Portfolio: React.FC = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const { navigateToSection } = useNavigation();
   const { heavyAnimations } = React.useContext(PerfContext);
   const enableAnimations = heavyAnimations;
   useEffect(() => {
@@ -121,7 +123,12 @@ const Portfolio: React.FC = () => {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="portfolio" className="portfolio" ref={ref}>
+    <section
+      id="portfolio"
+      className="portfolio"
+      ref={ref}
+      data-preview-image="/images/previews/portfolio.svg"
+    >
       {inView && (
         <>
           {/* Particle Background */}
@@ -357,10 +364,7 @@ const Portfolio: React.FC = () => {
                 className="cta-button"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  const element = document.getElementById("contact");
-                  element?.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={() => navigateToSection("contact")}
               >
                 Get Started
               </motion.button>
