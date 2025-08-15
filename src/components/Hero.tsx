@@ -296,10 +296,10 @@ const Hero: React.FC = () => {
           </motion.div>
           <motion.div
             className="floating-shape shape-2"
-            initial={{ x: 50, y: 400, scale: 1.1, rotate: 0, opacity: 0.6 }}
+            initial={{ x: 50, y: 200, scale: 1.1, rotate: 0, opacity: 0.6 }}
             animate={{
               x: [50, 70, 30, 50],
-              y: [400, 420, 380, 400],
+              y: [200, 220, 180, 200],
               scale: [1.1, 0.95, 1.2, 1.1],
               rotate: [0, -20, 10, 0],
               opacity: [0.6, 0.9, 0.7, 0.6],
@@ -334,10 +334,10 @@ const Hero: React.FC = () => {
           </motion.div>
           <motion.div
             className="floating-shape shape-3"
-            initial={{ x: 0, y: 500, scale: 0.7, rotate: 0, opacity: 0.5 }}
+            initial={{ x: 0, y: 250, scale: 0.7, rotate: 0, opacity: 0.5 }}
             animate={{
               x: [0, 40, -40, 0],
-              y: [500, 520, 480, 500],
+              y: [250, 270, 230, 250],
               scale: [0.7, 1, 0.8, 0.7],
               rotate: [0, 30, -15, 0],
               opacity: [0.5, 0.8, 0.6, 0.5],
