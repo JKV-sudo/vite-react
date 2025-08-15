@@ -9,6 +9,7 @@ import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
 import { getConfig } from "./ConfigPanel";
 import { PerfContext } from "./PerformanceOptimizer";
 import { useNavigation } from "../hooks/useNavigation";
+import NeonSVGAnimation from "./NeonSVGAnimation";
 
 // Add a custom hook for mobile detection
 function useIsMobile(breakpoint = 700) {
@@ -253,6 +254,9 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Animated Matrix Particles Background */}
+
+          {/* Neon SVG Orbits */}
+          <NeonSVGAnimation />
 
           {/* Floating 3D Neon Shapes */}
           <motion.div
