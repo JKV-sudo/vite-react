@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import DroneIcon from "./DroneIcon";
-import { useNavigation } from "../hooks/useNavigation";
+
 import "../styles/portfolio.css";
 import { useInView } from "react-intersection-observer";
 import { PerfContext } from "./PerformanceOptimizer";
@@ -27,7 +27,7 @@ const Portfolio: React.FC = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const { navigateToSection } = useNavigation();
+
   const { heavyAnimations } = React.useContext(PerfContext);
   const enableAnimations = heavyAnimations;
   useEffect(() => {
@@ -344,30 +344,6 @@ const Portfolio: React.FC = () => {
                   </motion.div>
                 ))}
               </AnimatePresence>
-            </motion.div>
-
-            {/* Call to Action */}
-            <motion.div
-              className="portfolio-cta"
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: "0 15px 40px rgba(0, 212, 255, 0.4)",
-              }}
-              transition={{ duration: 0.8, delay: 1.2 }}
-              viewport={{ once: true }}
-            >
-              <h3>Ready to Start Your Project?</h3>
-              <p>Let's create something amazing together</p>
-              <motion.button
-                className="cta-button"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigateToSection("contact")}
-              >
-                Get Started
-              </motion.button>
             </motion.div>
           </div>
         </>

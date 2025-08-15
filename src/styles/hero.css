@@ -12,6 +12,12 @@
   overflow: hidden;
 }
 
+/* Guided mode overrides for proper spacing */
+body.guided-mode .hero {
+  padding: 2rem 1rem !important; /* Reduced padding for guided mode */
+  min-height: calc(100vh - 80px) !important; /* Account for header */
+}
+
 .hero-container {
   overflow: hidden;
   margin: 0 auto;
@@ -24,6 +30,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Guided mode overrides for hero container */
+body.guided-mode .hero-container {
+  max-width: none !important; /* Full width in guided mode */
+  width: 100% !important;
+  padding: 0 1rem !important; /* Reduced padding */
 }
 
 .hero-content {

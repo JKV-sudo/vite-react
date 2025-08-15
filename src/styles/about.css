@@ -7,6 +7,13 @@
   max-width: 100%;
 }
 
+/* Guided mode overrides for proper spacing */
+body.guided-mode .about {
+  padding: 4rem 1rem 2rem 1rem !important; /* More top padding to push content down */
+  min-height: calc(100vh - 80px) !important; /* Account for header */
+  margin-top: 2rem !important; /* Additional top margin */
+}
+
 /* Proper DNA Helix Animation */
 .dna-helix-container {
   position: absolute;
@@ -28,6 +35,12 @@
   perspective-origin: center;
   /* Temporary debug border */
   border: 3px solid rgba(255, 0, 0, 0.5);
+}
+
+/* Guided mode overrides for DNA helix positioning */
+body.guided-mode .dna-helix-container {
+  top: 60% !important; /* Move down in guided mode */
+  transform: translate(-50%, -40%) !important; /* Adjust transform */
 }
 
 .dna-helix-structure {
@@ -136,9 +149,23 @@
   box-sizing: border-box;
 }
 
+/* Guided mode overrides for about container */
+body.guided-mode .about-container {
+  max-width: none !important; /* Full width in guided mode */
+  width: 100% !important;
+  padding: 2rem 1rem !important; /* More padding for better spacing */
+  margin-top: 2rem !important; /* Additional top margin */
+}
+
 .about-header {
   text-align: center;
   margin-bottom: 5rem;
+}
+
+/* Guided mode overrides for about header */
+body.guided-mode .about-header {
+  margin-top: 3rem !important; /* Additional top margin */
+  margin-bottom: 4rem !important; /* Slightly reduced bottom margin */
 }
 
 .about-title {

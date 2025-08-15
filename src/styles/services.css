@@ -7,6 +7,20 @@
   max-width: 100%;
 }
 
+/* Guided mode overrides for proper spacing */
+body.guided-mode .services {
+  padding: 2rem 1rem !important; /* Reduced padding for guided mode */
+  min-height: calc(100vh - 80px) !important; /* Account for header */
+  background: rgba(0, 0, 0, 0.3) !important; /* Override background */
+  backdrop-filter: blur(20px) !important; /* Glassmorphism effect */
+}
+
+/* Override pseudo-element backgrounds */
+body.guided-mode .services::before {
+  background-image: none !important; /* Remove grid background */
+  background: rgba(0, 0, 0, 0.1) !important; /* Subtle background instead */
+}
+
 .services::before {
   content: "";
   position: absolute;
@@ -41,6 +55,13 @@
   width: 100%;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+/* Guided mode overrides for services container */
+body.guided-mode .services-container {
+  max-width: none !important; /* Full width in guided mode */
+  width: 100% !important;
+  padding: 0 1rem !important; /* Reduced padding */
 }
 
 .services-header {

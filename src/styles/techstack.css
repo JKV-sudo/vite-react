@@ -18,7 +18,7 @@
   max-width: 520px;
   max-height: 520px;
   border-radius: 50%;
-  filter: blur(48px);
+  filter: blur(24px); /* Reduced from 48px for better performance */
   opacity: 0.18;
 }
 
@@ -97,6 +97,7 @@
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  will-change: transform, box-shadow; /* Optimize for animations */
 }
 
 .tech-tile::before {
@@ -114,7 +115,7 @@
       rgba(57, 255, 20, 0.18),
       rgba(57, 255, 20, 0) 70%
     );
-  filter: blur(16px);
+  filter: blur(8px); /* Reduced from 16px for better performance */
   z-index: 0;
   pointer-events: none;
 }
@@ -134,17 +135,85 @@
   height: 100%;
   position: relative;
   z-index: 1;
+  will-change: transform; /* Optimize for animations */
 }
 
 .tech-svg {
   display: block;
-  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.35));
+  filter: drop-shadow(
+    0 0 6px rgba(0, 212, 255, 0.35)
+  ); /* Reduced blur radius */
 }
 
 .tech-name {
   margin-top: 10px;
   font-weight: 700;
   letter-spacing: 0.02em;
+}
+
+/* Performance optimizations for lower-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .tech-tile::before {
+    filter: blur(4px);
+  }
+
+  .bg-blob {
+    filter: blur(12px);
+  }
+
+  .tech-svg {
+    filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.35));
+  }
+}
+
+/* Guided mode overrides for proper spacing */
+body.guided-mode .techstack {
+  padding: 2rem 1rem !important; /* Reduced padding for guided mode */
+  min-height: calc(100vh - 80px) !important; /* Account for header */
+  background: rgba(0, 0, 0, 0.3) !important; /* Semi-transparent background */
+  backdrop-filter: blur(20px) !important; /* Glassmorphism effect */
+  border: 1px solid rgba(0, 212, 255, 0.2) !important; /* Subtle border */
+  border-radius: 16px !important; /* Rounded corners */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important; /* Subtle shadow */
+}
+
+/* Force override any existing background styles for techstack */
+body.guided-mode .techstack,
+body.guided-mode .techstack::before,
+body.guided-mode .techstack::after {
+  background: rgba(
+    0,
+    0,
+    0,
+    0.3
+  ) !important; /* Override any existing backgrounds */
+  backdrop-filter: blur(20px) !important; /* Glassmorphism effect */
+}
+
+body.guided-mode .techstack-container {
+  max-width: none !important; /* Full width in guided mode */
+  width: 100% !important;
+  padding: 0 !important;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.2
+  ) !important; /* Lighter transparent background */
+  backdrop-filter: blur(15px) !important; /* Glassmorphism effect */
+  border: 1px solid rgba(57, 255, 20, 0.15) !important; /* Subtle green border */
+  border-radius: 12px !important; /* Rounded corners */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2) !important; /* Subtle shadow */
+}
+
+body.guided-mode .tech-grid {
+  gap: 16px !important; /* Slightly reduced gap for better fit */
+}
+
+@media (max-width: 700px) {
+  body.guided-mode .techstack {
+    padding: 1rem !important; /* Even less padding on mobile */
+  }
 }
 
 @media (max-width: 700px) {
@@ -161,5 +230,14 @@
   }
   .tech-tile.span-3 {
     grid-column: span 4;
+  }
+
+  /* Further reduce effects on mobile */
+  .bg-blob {
+    filter: blur(16px);
+  }
+
+  .tech-tile::before {
+    filter: blur(6px);
   }
 }

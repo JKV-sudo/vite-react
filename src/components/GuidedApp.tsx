@@ -6,6 +6,7 @@ import Hero from "./Hero";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import CubeController from "./CubeController";
+import StickyCTA from "./StickyCTA";
 import "../styles/guided.css";
 
 // Lazy load sections for performance
@@ -248,6 +249,14 @@ export const GuidedApp: React.FC = () => {
       }}
     >
       <AnimatePresence mode="wait">{renderCurrentSection()}</AnimatePresence>
+      <StickyCTA
+        type="ribbon"
+        position="bottom-left"
+        glassmorphism={true}
+        animated={true}
+        text="Projekt starten"
+        icon="⚡"
+      />
     </div>
   );
 };

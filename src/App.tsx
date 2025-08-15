@@ -1,6 +1,7 @@
 import PerformanceOptimizer from "./components/PerformanceOptimizer";
 import SplashScreen from "./components/SplashScreen";
 import GuidedApp from "./components/GuidedApp";
+
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getConfig } from "./components/ConfigPanel";

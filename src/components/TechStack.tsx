@@ -320,8 +320,12 @@ const logos: Array<{ name: string; Logo: React.FC<LogoProps> }> = [
 
 const TechStack: React.FC = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { heavyAnimations } = React.useContext(PerfContext);
-  const enableAnimations = heavyAnimations;
+  const { heavyAnimations, tier } = React.useContext(PerfContext);
+
+  // Performance-based animation control
+  const enableAnimations = heavyAnimations && tier !== "low";
+  const enableBackgroundAnimations = heavyAnimations && tier === "high";
+  const enableLogoAnimations = heavyAnimations && tier !== "low";
 
   return (
     <section
@@ -331,58 +335,56 @@ const TechStack: React.FC = () => {
       data-preview-image="/images/previews/tech.svg"
     >
       <div className="techstack-container">
-        <motion.div
-          className="techstack-bg"
-          aria-hidden
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          animate={enableAnimations ? { y: [0, -8, 0] } : undefined}
-          transition={{
-            duration: 12,
-            repeat: enableAnimations ? Infinity : 0,
-            ease: "easeInOut",
-          }}
-        >
+        {/* Conditional background animations based on performance */}
+        {enableBackgroundAnimations ? (
           <motion.div
-            className="bg-blob blob-blue"
-            animate={
-              enableAnimations
-                ? { x: [0, 12, -6, 0], y: [0, -6, 8, 0] }
-                : undefined
-            }
+            className="techstack-bg"
+            aria-hidden
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            animate={{ y: [0, -8, 0] }}
             transition={{
-              duration: 18,
-              repeat: enableAnimations ? Infinity : 0,
+              duration: 12,
+              repeat: Infinity,
               ease: "easeInOut",
             }}
-          />
-          <motion.div
-            className="bg-blob blob-green"
-            animate={
-              enableAnimations
-                ? { x: [0, -10, 6, 0], y: [0, 8, -6, 0] }
-                : undefined
-            }
-            transition={{
-              duration: 16,
-              repeat: enableAnimations ? Infinity : 0,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="bg-blob blob-pink"
-            animate={
-              enableAnimations
-                ? { x: [0, 8, -8, 0], y: [0, -10, 10, 0] }
-                : undefined
-            }
-            transition={{
-              duration: 20,
-              repeat: enableAnimations ? Infinity : 0,
-              ease: "easeInOut",
-            }}
-          />
-        </motion.div>
+          >
+            <motion.div
+              className="bg-blob blob-blue"
+              animate={{ x: [0, 12, -6, 0], y: [0, -6, 8, 0] }}
+              transition={{
+                duration: 18,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="bg-blob blob-green"
+              animate={{ x: [0, -10, 6, 0], y: [0, 8, -6, 0] }}
+              transition={{
+                duration: 16,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="bg-blob blob-pink"
+              animate={{ x: [0, 8, -8, 0], y: [0, -10, 10, 0] }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
+        ) : (
+          <div className="techstack-bg" aria-hidden>
+            <div className="bg-blob blob-blue" />
+            <div className="bg-blob blob-green" />
+            <div className="bg-blob blob-pink" />
+          </div>
+        )}
+
         <motion.div
           className="techstack-header"
           initial={{ y: -40, opacity: 0 }}
@@ -438,13 +440,13 @@ const TechStack: React.FC = () => {
               <motion.div
                 className="tech-logo"
                 animate={
-                  enableAnimations
+                  enableLogoAnimations
                     ? { y: [0, -5, 0], rotate: [0, 2.5, 0] }
                     : undefined
                 }
                 transition={{
                   duration: 3.6,
-                  repeat: enableAnimations ? Infinity : 0,
+                  repeat: enableLogoAnimations ? Infinity : 0,
                   ease: "easeInOut",
                 }}
               >

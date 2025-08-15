@@ -138,28 +138,6 @@ const Hero: React.FC = () => {
     },
   };
 
-  const buttonVariants: Variants = {
-    hidden: { scale: config.heroAnimations ? 0 : 1, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
-    },
-    hover: enableAnimations
-      ? {
-          scale: 1.05,
-          boxShadow: "0 0 25px rgba(0, 212, 255, 0.6)",
-          transition: {
-            type: "spring",
-            stiffness: 120,
-            damping: 12,
-            duration: 0.5,
-          },
-        }
-      : {},
-    tap: enableAnimations ? { scale: 0.97, transition: { duration: 0.2 } } : {},
-  };
-
   const featureVariants: Variants = {
     hidden: { y: config.heroAnimations ? 30 : 0, opacity: 0 },
     visible: {
@@ -581,61 +559,6 @@ const Hero: React.FC = () => {
           Cutting-edge Technologie trifft auf kreative Vision.
         </motion.p>
 
-        {/* Animated Call-to-Action Buttons */}
-        <motion.div
-          className="hero-cta"
-          variants={itemVariants}
-          style={{ zIndex: 10, position: "relative" }}
-        >
-          <motion.button
-            onClick={() => navigateToSection("contact")}
-            className="cta-primary"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            <motion.span
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            >
-              Projekt starten
-            </motion.span>
-          </motion.button>
-          <motion.button
-            onClick={() => navigateToSection("services")}
-            className="cta-secondary"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            Unsere Leistungen
-          </motion.button>
-          <motion.button
-            onClick={() => navigateToSection("about")}
-            className="cta-secondary"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            Über uns
-          </motion.button>
-          <motion.button
-            onClick={() => navigateToSection("portfolio")}
-            className="cta-secondary"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            Portfolio
-          </motion.button>
-        </motion.div>
-
         {/* Animated Key Points */}
         <motion.div className="hero-features" variants={itemVariants}>
           {featureIcons.map((feature, index) => (
@@ -682,6 +605,58 @@ const Hero: React.FC = () => {
               <span className="feature-text">{feature.text}</span>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* Hero CTA Buttons */}
+        <motion.div className="hero-cta" variants={itemVariants}>
+          <motion.button
+            className="cta-primary"
+            onClick={() => {
+              console.log("CTA Primary clicked - navigating to contact");
+              navigateToSection("contact");
+            }}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            Projekt starten
+          </motion.button>
+          <motion.button
+            className="cta-secondary"
+            onClick={() => {
+              console.log("CTA Secondary clicked - navigating to services");
+              navigateToSection("services");
+            }}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            Unsere Leistungen
+          </motion.button>
+          <motion.button
+            className="cta-secondary"
+            onClick={() => {
+              console.log("CTA Secondary clicked - navigating to about");
+              navigateToSection("about");
+            }}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            Über uns
+          </motion.button>
+          <motion.button
+            className="cta-secondary"
+            onClick={() => {
+              console.log("CTA Secondary clicked - navigating to portfolio");
+              navigateToSection("portfolio");
+            }}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            Portfolio
+          </motion.button>
         </motion.div>
 
         {/* Animated Background Elements */}
