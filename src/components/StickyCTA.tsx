@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import "../styles/eye-animations.css";
 
 interface StickyCTAProps {
   type?: "fab" | "banner" | "ribbon" | "panel";
@@ -16,7 +17,6 @@ interface StickyCTAProps {
   animated?: boolean;
   slideIn?: boolean;
   text?: string;
-  icon?: string;
   onClick?: () => void;
   className?: string;
 }
@@ -30,7 +30,6 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
   animated = false,
   slideIn = false,
   text = "Projekt starten",
-  icon = "🚀",
   onClick,
   className = "",
 }) => {
@@ -103,6 +102,107 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
     }
   };
 
+  // Eye component with CodePen-style animation
+  const EyeIcon = () => (
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle at 30% 30%, #ffffff 0%, #f0f0f0 30%, #e0e0e0 60%, #d0d0d0 100%)",
+          border: "2px solid #333",
+          overflow: "hidden",
+          animation: "eyeBlink 4s infinite",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: "25%",
+            left: "25%",
+            width: "50%",
+            height: "50%",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle at 30% 30%, #4a90e2 0%, #357abd 50%, #2c5aa0 100%)",
+            border: "2px solid #1a365d",
+            animation: "eyeMove 3s infinite",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "25%",
+              left: "25%",
+              width: "50%",
+              height: "50%",
+              borderRadius: "50%",
+              background: "#000",
+              boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.3)",
+              animation: "pupilMove 3s infinite",
+            }}
+          ></div>
+          <div
+            style={{
+              position: "absolute",
+              top: "15%",
+              left: "15%",
+              width: "20%",
+              height: "20%",
+              borderRadius: "50%",
+              background: "rgba(255, 255, 255, 0.8)",
+            }}
+          ></div>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 30%, transparent 70%)",
+            borderRadius: "50%",
+            transformOrigin: "center top",
+            animation: "eyelidBlink 4s infinite",
+          }}
+        ></div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          top: "-5px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "80%",
+          height: "10px",
+        }}
+      >
+        {[...Array(5)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: `${i * 20}%`,
+              width: "2px",
+              height: "8px",
+              background: "#333",
+              borderRadius: "50%",
+              transform: `rotate(${i * 10 - 20}deg)`,
+              transformOrigin: "bottom center",
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
   // Render different CTA types
   const renderCTA = () => {
     switch (type) {
@@ -124,6 +224,7 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
               fontSize: "1.5rem",
               color: "#fff",
               transition: "all 0.3s ease",
+              padding: "8px",
             }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{
@@ -164,20 +265,28 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
-                  style={{ fontSize: "0.7rem", whiteSpace: "nowrap" }}
+                  style={{
+                    fontSize: "0.7rem",
+                    whiteSpace: "nowrap",
+                    color: "#fff",
+                    textShadow: "0 0 8px rgba(0, 212, 255, 0.8)",
+                    fontWeight: "700",
+                    fontFamily: "JetBrains Mono, monospace",
+                  }}
                 >
                   {text}
                 </motion.span>
               ) : (
-                <motion.span
-                  key="icon"
+                <motion.div
+                  key="eye"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
+                  style={{ width: "100%", height: "100%" }}
                 >
-                  {icon}
-                </motion.span>
+                  <EyeIcon />
+                </motion.div>
               )}
             </AnimatePresence>
           </motion.button>
@@ -204,6 +313,9 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
             }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
+            <div style={{ width: "32px", height: "32px" }}>
+              <EyeIcon />
+            </div>
             <span style={{ color: "#fff", fontSize: "1rem" }}>
               Bereit für Ihr nächstes Projekt?
             </span>
@@ -292,18 +404,10 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
               }}
             />
 
-            {/* Neon icon */}
-            <span
-              style={{
-                color: "#00d4ff",
-                fontSize: "0.9rem",
-                filter: "drop-shadow(0 0 6px rgba(0, 212, 255, 0.8))",
-                textShadow: "0 0 8px rgba(0, 212, 255, 0.9)",
-                zIndex: 1,
-              }}
-            >
-              {icon}
-            </span>
+            {/* Eye icon */}
+            <div style={{ width: "20px", height: "20px", zIndex: 1 }}>
+              <EyeIcon />
+            </div>
 
             {/* Neon text */}
             <span
@@ -361,8 +465,17 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
             onClick={handleClick}
           >
             <div style={{ color: "#fff", textAlign: "center" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>
-                {icon}
+              <div
+                style={{
+                  fontSize: "2rem",
+                  marginBottom: "0.5rem",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <div style={{ width: "48px", height: "48px" }}>
+                  <EyeIcon />
+                </div>
               </div>
               <div
                 style={{

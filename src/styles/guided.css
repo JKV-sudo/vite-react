@@ -581,6 +581,59 @@ body.guided-mode .sticky-cta-ribbon {
   }
 }
 
+/* Mobile Hero Optimizations */
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1rem !important;
+    min-height: 80vh !important;
+  }
+
+  .hero-title-main {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .hero-title-sub {
+    font-size: 1rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .hero-description {
+    font-size: 1.1rem !important;
+    margin-bottom: 1.5rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-features {
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .feature {
+    padding: 0.75rem 1.25rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .feature-icon {
+    font-size: 1.2rem !important;
+  }
+
+  .feature-text {
+    font-size: 0.9rem !important;
+  }
+
+  .hero-cta {
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .cta-primary,
+  .cta-secondary {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
 /* Hero CTA buttons in guided mode */
 body.guided-mode .hero-cta {
   display: flex !important;

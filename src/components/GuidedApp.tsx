@@ -249,13 +249,22 @@ export const GuidedApp: React.FC = () => {
       }}
     >
       <AnimatePresence mode="wait">{renderCurrentSection()}</AnimatePresence>
+      {/* Eye-based StickyCTA - Ribbon style */}
       <StickyCTA
         type="ribbon"
         position="bottom-left"
         glassmorphism={true}
         animated={true}
         text="Projekt starten"
-        icon="⚡"
+      />
+
+      {/* Eye-based StickyCTA - FAB style */}
+      <StickyCTA
+        type="fab"
+        position="bottom-right"
+        glassmorphism={true}
+        pulse={true}
+        text="Kontakt"
       />
     </div>
   );

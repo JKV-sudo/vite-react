@@ -2,7 +2,7 @@ import React from "react";
 import { motion, Variants, anticipate } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import logo from "../assets/logo_eye_V2-removebg-preview.png";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import DroneIcon from "./DroneIcon";
 import logoWebp from "../assets/logo_eye_V2-removebg-preview.webp";
 import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
@@ -10,16 +10,25 @@ import { getConfig } from "./ConfigPanel";
 import { PerfContext } from "./PerformanceOptimizer";
 import { useNavigation } from "../hooks/useNavigation";
 
-// Add a custom hook for mobile detection
-function useIsMobile(breakpoint = 700) {
-  const [isMobile, setIsMobile] = React.useState(
-    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
-  );
-  React.useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [breakpoint]);
+// Improved mobile detection hook
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Check on mount
+    checkMobile();
+
+    // Add event listener
+    window.addEventListener("resize", checkMobile);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return isMobile;
 }
 
@@ -36,7 +45,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     let ctx: ReturnType<typeof import("gsap").gsap.context> | undefined;
     const run = async () => {
-      if (!enableAnimations || !logoRef.current) return;
+      if (!enableAnimations || !logoRef.current || isMobile) return;
       const { default: gsap } = await import("gsap");
       ctx = gsap.context(() => {
         gsap.fromTo(
@@ -72,107 +81,174 @@ const Hero: React.FC = () => {
     };
     run();
     return () => ctx?.revert?.();
-  }, [enableAnimations]);
+  }, [enableAnimations, isMobile]);
 
-  // Framer Motion animation variants
+  // Simplified animation variants
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: enableAnimations
-        ? {
-            delayChildren: 0.4,
-            staggerChildren: 0.25,
-            duration: 1.2,
-            ease: anticipate,
-          }
-        : { duration: 0 },
+      transition: {
+        duration: isMobile ? 0.3 : 1.2,
+        staggerChildren: isMobile ? 0.1 : 0.25,
+        delayChildren: isMobile ? 0 : 0.4,
+      },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { y: enableAnimations ? 50 : 0, opacity: 0 },
+    hidden: { y: isMobile ? 20 : 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
+      transition: { duration: isMobile ? 0.3 : 1, ease: anticipate },
     },
   };
 
   const logoVariants: Variants = {
-    hidden: {
-      scale: enableAnimations ? 0 : 1,
-      rotate: enableAnimations ? -180 : 0,
-      opacity: 0,
-    },
+    hidden: { scale: isMobile ? 0.8 : 0, opacity: 0 },
     visible: {
       scale: 1,
-      rotate: 0,
       opacity: 1,
-      transition: {
-        duration: enableAnimations ? 1.2 : 0,
-        ease: anticipate,
-      },
+      transition: { duration: isMobile ? 0.5 : 1.2, ease: anticipate },
     },
-    hover: enableAnimations
-      ? {
-          scale: 1.1,
-          rotate: 5,
-          boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
-          transition: {
-            type: "spring",
-            stiffness: 120,
-            damping: 12,
-            duration: 0.5,
-          },
-        }
-      : {},
-  };
-
-  const titleVariants: Variants = {
-    hidden: { x: config.heroAnimations ? -100 : 0, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
-    },
-  };
-
-  const featureVariants: Variants = {
-    hidden: { y: config.heroAnimations ? 30 : 0, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: enableAnimations ? 1 : 0, ease: anticipate },
-    },
-    hover: enableAnimations
-      ? {
-          y: -5,
-          scale: 1.05,
-          boxShadow: "0 10px 30px rgba(57, 255, 20, 0.3)",
-          transition: {
-            type: "spring",
-            stiffness: 120,
-            damping: 12,
-            duration: 0.5,
-          },
-        }
-      : {},
   };
 
   const featureIcons = [
     { icon: "🖥️", text: "Web-App Entwicklung" },
     { icon: "📱", text: "Social Media" },
-    { icon: <DroneIcon size={32} />, text: "Drohnenaufnahmen" }, // Use the new DroneIcon component
+    { icon: <DroneIcon size={isMobile ? 24 : 32} />, text: "Drohnenaufnahmen" },
   ];
 
+  // Mobile version
+  if (isMobile) {
+    return (
+      <section
+        id="home"
+        className="hero-mobile"
+        ref={ref}
+        data-preview-image="/images/previews/home.svg"
+      >
+        {/* Simple background */}
+        {inView && (
+          <div className="hero-bg-logo-mobile">
+            <img
+              src={logo}
+              alt="Split-Vision Logo BG"
+              className="hero-bg-logo-img-mobile"
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "60vw",
+                height: "60vw",
+                maxWidth: "250px",
+                maxHeight: "250px",
+                objectFit: "contain",
+                opacity: 0.08,
+                filter: "drop-shadow(0 0 30px #00d4ff)",
+                zIndex: 1,
+              }}
+            />
+          </div>
+        )}
+
+        <motion.div
+          className="hero-container-mobile"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Logo */}
+          <motion.div className="hero-logo-mobile" variants={logoVariants}>
+            <img
+              src={logo}
+              alt="Split-Vision Logo"
+              className="hero-logo-img-mobile"
+              style={{
+                width: "70px",
+                height: "70px",
+                filter: "drop-shadow(0 0 15px #00d4ff) brightness(1.2)",
+                borderRadius: "50%",
+              }}
+            />
+          </motion.div>
+
+          {/* Title */}
+          <motion.h1 className="hero-title-mobile" variants={itemVariants}>
+            <span className="hero-title-main-mobile">Split-Vision</span>
+            <span className="hero-title-sub-mobile">
+              Ihre Vision, unsere Expertise
+            </span>
+          </motion.h1>
+
+          {/* Description */}
+          <motion.p className="hero-description-mobile" variants={itemVariants}>
+            Marketing-Agentur für <strong>Web-App Entwicklung</strong>,
+            <strong> Social Media Management</strong> und{" "}
+            <strong>Drohnenaufnahmen</strong>
+          </motion.p>
+
+          {/* Subtext */}
+          <motion.p className="hero-subtext-mobile" variants={itemVariants}>
+            Wir erschaffen digitale Erlebnisse, die im Gedächtnis bleiben.
+          </motion.p>
+
+          {/* Features */}
+          <motion.div className="hero-features-mobile" variants={itemVariants}>
+            {featureIcons.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="feature-mobile"
+                variants={itemVariants}
+                transition={{ delay: index * 0.1 }}
+              >
+                <span className="feature-icon-mobile">{feature.icon}</span>
+                <span className="feature-text-mobile">{feature.text}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* CTA Buttons */}
+          <motion.div className="hero-cta-mobile" variants={itemVariants}>
+            <button
+              className="cta-primary-mobile"
+              onClick={() => navigateToSection("contact")}
+            >
+              Projekt starten
+            </button>
+            <button
+              className="cta-secondary-mobile"
+              onClick={() => navigateToSection("services")}
+            >
+              Unsere Leistungen
+            </button>
+            <button
+              className="cta-secondary-mobile"
+              onClick={() => navigateToSection("about")}
+            >
+              Über uns
+            </button>
+            <button
+              className="cta-secondary-mobile"
+              onClick={() => navigateToSection("portfolio")}
+            >
+              Portfolio
+            </button>
+          </motion.div>
+        </motion.div>
+      </section>
+    );
+  }
+
+  // Desktop version (existing code)
   return (
     <section
       id="home"
       className="hero"
       ref={ref}
       data-preview-image="/images/previews/home.svg"
-      // style={{ border: "3px solid blue" }} // Removed debug styling
     >
       {/* Lazy render heavy elements only when in view */}
       {inView && (
@@ -183,7 +259,7 @@ const Hero: React.FC = () => {
               <source srcSet={logoAvif} type="image/avif" />
               <source srcSet={logoWebp} type="image/webp" />
               <img
-                src={logo} // TODO: Replace with WebP/AVIF for optimization
+                src={logo}
                 alt="Split-Vision Logo BG Blue"
                 className="hero-bg-logo-img"
                 width={800}
@@ -207,7 +283,7 @@ const Hero: React.FC = () => {
               <source srcSet={logoAvif} type="image/avif" />
               <source srcSet={logoWebp} type="image/webp" />
               <img
-                src={logo} // TODO: Replace with WebP/AVIF for optimization
+                src={logo}
                 alt="Split-Vision Logo BG Red"
                 className="hero-bg-logo-img"
                 width={800}
@@ -231,7 +307,7 @@ const Hero: React.FC = () => {
               <source srcSet={logoAvif} type="image/avif" />
               <source srcSet={logoWebp} type="image/webp" />
               <img
-                src={logo} // TODO: Replace with WebP/AVIF for optimization
+                src={logo}
                 alt="Split-Vision Logo BG Main"
                 className="hero-bg-logo-img"
                 width={800}
@@ -252,8 +328,6 @@ const Hero: React.FC = () => {
             </picture>
           </div>
 
-          {/* Animated Matrix Particles Background */}
-
           {/* Floating 3D Neon Shapes */}
           <motion.div
             className="floating-shape shape-1"
@@ -272,7 +346,7 @@ const Hero: React.FC = () => {
               left: 0,
               width: 180,
               height: 180,
-              zIndex: 1, // above -1, below bg logo (2)
+              zIndex: 1,
               pointerEvents: "none",
               filter: "blur(32px) brightness(0.7)",
             }}
@@ -311,7 +385,7 @@ const Hero: React.FC = () => {
               right: 0,
               width: 140,
               height: 140,
-              zIndex: -1, // ensure behind bg logo
+              zIndex: -1,
               pointerEvents: "none",
             }}
           >
@@ -349,7 +423,7 @@ const Hero: React.FC = () => {
               left: 0,
               width: 100,
               height: 100,
-              zIndex: -1, // ensure behind bg logo
+              zIndex: -1,
               pointerEvents: "none",
             }}
           >
@@ -386,40 +460,25 @@ const Hero: React.FC = () => {
         <motion.div
           className="hero-logo"
           variants={logoVariants}
-          whileHover={
-            !isMobile
-              ? {
-                  scale: 1.1,
-                  rotate: 5,
-                  boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
-                  filter:
-                    "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
-                  borderRadius: "50%",
-                  transition: {
-                    type: "spring",
-                    stiffness: 120,
-                    damping: 12,
-                    duration: 0.5,
-                  },
-                }
-              : undefined
-          }
-          style={
-            isMobile
-              ? {
-                  scale: 1.1,
-                  rotate: 5,
-                  boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
-                  filter:
-                    "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
-                  borderRadius: "50%",
-                }
-              : {
-                  position: "relative",
-                  display: "inline-block",
-                  borderRadius: "50%",
-                }
-          }
+          whileHover={{
+            scale: 1.1,
+            rotate: 5,
+            boxShadow: "0 0 30px rgba(0, 212, 255, 0.8)",
+            filter:
+              "blur(2.5px) drop-shadow(0 0 24px #00d4ff) drop-shadow(0 0 24px #39ff14)",
+            borderRadius: "50%",
+            transition: {
+              type: "spring",
+              stiffness: 120,
+              damping: 12,
+              duration: 0.5,
+            },
+          }}
+          style={{
+            position: "relative",
+            display: "inline-block",
+            borderRadius: "50%",
+          }}
           ref={logoRef}
         >
           {/* RGB Split Layers */}
@@ -507,7 +566,7 @@ const Hero: React.FC = () => {
         <motion.h1 className="hero-title" variants={itemVariants}>
           <motion.span
             className="hero-title-main"
-            variants={titleVariants}
+            variants={itemVariants}
             animate={{
               textShadow: [
                 "0 0 10px #00d4ff",
@@ -563,8 +622,18 @@ const Hero: React.FC = () => {
             <motion.div
               key={index}
               className="feature"
-              variants={featureVariants}
-              whileHover="hover"
+              variants={itemVariants}
+              whileHover={{
+                y: -5,
+                scale: 1.05,
+                boxShadow: "0 10px 30px rgba(57, 255, 20, 0.3)",
+                transition: {
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 12,
+                  duration: 0.5,
+                },
+              }}
               custom={index}
               animate={
                 enableAnimations
