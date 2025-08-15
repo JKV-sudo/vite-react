@@ -16,6 +16,7 @@ import { NavigationProvider } from "./components/NavigationProvider";
 function App() {
   const [config, setConfig] = useState(getConfig());
   const [showSplash, setShowSplash] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
     const checkConfig = () => {
@@ -54,6 +55,9 @@ function App() {
       const MAX_MS = firstVisit ? 3000 : 1500;
       const start = performance.now();
 
+      // Initialize progress
+      setLoadingProgress(0);
+
       const fontsReady: Promise<unknown> =
         (document as unknown as { fonts?: { ready: Promise<unknown> } }).fonts
           ?.ready ?? Promise.resolve();
@@ -71,10 +75,29 @@ function App() {
 
       // Optional future: add API prefetch into the array
       const dataPrefetch = Promise.resolve();
+
+      // Track progress for each completed task
+      let completedTasks = 0;
+      const totalTasks = 4;
+
+      const updateProgress = () => {
+        completedTasks++;
+        setLoadingProgress((completedTasks / totalTasks) * 100);
+      };
+
+      // Monitor each task completion
+      fontsReady.then(updateProgress);
+      dynImports.then(updateProgress);
+      images.then(updateProgress);
+      dataPrefetch.then(updateProgress);
+
       await Promise.race([
         Promise.allSettled([fontsReady, images, dynImports, dataPrefetch]),
         wait(MAX_MS),
       ]);
+
+      // Ensure progress reaches 100%
+      setLoadingProgress(100);
 
       const elapsed = performance.now() - start;
       if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
@@ -103,7 +126,7 @@ function App() {
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 style={{ position: "relative", zIndex: 20000 }}
               >
-                <SplashScreen />
+                <SplashScreen progress={loadingProgress} />
                 <SnapshotPreloader />
               </motion.div>
             ) : (

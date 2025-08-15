@@ -6,20 +6,32 @@ import logoAvif from "../assets/logo_eye_V2-removebg-preview.avif";
 
 interface SplashScreenProps {
   onFinish?: () => void;
+  progress?: number;
 }
 
 // Performance tier detection for splash screen
 const getDevicePerformance = () => {
-  const memory = (navigator as any).deviceMemory || 4;
+  const memory = (navigator as { deviceMemory?: number }).deviceMemory || 4;
   const cores = navigator.hardwareConcurrency || 4;
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const connection =
+    (navigator as { connection?: { effectiveType?: string } }).connection
+      ?.effectiveType || "4g";
 
-  if (isMobile && memory < 4) return "low";
-  if (cores >= 4 && memory >= 4) return "high";
+  // More aggressive performance detection
+  if (
+    isMobile ||
+    memory < 4 ||
+    cores < 4 ||
+    connection === "slow-2g" ||
+    connection === "2g"
+  )
+    return "low";
+  if (cores >= 6 && memory >= 6 && !isMobile) return "high";
   return "medium";
 };
 
-const SplashScreen: React.FC<SplashScreenProps> = () => {
+const SplashScreen: React.FC<SplashScreenProps> = ({ progress = 0 }) => {
   const [perfTier] = useState(getDevicePerformance());
   const [reduceMotion] = useState(
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -36,15 +48,13 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
           initial={{ rotate: 0, opacity: 0 }}
           animate={{ rotate: 360, opacity: 1 }}
           transition={{
-            duration: perfTier === "high" ? 4 : 6,
+            duration: perfTier === "high" ? 2.5 : 3.5,
             repeat: Infinity,
             ease: "linear",
-            // Optimize for performance
             repeatType: "loop",
           }}
           style={{
             willChange: "transform",
-            // Use transform3d for GPU acceleration
             transform: "translateZ(0)",
           }}
         />
@@ -57,7 +67,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
           transition={{
-            duration: 6,
+            duration: 4,
             repeat: Infinity,
             ease: "linear",
             repeatType: "loop",
@@ -78,7 +88,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         className="splash-logo-wrap"
         initial={{ scale: 0.85, opacity: 0, rotate: -8 }}
         animate={{ scale: 1, opacity: 1, rotate: 0 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
         style={{
           willChange: "transform, opacity",
           transform: "translateZ(0)",
@@ -89,14 +99,15 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
           animate={
             !reduceMotion
               ? {
-                  y: perfTier === "high" ? [0, -6, 0] : [0, -3, 0],
-                  rotateZ: perfTier === "high" ? [0, 2, -2, 0] : [0, 1, 0],
-                  scale: perfTier === "high" ? [1, 1.02, 1] : [1, 1.01, 1],
+                  y: perfTier === "high" ? [0, -2, 0] : [0, -1, 0],
+                  rotateZ:
+                    perfTier === "high" ? [0, 0.3, -0.3, 0] : [0, 0.15, 0],
+                  scale: perfTier === "high" ? [1, 1.008, 1] : [1, 1.004, 1],
                 }
               : {}
           }
           transition={{
-            duration: perfTier === "high" ? 3.2 : 4,
+            duration: perfTier === "high" ? 3.5 : 4.2,
             repeat: reduceMotion ? 0 : Infinity,
             ease: "easeInOut",
             repeatType: "loop",
@@ -118,12 +129,12 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
                 className="splash-logo-layer layer-blue"
                 initial={{ opacity: 0 }}
                 animate={{
-                  opacity: [0.6, 0.9, 0.7, 0.6],
-                  x: [2, 4, 2, -1, 2],
-                  y: [0, -1, 0, 1, 0],
+                  opacity: [0.6, 0.7, 0.6],
+                  x: [1, 2, 1],
+                  y: [0, -0.3, 0],
                 }}
                 transition={{
-                  duration: 2.4,
+                  duration: 2.5,
                   repeat: Infinity,
                   ease: "easeInOut",
                   repeatType: "loop",
@@ -148,12 +159,12 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
                 className="splash-logo-layer layer-green"
                 initial={{ opacity: 0 }}
                 animate={{
-                  opacity: [0.5, 0.8, 0.6, 0.5],
-                  x: [-2, -4, -2, 1, -2],
-                  y: [0, 1, 0, -1, 0],
+                  opacity: [0.5, 0.6, 0.5],
+                  x: [-1, -2, -1],
+                  y: [0, 0.3, 0],
                 }}
                 transition={{
-                  duration: 2.8,
+                  duration: 3.0,
                   repeat: Infinity,
                   ease: "easeInOut",
                   repeatType: "loop",
@@ -176,21 +187,22 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
               animate={
                 !reduceMotion
                   ? {
-                      scale: perfTier === "high" ? [1, 1.03, 1] : [1, 1.015, 1],
-                      rotate: perfTier === "high" ? [0, 1, -1, 0] : [0, 0.5, 0],
+                      scale: perfTier === "high" ? [1, 1.01, 1] : [1, 1.005, 1],
+                      rotate:
+                        perfTier === "high" ? [0, 0.2, -0.2, 0] : [0, 0.1, 0],
                       // Remove expensive filter animations on lower-end devices
                       ...(perfTier === "high" && {
                         filter: [
-                          "drop-shadow(0 0 18px #00d4ff) brightness(1.2)",
-                          "drop-shadow(0 0 26px #39ff14) brightness(1.3)",
-                          "drop-shadow(0 0 18px #00d4ff) brightness(1.2)",
+                          "drop-shadow(0 0 12px #00d4ff) brightness(1.05)",
+                          "drop-shadow(0 0 16px #39ff14) brightness(1.1)",
+                          "drop-shadow(0 0 12px #00d4ff) brightness(1.05)",
                         ],
                       }),
                     }
                   : {}
               }
               transition={{
-                duration: perfTier === "high" ? 2.6 : 3.2,
+                duration: perfTier === "high" ? 4.0 : 5.0,
                 repeat: reduceMotion ? 0 : Infinity,
                 ease: "easeInOut",
                 repeatType: "loop",
@@ -212,7 +224,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
               initial={{ y: "-120%" }}
               animate={{ y: "120%" }}
               transition={{
-                duration: 1.6,
+                duration: 1.2,
                 repeat: Infinity,
                 ease: "linear",
                 repeatType: "loop",
@@ -231,10 +243,10 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
               initial={{ left: "-60%" }}
               animate={{ left: ["-60%", "160%"] }}
               transition={{
-                duration: 1.8,
+                duration: 1.4,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.4,
+                delay: 0.3,
                 repeatType: "loop",
               }}
               style={{
@@ -249,7 +261,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
       {/* Sparks - Reduced count for performance */}
       {perfTier === "high" && !reduceMotion && (
         <div className="splash-sparks">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 4 }).map((_, i) => (
             <span key={i} className={`spark spark-${i + 1}`} />
           ))}
         </div>
@@ -259,7 +271,7 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         className="splash-wordmark"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
         style={{
           willChange: "transform, opacity",
         }}
@@ -271,12 +283,10 @@ const SplashScreen: React.FC<SplashScreenProps> = () => {
         <motion.div
           className="splash-progress"
           initial={{ width: "0%" }}
-          animate={{ width: ["0%", "100%"] }}
+          animate={{ width: `${progress}%` }}
           transition={{
-            duration: 1.6,
-            ease: "easeInOut",
-            repeat: Infinity,
-            repeatType: "loop",
+            duration: 0.3,
+            ease: "easeOut",
           }}
           style={{
             willChange: "width",

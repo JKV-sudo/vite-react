@@ -33,8 +33,6 @@ body.guided-mode .about {
   border-radius: 50%;
   perspective: 1200px;
   perspective-origin: center;
-  /* Temporary debug border */
-  border: 3px solid rgba(255, 0, 0, 0.5);
 }
 
 /* Guided mode overrides for DNA helix positioning */

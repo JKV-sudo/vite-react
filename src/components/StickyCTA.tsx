@@ -40,7 +40,6 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
   // Show CTA after a delay
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log("StickyCTA: Setting visible to true");
       setIsVisible(true);
     }, 2000);
     return () => clearTimeout(timer);
@@ -386,14 +385,6 @@ const StickyCTA: React.FC<StickyCTAProps> = ({
     }
   };
 
-  console.log(
-    "StickyCTA: Rendering, isVisible:",
-    isVisible,
-    "type:",
-    type,
-    "position:",
-    position
-  );
   return <AnimatePresence>{renderCTA()}</AnimatePresence>;
 };
 

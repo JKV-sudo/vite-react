@@ -3080,32 +3080,29 @@ body[style*="--animation-paused: true"] * {
   inset: 0;
   background: radial-gradient(
       circle at 20% 30%,
-      rgba(0, 212, 255, 0.08),
+      rgba(0, 212, 255, 0.06),
       transparent 35%
     ),
-    radial-gradient(circle at 80% 70%, rgba(57, 255, 20, 0.06), transparent 40%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
-  mask-image: radial-gradient(circle at center, black 50%, transparent 75%);
-  opacity: 0.7;
+    radial-gradient(circle at 80% 70%, rgba(57, 255, 20, 0.04), transparent 40%);
+  background-size: 100% 100%, 100% 100%;
+  opacity: 0.6;
 }
 
 .splash-ring {
   position: absolute;
-  width: 260px;
-  height: 260px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
     rgba(0, 212, 255, 0),
-    rgba(0, 212, 255, 0.8),
-    rgba(57, 255, 20, 0.9),
-    rgba(0, 212, 255, 0.8),
+    rgba(0, 212, 255, 0.7),
+    rgba(57, 255, 20, 0.8),
+    rgba(0, 212, 255, 0.7),
     rgba(0, 212, 255, 0)
   );
-  filter: blur(10px) brightness(1.1);
-  opacity: 0.8;
+  filter: blur(8px) brightness(1.05);
+  opacity: 0.7;
   /* Performance optimizations */
   will-change: transform;
   transform: translateZ(0);
@@ -3149,20 +3146,20 @@ body[style*="--animation-paused: true"] * {
 
 .splash-logo-wrap {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 40px #00d4ff55, 0 0 80px #39ff1444;
+  box-shadow: 0 0 30px #00d4ff44, 0 0 60px #39ff1433;
   overflow: hidden;
 }
 
 .splash-logo-layer {
   position: absolute;
-  width: 130px;
-  height: 130px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   /* Performance optimizations */
   will-change: transform, opacity, filter;

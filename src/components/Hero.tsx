@@ -166,8 +166,6 @@ const Hero: React.FC = () => {
     { icon: <DroneIcon size={32} />, text: "Drohnenaufnahmen" }, // Use the new DroneIcon component
   ];
 
-  console.log("[Hero] Component rendering");
-
   return (
     <section
       id="home"
@@ -611,10 +609,7 @@ const Hero: React.FC = () => {
         <motion.div className="hero-cta" variants={itemVariants}>
           <motion.button
             className="cta-primary"
-            onClick={() => {
-              console.log("CTA Primary clicked - navigating to contact");
-              navigateToSection("contact");
-            }}
+            onClick={() => navigateToSection("contact")}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
@@ -623,10 +618,7 @@ const Hero: React.FC = () => {
           </motion.button>
           <motion.button
             className="cta-secondary"
-            onClick={() => {
-              console.log("CTA Secondary clicked - navigating to services");
-              navigateToSection("services");
-            }}
+            onClick={() => navigateToSection("services")}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
@@ -635,10 +627,7 @@ const Hero: React.FC = () => {
           </motion.button>
           <motion.button
             className="cta-secondary"
-            onClick={() => {
-              console.log("CTA Secondary clicked - navigating to about");
-              navigateToSection("about");
-            }}
+            onClick={() => navigateToSection("about")}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
@@ -647,10 +636,7 @@ const Hero: React.FC = () => {
           </motion.button>
           <motion.button
             className="cta-secondary"
-            onClick={() => {
-              console.log("CTA Secondary clicked - navigating to portfolio");
-              navigateToSection("portfolio");
-            }}
+            onClick={() => navigateToSection("portfolio")}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
