@@ -14,6 +14,8 @@ export function getConfig() {
 
 export function setConfig(newConfig: any) {
   localStorage.setItem("sv_config", JSON.stringify(newConfig));
+  // Dispatch custom event to notify other components
+  window.dispatchEvent(new CustomEvent("configChanged"));
 }
 
 const ConfigPanel: React.FC = () => {

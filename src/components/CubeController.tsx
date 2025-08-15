@@ -93,18 +93,11 @@ export const CubeController: React.FC = () => {
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         // Horizontal swipe
         const { previous, next } = getAdjacentSections();
-        console.log(
-          `[CubeController] Swipe detected: deltaX=${deltaX}, previous=${previous}, next=${next}`
-        );
         if (deltaX > 0 && previous) {
           // Swipe right (go to previous)
-          console.log(
-            `[CubeController] Swiping right to previous: ${previous}`
-          );
           navigateToSection(previous);
         } else if (deltaX < 0 && next) {
           // Swipe left (go to next)
-          console.log(`[CubeController] Swiping left to next: ${next}`);
           navigateToSection(next);
         }
       }

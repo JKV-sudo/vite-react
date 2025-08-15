@@ -56,25 +56,13 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
   const cardRef = React.useRef<HTMLDivElement>(null);
   const innerRef = React.useRef<HTMLDivElement>(null);
 
-  const logRects = (label: string) => {
-    if (cardRef.current && innerRef.current) {
-      console.log(label, {
-        card: cardRef.current.getBoundingClientRect(),
-        inner: innerRef.current.getBoundingClientRect(),
-      });
-    }
-  };
+  // Removed debug logging for performance
 
   return (
     <div
       className="service-card"
       ref={cardRef}
-      onMouseEnter={() => {
-        logRects("mouseenter");
-      }}
-      onMouseLeave={() => {
-        logRects("mouseleave");
-      }}
+      // Removed debug event handlers for performance
     >
       <div className="service-card-inner" ref={innerRef}>
         {/* Front of card */}
@@ -105,7 +93,6 @@ const ServiceCard: React.FC<{ service: (typeof services)[0] }> = ({
 };
 
 const Services: React.FC = () => {
-  console.log("[Services] Component rendering");
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
     <section

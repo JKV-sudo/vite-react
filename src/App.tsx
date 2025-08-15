@@ -19,15 +19,24 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
-    const checkConfig = () => {
+    // Listen for config changes in localStorage
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "sv_config" && e.newValue) {
+        setConfig(JSON.parse(e.newValue));
+      }
+    };
+
+    // Listen for custom config change events
+    const handleConfigChange = () => {
       setConfig(getConfig());
     };
 
-    // Check config every 500ms for changes
-    const interval = setInterval(checkConfig, 500);
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("configChanged", handleConfigChange);
 
     return () => {
-      clearInterval(interval);
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("configChanged", handleConfigChange);
     };
   }, []);
 

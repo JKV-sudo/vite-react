@@ -44,28 +44,14 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
   // Navigate to section using 3D cube
   const navigateToSection = useCallback(
     (targetId: SectionId) => {
-      console.log(
-        `[Navigation] navigateToSection called: "${activeSection}" -> "${targetId}"`
-      );
-
       if (targetId === activeSection) {
-        console.log(
-          `[Navigation] Already at "${targetId}", skipping navigation`
-        );
         return;
-      } else {
-        console.log(
-          `[Navigation] Different section detected: "${activeSection}" !== "${targetId}"`
-        );
       }
-
-      console.log(`[Navigation] About to call setActiveSection("${targetId}")`);
 
       const currentId = activeSection;
 
       // Update section state immediately for guided experience
       setActiveSection(targetId);
-      console.log(`[Navigation] setActiveSection("${targetId}") called`);
 
       // Run 3D transition
       navigateWith3D({
@@ -73,9 +59,6 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
         targetId,
         orderedIds: NAV_SECTIONS.map((s) => s.id),
       });
-      console.log(
-        `[Navigation] 3D transition started: ${currentId} -> ${targetId}`
-      );
     },
     [activeSection, navigateWith3D]
   );
@@ -99,8 +82,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, [activeSection]);
 
-  // Debug: log only state changes
-  console.log(`[NavigationProvider] activeSection = "${activeSection}"`);
+  // Removed debug logging for performance
 
   // Memoize context value to prevent unnecessary re-renders
   const contextValue = React.useMemo(

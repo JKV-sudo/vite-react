@@ -279,7 +279,6 @@ const CTADemo: React.FC = () => {
             glassmorphism={true}
             pulse={true}
             text="Projekt starten"
-            icon="🚀"
           />
 
           {/* Show different positions for demo */}
@@ -291,7 +290,6 @@ const CTADemo: React.FC = () => {
                 glassmorphism={true}
                 pulse={false}
                 text="Demo"
-                icon="🎯"
               />
               <StickyCTA
                 type="fab"
@@ -299,7 +297,6 @@ const CTADemo: React.FC = () => {
                 glassmorphism={true}
                 pulse={false}
                 text="Demo"
-                icon="⚡"
               />
             </>
           )}
@@ -337,7 +334,6 @@ const CTADemo: React.FC = () => {
   glassmorphism={true}
   pulse={true}
   text="Projekt starten"
-  icon="🚀"
 />`}
             </pre>
           </div>

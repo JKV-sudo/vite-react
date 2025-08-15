@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 
 // DNA Helix parameters
 const DOTS = 24;
@@ -16,76 +16,82 @@ const DnaHelix: React.FC = () => {
   const dotsRef = useRef<SVGCircleElement[]>([]);
   const linesRef = useRef<SVGLineElement[]>([]);
 
-  useEffect(() => {
-    let start: number | null = null;
-    function animate(time: number) {
-      if (!start) start = time;
-      const t = ((time - start) / 1000) * SPEED;
-      for (let i = 0; i < DOTS; i++) {
-        // Calculate phase for this dot
-        const phase = (i / DOTS) * PERIOD + t;
-        // X position for left and right rails
-        const x1 = WIDTH / 2 + Math.sin(phase) * AMPLITUDE;
-        const x2 = WIDTH / 2 - Math.sin(phase) * AMPLITUDE;
-        // Y position
-        const y = (i / DOTS) * HEIGHT;
-        // Z for scale (3D effect)
-        const z = Math.cos(phase);
-        // Scale and opacity for 3D illusion
-        const scale = 0.5 + (0.5 * (z + 1)) / 2;
-        const opacity = 0.5 + (0.5 * (z + 1)) / 2;
-        // Color
-        const color1 = COLORS[0];
-        const color2 = COLORS[1];
-        // Left dot
-        if (dotsRef.current[i * 2]) {
-          dotsRef.current[i * 2].setAttribute("cx", x1.toString());
-          dotsRef.current[i * 2].setAttribute("cy", y.toString());
-          dotsRef.current[i * 2].setAttribute(
-            "r",
-            (DOT_RADIUS * scale).toString()
-          );
-          dotsRef.current[i * 2].setAttribute("fill", color1);
-          dotsRef.current[i * 2].setAttribute("opacity", opacity.toString());
-        }
-        // Right dot
-        if (dotsRef.current[i * 2 + 1]) {
-          dotsRef.current[i * 2 + 1].setAttribute("cx", x2.toString());
-          dotsRef.current[i * 2 + 1].setAttribute("cy", y.toString());
-          dotsRef.current[i * 2 + 1].setAttribute(
-            "r",
-            (DOT_RADIUS * scale).toString()
-          );
-          dotsRef.current[i * 2 + 1].setAttribute("fill", color2);
-          dotsRef.current[i * 2 + 1].setAttribute(
-            "opacity",
-            opacity.toString()
-          );
-        }
-        // Rung (line)
-        if (linesRef.current[i]) {
-          linesRef.current[i].setAttribute("x1", x1.toString());
-          linesRef.current[i].setAttribute("y1", y.toString());
-          linesRef.current[i].setAttribute("x2", x2.toString());
-          linesRef.current[i].setAttribute("y2", y.toString());
-          linesRef.current[i].setAttribute("stroke", `url(#dna-gradient)`);
-          linesRef.current[i].setAttribute(
-            "stroke-width",
-            (3 * scale).toString()
-          );
-          linesRef.current[i].setAttribute(
-            "opacity",
-            (0.3 + 0.7 * opacity).toString()
-          );
-        }
+  // Memoize animation function for better performance
+  const animate = useCallback((time: number) => {
+    if (!requestRef.current) return;
+
+    const start = performance.now();
+    const t = ((time - start) / 1000) * SPEED;
+
+    for (let i = 0; i < DOTS; i++) {
+      // Calculate phase for this dot
+      const phase = (i / DOTS) * PERIOD + t;
+      // X position for left and right rails
+      const x1 = WIDTH / 2 + Math.sin(phase) * AMPLITUDE;
+      const x2 = WIDTH / 2 - Math.sin(phase) * AMPLITUDE;
+      // Y position
+      const y = (i / DOTS) * HEIGHT;
+      // Z for scale (3D effect)
+      const z = Math.cos(phase);
+      // Scale and opacity for 3D illusion
+      const scale = 0.5 + (0.5 * (z + 1)) / 2;
+      const opacity = 0.5 + (0.5 * (z + 1)) / 2;
+      // Color
+      const color1 = COLORS[0];
+      const color2 = COLORS[1];
+
+      // Left dot
+      if (dotsRef.current[i * 2]) {
+        dotsRef.current[i * 2].setAttribute("cx", x1.toString());
+        dotsRef.current[i * 2].setAttribute("cy", y.toString());
+        dotsRef.current[i * 2].setAttribute(
+          "r",
+          (DOT_RADIUS * scale).toString()
+        );
+        dotsRef.current[i * 2].setAttribute("fill", color1);
+        dotsRef.current[i * 2].setAttribute("opacity", opacity.toString());
       }
-      requestRef.current = requestAnimationFrame(animate);
+      // Right dot
+      if (dotsRef.current[i * 2 + 1]) {
+        dotsRef.current[i * 2 + 1].setAttribute("cx", x2.toString());
+        dotsRef.current[i * 2 + 1].setAttribute("cy", y.toString());
+        dotsRef.current[i * 2 + 1].setAttribute(
+          "r",
+          (DOT_RADIUS * scale).toString()
+        );
+        dotsRef.current[i * 2 + 1].setAttribute("fill", color2);
+        dotsRef.current[i * 2 + 1].setAttribute("opacity", opacity.toString());
+      }
+      // Rung (line)
+      if (linesRef.current[i]) {
+        linesRef.current[i].setAttribute("x1", x1.toString());
+        linesRef.current[i].setAttribute("y1", y.toString());
+        linesRef.current[i].setAttribute("x2", x2.toString());
+        linesRef.current[i].setAttribute("y2", y.toString());
+        linesRef.current[i].setAttribute("stroke", `url(#dna-gradient)`);
+        linesRef.current[i].setAttribute(
+          "stroke-width",
+          (3 * scale).toString()
+        );
+        linesRef.current[i].setAttribute(
+          "opacity",
+          (0.3 + 0.7 * opacity).toString()
+        );
+      }
     }
+
+    requestRef.current = requestAnimationFrame(animate);
+  }, []);
+
+  useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+        requestRef.current = undefined;
+      }
     };
-  }, []);
+  }, [animate]);
 
   // Render SVG
   return (

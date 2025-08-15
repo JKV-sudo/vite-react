@@ -24,7 +24,6 @@ function getPerformanceTier() {
 }
 
 const AnimatedParticles: React.FC = () => {
-  console.log("[AnimatedParticles] Component mounted/rendered");
   const [enabled, setEnabled] = useState(true);
   const [canvasSize, setCanvasSize] = useState(getViewportWithMargin());
   const [particleCount, setParticleCount] = useState(25);
@@ -34,22 +33,20 @@ const AnimatedParticles: React.FC = () => {
   useEffect(() => {
     const checkConfig = () => {
       const config = getConfig();
-      console.log(
-        "[AnimatedParticles] Checking config - particles:",
-        config.particles,
-        "| enabled:",
-        config.particles
-      );
       setEnabled(config.particles);
     };
 
     checkConfig();
 
-    // Check config every 500ms for changes
-    const interval = setInterval(checkConfig, 500);
+    // Listen for config changes instead of polling
+    const handleConfigChange = () => {
+      checkConfig();
+    };
+
+    window.addEventListener("configChanged", handleConfigChange);
 
     return () => {
-      clearInterval(interval);
+      window.removeEventListener("configChanged", handleConfigChange);
     };
   }, []);
 

@@ -50,15 +50,6 @@ const SectionWrapper: React.FC<{
   children: React.ReactNode;
   sectionId: string;
 }> = ({ children, sectionId }) => {
-  console.log(`[SectionWrapper] Mounting section: ${sectionId}`);
-
-  useEffect(() => {
-    console.log(`[SectionWrapper] Section ${sectionId} mounted`);
-    return () => {
-      console.log(`[SectionWrapper] Section ${sectionId} unmounting`);
-    };
-  }, [sectionId]);
-
   return (
     <motion.div
       key={sectionId}
@@ -100,14 +91,8 @@ const SectionWrapper: React.FC<{
   );
 };
 
-const GUIDED_APP_ID = Math.random().toString(36).substr(2, 9);
-
 export const GuidedApp: React.FC = () => {
   const { activeSection } = useNavigation();
-
-  console.log(
-    `[GuidedApp#${GUIDED_APP_ID}] Component render - activeSection: "${activeSection}"`
-  );
 
   // Set body class for guided mode
   useEffect(() => {
@@ -117,30 +102,10 @@ export const GuidedApp: React.FC = () => {
     };
   }, []);
 
-  // Debug active section changes and ensure consistency
-  useEffect(() => {
-    // Check if there's a navigation target that doesn't match current section
-    const targetSection = sessionStorage.getItem("nav_target_section");
-    if (targetSection && targetSection !== activeSection) {
-      console.log(
-        `[GuidedApp] Mismatch detected: activeSection=${activeSection}, target=${targetSection}`
-      );
-      // Don't auto-correct here to avoid loops, just log for debugging
-    }
-  }, [activeSection]);
-
   // Render only the active section
   const renderCurrentSection = () => {
-    console.log(
-      `[GuidedApp#${GUIDED_APP_ID}] renderCurrentSection called - activeSection: "${activeSection}"`
-    );
-    console.log(
-      `[GuidedApp#${GUIDED_APP_ID}] Switch statement will check case: "${activeSection}"`
-    );
-
     switch (activeSection) {
       case "home":
-        console.log(`[GuidedApp] Switch matched "home" case`);
         return (
           <SectionWrapper sectionId="home">
             <Header />
@@ -153,7 +118,6 @@ export const GuidedApp: React.FC = () => {
         );
 
       case "services":
-        console.log(`[GuidedApp] Switch matched "services" case`);
         return (
           <SectionWrapper sectionId="services">
             <Header />
@@ -168,7 +132,6 @@ export const GuidedApp: React.FC = () => {
         );
 
       case "about":
-        console.log(`[GuidedApp] Switch matched "about" case`);
         return (
           <SectionWrapper sectionId="about">
             <Header />
@@ -223,9 +186,6 @@ export const GuidedApp: React.FC = () => {
         );
 
       default:
-        console.error(
-          `[GuidedApp] Unknown section: ${activeSection}, falling back to home`
-        );
         return (
           <SectionWrapper sectionId="home">
             <Header />

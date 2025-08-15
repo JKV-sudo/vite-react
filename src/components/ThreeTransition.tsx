@@ -564,7 +564,6 @@ export const ThreeTransitionProvider: React.FC<{
       direction: dir = 1,
     }: StartOptions) => {
       // Previews are pre-captured; no capture work here
-      console.log(`[ThreeTransition] Starting transition ${f} -> ${t}`);
       setShrunk(true);
       await new Promise((r) => setTimeout(r, 160));
       setFromId(f);
@@ -573,14 +572,10 @@ export const ThreeTransitionProvider: React.FC<{
       setDirection(dir);
       setActive(true);
       document.body.style.overflow = "hidden";
-      console.log(
-        `[ThreeTransition] 3D animation active, waiting for completion`
-      );
       await new Promise<void>((resolve) => {
         resolver.current = resolve;
       });
       // In guided mode, no scrolling needed - sections are rendered conditionally
-      console.log(`[ThreeTransition] Transition complete, unshrinking`);
       setShrunk(false);
       document.body.style.overflow = "";
     },
@@ -675,13 +670,7 @@ export const ThreeTransitionProvider: React.FC<{
     [startTransition, navigateWith3D, active]
   );
 
-  // Debug logging
-  console.log(
-    `[ThreeTransition] Render - shrunk: ${shrunk}, active: ${active}`
-  );
-  if (active) {
-    console.log("[ThreeTransition] 3D overlay is ACTIVE and covering screen");
-  }
+  // Removed debug logging for performance
 
   return (
     <ThreeTransitionContext.Provider value={contextValue}>

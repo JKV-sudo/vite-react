@@ -16,7 +16,6 @@ const Header: React.FC = () => {
 
   // Navigate to section with 3D transition
   const handleNavigation = (sectionId: string) => {
-    console.log(`[Header] handleNavigation called with: ${sectionId}`);
     navigateToSection(
       sectionId as
         | "home"
@@ -31,7 +30,6 @@ const Header: React.FC = () => {
 
   // Handle logo click
   const handleLogoClick = () => {
-    console.log(`[Header] handleLogoClick called`);
     navigateToHome();
     setIsMenuOpen(false);
   };
