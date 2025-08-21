@@ -92,6 +92,87 @@
   }
 }
 
+/* Navigation Animations */
+@keyframes navScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes hologramPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes logoHologram {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px var(--accent-blue)) hue-rotate(0deg);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px var(--accent-blue)) hue-rotate(180deg);
+  }
+}
+
+@keyframes scanLine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes brandUnderline {
+  0%,
+  100% {
+    width: 0;
+  }
+  50% {
+    width: 100%;
+  }
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+@keyframes btnScanLine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Matrix Rain Effect */
 .matrix-rain {
   position: absolute;

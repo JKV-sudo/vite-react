@@ -38,39 +38,139 @@
 
     <!-- Navigation -->
     <nav class="nav-bar" id="nav-bar">
+        <div class="nav-hologram-effect"></div>
         <div class="nav-content">
-            <div class="nav-logo">
-                <img src="./assets/logo_eye_V2-removebg-preview.png" alt="Split-Vision" class="nav-logo-img">
-                <span class="nav-brand">Split-Vision</span>
+            <div class="nav-logo-section">
+                <div class="nav-logo-container">
+                    <div class="nav-logo-hologram">
+                        <img src="./assets/logo_eye_V2-removebg-preview.png" alt="Split-Vision" class="nav-logo-img">
+                        <div class="hologram-scan-line"></div>
+                    </div>
+                    <div class="nav-brand-container">
+                        <span class="nav-brand">Split-Vision</span>
+                        <div class="nav-brand-underline"></div>
+                    </div>
+                </div>
+                <div class="nav-status">
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">ONLINE</span>
+                    </div>
+                </div>
             </div>
+            
             <div class="nav-controls">
-                <button class="nav-btn" data-face="front" data-page="home">
-                    <span class="nav-icon">🏠</span>
-                    <span class="nav-label">Home</span>
+                <div class="nav-controls-container">
+                    <button class="nav-btn" data-face="front" data-page="home">
+                        <div class="nav-btn-hologram">
+                            <span class="nav-icon">🏠</span>
+                            <span class="nav-label">Home</span>
+                            <div class="nav-btn-scan-line"></div>
+                        </div>
+                        <div class="nav-btn-glow"></div>
+                    </button>
+                    <button class="nav-btn" data-face="right" data-page="services">
+                        <div class="nav-btn-hologram">
+                            <span class="nav-icon">⚡</span>
+                            <span class="nav-label">Services</span>
+                            <div class="nav-btn-scan-line"></div>
+                        </div>
+                        <div class="nav-btn-glow"></div>
+                    </button>
+                    <button class="nav-btn" data-face="back" data-page="about">
+                        <div class="nav-btn-hologram">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-label">About</span>
+                            <div class="nav-btn-scan-line"></div>
+                        </div>
+                        <div class="nav-btn-glow"></div>
+                    </button>
+                    <button class="nav-btn" data-face="left" data-page="portfolio">
+                        <div class="nav-btn-hologram">
+                            <span class="nav-icon">💼</span>
+                            <span class="nav-label">Portfolio</span>
+                            <div class="nav-btn-scan-line"></div>
+                        </div>
+                        <div class="nav-btn-glow"></div>
+                    </button>
+                    <button class="nav-btn" data-face="top" data-page="tech">
+                        <div class="nav-btn-hologram">
+                            <span class="nav-icon">🔧</span>
+                            <span class="nav-label">Tech</span>
+                            <div class="nav-btn-scan-line"></div>
+                        </div>
+                        <div class="nav-btn-glow"></div>
+                    </button>
+                    <button class="nav-btn" data-face="bottom" data-page="contact">
+                        <div class="nav-btn-hologram">
+                            <span class="nav-icon">📧</span>
+                            <span class="nav-label">Contact</span>
+                            <div class="nav-btn-scan-line"></div>
+                        </div>
+                        <div class="nav-btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="nav-action-btn">
+                    <span class="action-icon">⚙️</span>
+                    <div class="action-tooltip">Settings</div>
+                </div>
+                <div class="nav-action-btn">
+                    <span class="action-icon">🔍</span>
+                    <div class="action-tooltip">Search</div>
+                </div>
+                <div class="nav-mobile-toggle" id="mobile-menu-toggle">
+                    <span class="mobile-line"></span>
+                    <span class="mobile-line"></span>
+                    <span class="mobile-line"></span>
+                </div>
+            </div>
+        </div>
+        <div class="nav-border-glow"></div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <img src="./assets/logo_eye_V2-removebg-preview.png" alt="Split-Vision" class="mobile-logo-img">
+                    <span class="mobile-brand">Split-Vision</span>
+                </div>
+                <button class="mobile-close-btn" id="mobile-close-btn">
+                    <span class="close-icon">✕</span>
                 </button>
-                <button class="nav-btn" data-face="right" data-page="services">
-                    <span class="nav-icon">⚡</span>
-                    <span class="nav-label">Services</span>
+            </div>
+            <div class="mobile-menu-items">
+                <button class="mobile-menu-item" data-face="front" data-page="home">
+                    <span class="mobile-icon">🏠</span>
+                    <span class="mobile-label">Home</span>
                 </button>
-                <button class="nav-btn" data-face="back" data-page="about">
-                    <span class="nav-icon">👥</span>
-                    <span class="nav-label">About</span>
+                <button class="mobile-menu-item" data-face="right" data-page="services">
+                    <span class="mobile-icon">⚡</span>
+                    <span class="mobile-label">Services</span>
                 </button>
-                <button class="nav-btn" data-face="left" data-page="portfolio">
-                    <span class="nav-icon">💼</span>
-                    <span class="nav-label">Portfolio</span>
+                <button class="mobile-menu-item" data-face="back" data-page="about">
+                    <span class="mobile-icon">👥</span>
+                    <span class="mobile-label">About</span>
                 </button>
-                <button class="nav-btn" data-face="top" data-page="tech">
-                    <span class="nav-icon">🔧</span>
-                    <span class="nav-label">Tech</span>
+                <button class="mobile-menu-item" data-face="left" data-page="portfolio">
+                    <span class="mobile-icon">💼</span>
+                    <span class="mobile-label">Portfolio</span>
                 </button>
-                <button class="nav-btn" data-face="bottom" data-page="contact">
-                    <span class="nav-icon">📧</span>
-                    <span class="nav-label">Contact</span>
+                <button class="mobile-menu-item" data-face="top" data-page="tech">
+                    <span class="mobile-icon">🔧</span>
+                    <span class="mobile-label">Tech</span>
+                </button>
+                <button class="mobile-menu-item" data-face="bottom" data-page="contact">
+                    <span class="mobile-icon">📧</span>
+                    <span class="mobile-label">Contact</span>
                 </button>
             </div>
         </div>
-    </nav>
+    </div>
 
     <!-- Main App Container -->
     <main class="app-container" id="app-container">
