@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #000; color: #fff; }
+        .test { background: #333; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        .success { background: #2d5a2d; }
+        .error { background: #5a2d2d; }
+    </style>
+</head>
+<body>
+    <h1>Split-Vision Test Page</h1>
+    
+    <div class="test" id="css-test">
+        ✅ CSS Loading Test: If you see styled content, CSS is working!
+    </div>
+    
+    <div class="test" id="js-test">
+        ❌ JavaScript Loading Test: Waiting...
+    </div>
+    
+    <div class="test" id="files-test">
+        📁 File Structure Test: Checking...
+    </div>
+    
+    <script>
+        // Test JavaScript loading
+        document.getElementById('js-test').innerHTML = '✅ JavaScript Loading Test: Working!';
+        document.getElementById('js-test').className = 'test success';
+        
+        // Test file access
+        fetch('./styles/main.css')
+            .then(response => response.ok ? 'CSS file accessible' : 'CSS file missing')
+            .then(result => {
+                document.getElementById('files-test').innerHTML = `✅ File Structure Test: ${result}`;
+                document.getElementById('files-test').className = 'test success';
+            })
+            .catch(err => {
+                document.getElementById('files-test').innerHTML = `❌ File Structure Test: ${err}`;
+                document.getElementById('files-test').className = 'test error';
+            });
+        
+        // Test main.js loading
+        fetch('./js/main.js')
+            .then(response => {
+                if (response.ok) {
+                    const div = document.createElement('div');
+                    div.className = 'test success';
+                    div.innerHTML = '✅ Main JS File: Accessible';
+                    document.body.appendChild(div);
+                }
+            })
+            .catch(err => {
+                const div = document.createElement('div');
+                div.className = 'test error';
+                div.innerHTML = `❌ Main JS File: ${err}`;
+                document.body.appendChild(div);
+            });
+    </script>
+</body>
+</html>

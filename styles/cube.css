@@ -1,0 +1,848 @@
+/* 3D Cube Navigation System - Enhanced */
+
+.cube-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  perspective: 2500px;
+  perspective-origin: center center;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 26, 42, 0.3) 0%,
+    rgba(0, 0, 0, 0.9) 70%
+  );
+}
+
+.cube-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 212, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(57, 255, 20, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 60%,
+      rgba(157, 78, 221, 0.1) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  animation: ambientGlow 8s ease-in-out infinite;
+}
+
+.cube {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center center;
+  filter: drop-shadow(0 0 50px rgba(0, 212, 255, 0.3));
+}
+
+/* Enhanced cube rotation with glow effects */
+.cube.show-front {
+  transform: translateZ(-50vh) rotateY(0deg) rotateX(0deg);
+  filter: drop-shadow(0 0 60px rgba(0, 212, 255, 0.4));
+}
+
+.cube.show-back {
+  transform: translateZ(-50vh) rotateY(-180deg) rotateX(0deg);
+  filter: drop-shadow(0 0 60px rgba(255, 0, 64, 0.4));
+}
+
+.cube.show-right {
+  transform: translateZ(-50vh) rotateY(-90deg) rotateX(0deg);
+  filter: drop-shadow(0 0 60px rgba(57, 255, 20, 0.4));
+}
+
+.cube.show-left {
+  transform: translateZ(-50vh) rotateY(90deg) rotateX(0deg);
+  filter: drop-shadow(0 0 60px rgba(255, 165, 0, 0.4));
+}
+
+.cube.show-top {
+  transform: translateZ(-50vh) rotateY(0deg) rotateX(-90deg);
+  filter: drop-shadow(0 0 60px rgba(157, 78, 221, 0.4));
+}
+
+.cube.show-bottom {
+  transform: translateZ(-50vh) rotateY(0deg) rotateX(90deg);
+  filter: drop-shadow(0 0 60px rgba(255, 20, 147, 0.4));
+}
+
+/* Cube Face Base Styles - Enhanced */
+.cube-face {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(26, 26, 26, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  backface-visibility: visible;
+  position: relative;
+  box-shadow: inset 0 0 100px rgba(0, 212, 255, 0.1),
+    0 0 100px rgba(0, 212, 255, 0.2);
+}
+
+/* Enhanced face-specific borders with glowing edges */
+.cube-face::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    rgba(0, 212, 255, 0.6) 0%,
+    rgba(57, 255, 20, 0.6) 25%,
+    rgba(157, 78, 221, 0.6) 50%,
+    rgba(255, 0, 64, 0.6) 75%,
+    rgba(0, 212, 255, 0.6) 100%
+  );
+  border-radius: 8px;
+  z-index: -1;
+  animation: borderGlow 4s linear infinite;
+}
+
+.cube-face::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 98px,
+      rgba(0, 212, 255, 0.03) 100px,
+      rgba(0, 212, 255, 0.03) 102px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 98px,
+      rgba(0, 212, 255, 0.03) 100px,
+      rgba(0, 212, 255, 0.03) 102px
+    );
+  pointer-events: none;
+  animation: scanlines 20s linear infinite;
+}
+
+/* Individual Face Positioning - Fixed 3D Cube Structure */
+.cube-face.front {
+  transform: translateZ(50vh);
+}
+
+.cube-face.back {
+  transform: rotateY(180deg) translateZ(50vh);
+}
+
+.cube-face.right {
+  transform: rotateY(90deg) translateZ(50vh);
+}
+
+.cube-face.left {
+  transform: rotateY(-90deg) translateZ(50vh);
+}
+
+.cube-face.top {
+  transform: rotateX(90deg) translateZ(50vh);
+}
+
+.cube-face.bottom {
+  transform: rotateX(-90deg) translateZ(50vh);
+}
+
+/* These rotation states are handled above with enhanced glow effects */
+
+/* Face-specific styling */
+.cube-face.front {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 26, 42, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+.cube-face.right {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(26, 42, 0, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+.cube-face.back {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(42, 0, 26, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+.cube-face.left {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(42, 26, 0, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+.cube-face.top {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(20, 0, 42, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+.cube-face.bottom {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 42, 20, 0.9) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+/* Page-specific content styling */
+
+/* About Page Styles */
+.about-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-story {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.about-story h3 {
+  font-size: 2rem;
+  color: var(--accent-blue);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 15px var(--accent-blue);
+}
+
+.about-story p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.about-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  min-width: 150px;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+}
+
+.stat-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(57, 255, 20, 0.3);
+}
+
+.stat-number {
+  display: block;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--accent-green);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px var(--accent-green);
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.about-team {
+  text-align: center;
+}
+
+.about-team h3 {
+  font-size: 2rem;
+  color: var(--accent-purple);
+  margin-bottom: 2rem;
+  text-shadow: 0 0 15px var(--accent-purple);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.team-member {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-purple);
+  border-radius: 15px;
+  padding: 2rem;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(157, 78, 221, 0.3);
+}
+
+.member-avatar {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.team-member h4 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.team-member p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Portfolio Page Styles */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.portfolio-item {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px var(--border-glow);
+}
+
+.portfolio-item:hover {
+  transform: translateY(-10px) rotateY(5deg);
+  box-shadow: 0 20px 40px var(--border-glow);
+}
+
+.portfolio-image {
+  height: 200px;
+  background: linear-gradient(45deg, var(--bg-secondary), var(--bg-card));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--accent-blue);
+}
+
+.portfolio-placeholder {
+  font-size: 4rem;
+  opacity: 0.6;
+}
+
+.portfolio-info {
+  padding: 1.5rem;
+}
+
+.portfolio-info h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.portfolio-info p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.portfolio-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: rgba(0, 212, 255, 0.2);
+  color: var(--accent-blue);
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  border: 1px solid var(--accent-blue);
+}
+
+/* Tech Stack Page Styles */
+.tech-categories {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tech-category {
+  margin-bottom: 3rem;
+}
+
+.tech-category h3 {
+  font-size: 1.8rem;
+  color: var(--accent-green);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 0 0 15px var(--accent-green);
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.tech-item {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+}
+
+.tech-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px var(--border-glow);
+  border-color: var(--accent-green);
+}
+
+.tech-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.tech-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Contact Page Styles */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contact-form {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  border-radius: 15px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px var(--border-glow);
+}
+
+.contact-form h3 {
+  color: var(--accent-blue);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px var(--accent-blue);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition-smooth);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-green));
+  border: none;
+  border-radius: 8px;
+  color: var(--bg-primary);
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+}
+
+.contact-info {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green);
+  border-radius: 15px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+}
+
+.contact-info h3 {
+  color: var(--accent-green);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px var(--accent-green);
+}
+
+.contact-methods {
+  margin-bottom: 2rem;
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(57, 255, 20, 0.05);
+  border-radius: 8px;
+  transition: var(--transition-smooth);
+}
+
+.contact-method:hover {
+  background: rgba(57, 255, 20, 0.1);
+  transform: translateX(5px);
+}
+
+.contact-icon {
+  font-size: 1.5rem;
+}
+
+.contact-text {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.social-links h4 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 5px var(--accent-green);
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.social-link {
+  display: block;
+  padding: 0.75rem;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid var(--accent-blue);
+  border-radius: 8px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.social-link:hover {
+  background: var(--accent-blue);
+  color: var(--bg-primary);
+  transform: scale(1.05);
+}
+
+/* Responsive Design for Cube */
+@media (max-width: 768px) {
+  .cube-container {
+    perspective: 1500px;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .tech-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+}
+
+/* Service Card Flip Effects */
+.services-grid .service-card {
+  perspective: 1000px;
+  height: 300px;
+  width: 100%;
+  position: relative;
+  transition: var(--transition-smooth);
+}
+
+.services-grid .service-card:hover {
+  transform: translateY(-10px);
+}
+
+.service-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.service-card:hover .service-card-inner {
+  transform: rotateY(180deg);
+}
+
+.service-card-front,
+.service-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  border-radius: 15px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px var(--border-glow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.service-card-back {
+  transform: rotateY(180deg);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+}
+
+.service-card-front .service-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-card-front .service-title,
+.service-card-back .service-title-back {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px var(--accent-blue);
+}
+
+.service-card-back .service-title-back {
+  text-shadow: 0 0 10px var(--accent-green);
+}
+
+.service-description {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.service-hover-indicator {
+  margin-top: auto;
+  color: var(--accent-blue);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.service-hover-indicator .arrow {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-hover-indicator .arrow {
+  transform: translateX(5px);
+}
+
+.service-features {
+  list-style: none;
+  text-align: left;
+  width: 100%;
+}
+
+.service-feature {
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.feature-bullet {
+  color: var(--accent-green);
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .cube-face {
+    font-size: 0.9rem;
+  }
+
+  .contact-form,
+  .contact-info {
+    padding: 1.5rem;
+  }
+
+  .services-grid .service-card {
+    height: 250px;
+  }
+
+  .service-card-front,
+  .service-card-back {
+    padding: 1.5rem;
+  }
+}
+
+/* GSAP TRANSITION OPTIMIZATIONS */
+
+/* Enhanced Cube Face for active state */
+.cube-face.active {
+  z-index: 10;
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Non-active faces should be slightly transparent but still visible */
+.cube-face:not(.active) {
+  opacity: 0.7;
+}
+
+/* Subtle hover effect */
+.cube-face:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+/* Proper face visibility control */
+.cube-face {
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Only show the currently active face */
+.cube-face.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Show front face by default */
+.cube.show-front .cube-face.front {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cube.show-right .cube-face.right {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cube.show-back .cube-face.back {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cube.show-left .cube-face.left {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cube.show-top .cube-face.top {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cube.show-bottom .cube-face.bottom {
+  opacity: 1;
+  visibility: visible;
+}

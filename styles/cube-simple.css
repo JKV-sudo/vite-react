@@ -1,0 +1,119 @@
+/* SIMPLE WORKING 3D CUBE SYSTEM */
+
+.cube-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  perspective: 1000px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.cube {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Cube Face Base */
+.cube-face {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+}
+
+/* 3D Cube Face Positioning */
+.cube-face.front {
+  transform: translateZ(50vh);
+}
+
+.cube-face.back {
+  transform: rotateY(180deg) translateZ(50vh);
+}
+
+.cube-face.right {
+  transform: rotateY(90deg) translateZ(50vh);
+}
+
+.cube-face.left {
+  transform: rotateY(-90deg) translateZ(50vh);
+}
+
+.cube-face.top {
+  transform: rotateX(90deg) translateZ(50vh);
+}
+
+.cube-face.bottom {
+  transform: rotateX(-90deg) translateZ(50vh);
+}
+
+/* Cube States */
+.cube.show-front {
+  transform: translateZ(-50vh) rotateY(0deg) rotateX(0deg);
+}
+
+.cube.show-back {
+  transform: translateZ(-50vh) rotateY(-180deg) rotateX(0deg);
+}
+
+.cube.show-right {
+  transform: translateZ(-50vh) rotateY(-90deg) rotateX(0deg);
+}
+
+.cube.show-left {
+  transform: translateZ(-50vh) rotateY(90deg) rotateX(0deg);
+}
+
+.cube.show-top {
+  transform: translateZ(-50vh) rotateY(0deg) rotateX(-90deg);
+}
+
+.cube.show-bottom {
+  transform: translateZ(-50vh) rotateY(0deg) rotateX(90deg);
+}
+
+/* Page Content */
+.page-content {
+  width: 100%;
+  height: 100%;
+  padding: 4rem 2rem;
+  overflow-y: auto;
+  position: relative;
+  z-index: 10;
+}
+
+/* Face Colors for Testing */
+.cube-face.front {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 26, 42, 0.8));
+}
+
+.cube-face.right {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(26, 42, 0, 0.8));
+}
+
+.cube-face.back {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(42, 0, 26, 0.8));
+}
+
+.cube-face.left {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(42, 26, 0, 0.8));
+}
+
+.cube-face.top {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 0, 42, 0.8));
+}
+
+.cube-face.bottom {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 42, 20, 0.8));
+}

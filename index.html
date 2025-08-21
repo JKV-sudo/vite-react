@@ -1,141 +1,493 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split-Vision - Vanilla Demo</title>
+    <meta name="description" content="Marketing-Agentur für Web-App Entwicklung, Social Media Management & Drohnenaufnahmen">
     
-    <!-- Primary Meta Tags -->
-    <title>Split-Vision | Marketing-Agentur für Web-App Entwicklung, Social Media Management & Drohnenaufnahmen</title>
-    <meta name="title" content="Split-Vision | Marketing-Agentur für Web-App Entwicklung, Social Media Management & Drohnenaufnahmen" />
-    <meta name="description" content="Ihre Vision, unsere Expertise. Split-Vision ist eine innovative Marketing-Agentur in Berlin, spezialisiert auf Web-App Entwicklung, Social Media Management und professionelle Drohnenaufnahmen." />
-    <meta name="keywords" content="Marketing-Agentur, Web-App Entwicklung, Social Media Management, Drohnenaufnahmen, Berlin, Digital Marketing, Webdesign, App Entwicklung, Social Media Marketing, Drohnenfotografie" />
-    <meta name="author" content="Split-Vision" />
-    <meta name="robots" content="index, follow" />
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./assets/logo_eye_V2-removebg-preview.png" as="image">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;900&display=swap" as="style">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://split-vision.de/" />
-    <meta property="og:title" content="Split-Vision | Marketing-Agentur für Web-App Entwicklung, Social Media Management & Drohnenaufnahmen" />
-    <meta property="og:description" content="Ihre Vision, unsere Expertise. Split-Vision ist eine innovative Marketing-Agentur in Berlin, spezialisiert auf Web-App Entwicklung, Social Media Management und professionelle Drohnenaufnahmen." />
-    <meta property="og:image" content="https://split-vision.de/vite.svg" />
-    <meta property="og:site_name" content="Split-Vision" />
-    <meta property="og:locale" content="de_DE" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://split-vision.de/" />
-    <meta property="twitter:title" content="Split-Vision | Marketing-Agentur für Web-App Entwicklung, Social Media Management & Drohnenaufnahmen" />
-    <meta property="twitter:description" content="Ihre Vision, unsere Expertise. Split-Vision ist eine innovative Marketing-Agentur in Berlin, spezialisiert auf Web-App Entwicklung, Social Media Management und professionelle Drohnenaufnahmen." />
-    <meta property="twitter:image" content="https://split-vision.de/vite.svg" />
-    
-    <!-- Additional SEO Meta Tags -->
-    <meta name="theme-color" content="#000000" />
-    <meta name="msapplication-TileColor" content="#000000" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Split-Vision" />
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://split-vision.de/" />
-    
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Split-Vision",
-      "url": "https://split-vision.de",
-      "logo": "https://split-vision.de/vite.svg",
-      "description": "Marketing-Agentur für Web-App Entwicklung, Social Media Management & Drohnenaufnahmen",
-      "slogan": "Ihre Vision, unsere Expertise",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Berlin",
-        "addressCountry": "DE"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "availableLanguage": ["German", "English"]
-      },
-      "sameAs": [
-        "https://www.linkedin.com/company/split-vision",
-        "https://www.instagram.com/splitvision_agency",
-        "https://www.facebook.com/splitvisionagency"
-      ],
-      "serviceArea": {
-        "@type": "GeoCircle",
-        "geoMidpoint": {
-          "@type": "GeoCoordinates",
-          "latitude": 52.5200,
-          "longitude": 13.4050
-        },
-        "geoRadius": "50000"
-      },
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Marketing Services",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Web-App Entwicklung",
-              "description": "Professionelle Entwicklung von Web-Anwendungen und mobilen Apps"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Social Media Management",
-              "description": "Strategisches Social Media Management und Content Creation"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Drohnenaufnahmen",
-              "description": "Professionelle Drohnenfotografie und -videografie"
-            }
-          }
-        ]
-      }
-    }
-    </script>
-    
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Preload and load critical fonts with swap -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&family=Inter:wght@400;600;700&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&family=Inter:wght@400;600;700&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&family=Inter:wght@400;600;700&display=swap"
-      />
-    </noscript>
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/cube-simple.css">
+    <link rel="stylesheet" href="./styles/animations.css">
     
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/vite.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/vite.svg" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/vite.svg" />
-    <link rel="manifest" href="/site.webmanifest" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <link rel="icon" type="image/svg+xml" href="./assets/vite.svg">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <img src="./assets/logo_eye_V2-removebg-preview.png" alt="Split-Vision Logo" class="loading-logo">
+            <h1 class="loading-title">Split-Vision</h1>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loading-progress"></div>
+            </div>
+            <p class="loading-text">Initializing Quantum Matrix...</p>
+        </div>
+        <div class="matrix-rain" id="matrix-rain"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar" id="nav-bar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <img src="./assets/logo_eye_V2-removebg-preview.png" alt="Split-Vision" class="nav-logo-img">
+                <span class="nav-brand">Split-Vision</span>
+            </div>
+            <div class="nav-controls">
+                <button class="nav-btn" data-face="front" data-page="home">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Home</span>
+                </button>
+                <button class="nav-btn" data-face="right" data-page="services">
+                    <span class="nav-icon">⚡</span>
+                    <span class="nav-label">Services</span>
+                </button>
+                <button class="nav-btn" data-face="back" data-page="about">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label">About</span>
+                </button>
+                <button class="nav-btn" data-face="left" data-page="portfolio">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-label">Portfolio</span>
+                </button>
+                <button class="nav-btn" data-face="top" data-page="tech">
+                    <span class="nav-icon">🔧</span>
+                    <span class="nav-label">Tech</span>
+                </button>
+                <button class="nav-btn" data-face="bottom" data-page="contact">
+                    <span class="nav-icon">📧</span>
+                    <span class="nav-label">Contact</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main App Container -->
+    <main class="app-container" id="app-container">
+        <!-- 3D Cube Container -->
+        <div class="cube-container" id="cube-container">
+            <div class="cube" id="cube">
+                
+                <!-- Front Face - Home -->
+                <div class="cube-face front" data-page="home">
+                    <div class="page-content">
+                        <div class="hero-section">
+                            <div class="hero-logo">
+                                <img src="./assets/logo_eye_V2-removebg-preview.png" alt="Split-Vision Logo" class="hero-logo-img">
+                            </div>
+                            <h1 class="hero-title">
+                                <span class="hero-title-main">Split-Vision</span>
+                                <span class="hero-title-sub">Ihre Vision, unsere Expertise</span>
+                            </h1>
+                            <p class="hero-description">
+                                Marketing-Agentur für <strong>Web-App Entwicklung</strong>, 
+                                <strong>Social Media Management</strong> und <strong>Drohnenaufnahmen</strong>
+                            </p>
+                            <div class="hero-features">
+                                <div class="feature-card">
+                                    <span class="feature-icon">🖥️</span>
+                                    <span class="feature-text">Web-App Entwicklung</span>
+                                </div>
+                                <div class="feature-card">
+                                    <span class="feature-icon">📱</span>
+                                    <span class="feature-text">Social Media</span>
+                                </div>
+                                <div class="feature-card">
+                                    <span class="feature-icon">🚁</span>
+                                    <span class="feature-text">Drohnenaufnahmen</span>
+                                </div>
+                            </div>
+                            <div class="hero-cta">
+                                <button class="cta-primary" onclick="navigateToFace('bottom')">Projekt starten</button>
+                                <button class="cta-secondary" onclick="navigateToFace('right')">Unsere Leistungen</button>
+                            </div>
+                        </div>
+                        <div class="floating-shapes">
+                            <div class="shape shape-1"></div>
+                            <div class="shape shape-2"></div>
+                            <div class="shape shape-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Face - Services -->
+                <div class="cube-face right" data-page="services">
+                    <div class="page-content">
+                        <div class="section-header">
+                            <h2 class="section-title">Unsere Leistungen</h2>
+                            <p class="section-subtitle">Drei Kernbereiche, eine Vision: Ihr digitaler Erfolg</p>
+                        </div>
+                        <div class="services-grid">
+                            <div class="service-card">
+                                <div class="service-card-inner">
+                                    <div class="service-card-front">
+                                        <div class="service-icon">🖥️</div>
+                                        <h3 class="service-title">Web-App Programmierung</h3>
+                                        <p class="service-description">Moderne, responsive Web-Anwendungen mit neuesten Technologien</p>
+                                        <div class="service-hover-indicator">
+                                            <span>Mehr erfahren</span>
+                                            <span class="arrow">→</span>
+                                        </div>
+                                    </div>
+                                    <div class="service-card-back">
+                                        <h3 class="service-title-back">Web-App Programmierung</h3>
+                                        <ul class="service-features">
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Custom Web-Anwendungen</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Responsive Design</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>React, TypeScript, Node.js</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>E-Commerce Lösungen</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Progressive Web Apps (PWAs)</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>API Entwicklung & Integration</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-card-inner">
+                                    <div class="service-card-front">
+                                        <div class="service-icon">📱</div>
+                                        <h3 class="service-title">Social Media Management</h3>
+                                        <p class="service-description">Strategische Betreuung Ihrer Social Media Präsenz</p>
+                                        <div class="service-hover-indicator">
+                                            <span>Mehr erfahren</span>
+                                            <span class="arrow">→</span>
+                                        </div>
+                                    </div>
+                                    <div class="service-card-back">
+                                        <h3 class="service-title-back">Social Media Management</h3>
+                                        <ul class="service-features">
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Content-Strategie & Erstellung</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Plattform-Management</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Analytics & Reporting</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Community Building</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Influencer-Kooperationen</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Social Media Werbung</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-card-inner">
+                                    <div class="service-card-front">
+                                        <div class="service-icon">🚁</div>
+                                        <h3 class="service-title">Drohnenaufnahmen</h3>
+                                        <p class="service-description">Professionelle Luftaufnahmen für Marketing und Dokumentation</p>
+                                        <div class="service-hover-indicator">
+                                            <span>Mehr erfahren</span>
+                                            <span class="arrow">→</span>
+                                        </div>
+                                    </div>
+                                    <div class="service-card-back">
+                                        <h3 class="service-title-back">Drohnenaufnahmen</h3>
+                                        <ul class="service-features">
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Luftfotografie & Videografie</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Immobilien-Marketing</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Event-Dokumentation</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Baufortschritt-Monitoring</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Tourismus & Landschaft</li>
+                                            <li class="service-feature"><span class="feature-bullet">⚡</span>Gewerbe & Industrie</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Face - About -->
+                <div class="cube-face back" data-page="about">
+                    <div class="page-content">
+                        <div class="section-header">
+                            <h2 class="section-title">Über uns</h2>
+                            <p class="section-subtitle">Digital DNA Laboratory</p>
+                        </div>
+                        <div class="about-content">
+                            <div class="about-story">
+                                <h3>Unsere Geschichte</h3>
+                                <p>Split-Vision ist eine innovative Marketing-Agentur aus Deutschland, die sich auf cutting-edge digitale Lösungen spezialisiert hat. Wir erschaffen einzigartige digitale Erlebnisse, die im Gedächtnis bleiben.</p>
+                            </div>
+                            <div class="about-stats">
+                                <div class="stat-card">
+                                    <span class="stat-number">15+</span>
+                                    <span class="stat-label">Projekte</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="stat-number">8+</span>
+                                    <span class="stat-label">Kunden</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="stat-number">1</span>
+                                    <span class="stat-label">Jahr Erfahrung</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="stat-number">25+</span>
+                                    <span class="stat-label">Technologien</span>
+                                </div>
+                            </div>
+                            <div class="about-team">
+                                <h3>Unser Team</h3>
+                                <div class="team-grid">
+                                    <div class="team-member">
+                                        <div class="member-avatar">👨‍💻</div>
+                                        <h4>Max Developer</h4>
+                                        <p>Full-Stack Developer</p>
+                                    </div>
+                                    <div class="team-member">
+                                        <div class="member-avatar">👩‍🎨</div>
+                                        <h4>Anna Designer</h4>
+                                        <p>UI/UX Designer</p>
+                                    </div>
+                                    <div class="team-member">
+                                        <div class="member-avatar">👨‍🚁</div>
+                                        <h4>Tom Pilot</h4>
+                                        <p>Drone Operator</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left Face - Portfolio -->
+                <div class="cube-face left" data-page="portfolio">
+                    <div class="page-content">
+                        <div class="section-header">
+                            <h2 class="section-title">Portfolio</h2>
+                            <p class="section-subtitle">Digital Showcase Gallery</p>
+                        </div>
+                        <div class="portfolio-grid">
+                            <div class="portfolio-item">
+                                <div class="portfolio-image">
+                                    <div class="portfolio-placeholder">🌐</div>
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>E-Commerce Platform</h3>
+                                    <p>Modern online shop with React & Node.js</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">React</span>
+                                        <span class="tag">Node.js</span>
+                                        <span class="tag">MongoDB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-item">
+                                <div class="portfolio-image">
+                                    <div class="portfolio-placeholder">📱</div>
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Social Media Campaign</h3>
+                                    <p>Instagram & Facebook marketing strategy</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Social Media</span>
+                                        <span class="tag">Content</span>
+                                        <span class="tag">Analytics</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-item">
+                                <div class="portfolio-image">
+                                    <div class="portfolio-placeholder">🏢</div>
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Real Estate Drone Video</h3>
+                                    <p>Cinematic property showcase</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Drone</span>
+                                        <span class="tag">Video</span>
+                                        <span class="tag">4K</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-item">
+                                <div class="portfolio-image">
+                                    <div class="portfolio-placeholder">⚡</div>
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Performance Web App</h3>
+                                    <p>Lightning-fast dashboard application</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Performance</span>
+                                        <span class="tag">Dashboard</span>
+                                        <span class="tag">API</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Face - Tech Stack -->
+                <div class="cube-face top" data-page="tech">
+                    <div class="page-content">
+                        <div class="section-header">
+                            <h2 class="section-title">Technology Stack</h2>
+                            <p class="section-subtitle">Cutting-edge tools for superior results</p>
+                        </div>
+                        <div class="tech-categories">
+                            <div class="tech-category">
+                                <h3>Frontend</h3>
+                                <div class="tech-grid">
+                                    <div class="tech-item">
+                                        <span class="tech-icon">⚛️</span>
+                                        <span class="tech-name">React</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🔷</span>
+                                        <span class="tech-name">TypeScript</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">⚡</span>
+                                        <span class="tech-name">Vite</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🎨</span>
+                                        <span class="tech-name">CSS3</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h3>Backend</h3>
+                                <div class="tech-grid">
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🟢</span>
+                                        <span class="tech-name">Node.js</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🍃</span>
+                                        <span class="tech-name">MongoDB</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🗄️</span>
+                                        <span class="tech-name">PostgreSQL</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🚀</span>
+                                        <span class="tech-name">Express</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h3>Animation</h3>
+                                <div class="tech-grid">
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🎬</span>
+                                        <span class="tech-name">Framer Motion</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">⚡</span>
+                                        <span class="tech-name">GSAP</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">✨</span>
+                                        <span class="tech-name">Three.js</span>
+                                    </div>
+                                    <div class="tech-item">
+                                        <span class="tech-icon">🌟</span>
+                                        <span class="tech-name">Particles</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Face - Contact -->
+                <div class="cube-face bottom" data-page="contact">
+                    <div class="page-content">
+                        <div class="section-header">
+                            <h2 class="section-title">Kontakt</h2>
+                            <p class="section-subtitle">Quantum Communication Hub</p>
+                        </div>
+                        <div class="contact-content">
+                            <div class="contact-form">
+                                <h3>Projekt starten</h3>
+                                <form id="contact-form">
+                                    <div class="form-group">
+                                        <input type="text" id="name" name="name" placeholder="Ihr Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" id="email" name="email" placeholder="E-Mail Adresse" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <select id="service" name="service" required>
+                                            <option value="">Service auswählen</option>
+                                            <option value="webapp">Web-App Entwicklung</option>
+                                            <option value="social">Social Media Management</option>
+                                            <option value="drone">Drohnenaufnahmen</option>
+                                            <option value="all">Alles zusammen</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="message" name="message" placeholder="Beschreiben Sie Ihr Projekt" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn">Nachricht senden</button>
+                                </form>
+                            </div>
+                            <div class="contact-info">
+                                <h3>Kontakt Info</h3>
+                                <div class="contact-methods">
+                                    <div class="contact-method">
+                                        <span class="contact-icon">📧</span>
+                                        <span class="contact-text">info@split-vision.de</span>
+                                    </div>
+                                    <div class="contact-method">
+                                        <span class="contact-icon">📱</span>
+                                        <span class="contact-text">+49 123 456 789</span>
+                                    </div>
+                                    <div class="contact-method">
+                                        <span class="contact-icon">📍</span>
+                                        <span class="contact-text">Deutschland</span>
+                                    </div>
+                                    <div class="contact-method">
+                                        <span class="contact-icon">⏰</span>
+                                        <span class="contact-text">Mo-Fr 9:00-18:00</span>
+                                    </div>
+                                </div>
+                                <div class="social-links">
+                                    <h4>Folgen Sie uns</h4>
+                                    <div class="social-grid">
+                                        <a href="#" class="social-link">📘 Facebook</a>
+                                        <a href="#" class="social-link">📷 Instagram</a>
+                                        <a href="#" class="social-link">🐦 Twitter</a>
+                                        <a href="#" class="social-link">💼 LinkedIn</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Particle Canvas -->
+        <canvas id="particle-canvas" class="particle-canvas"></canvas>
+
+        <!-- Performance Monitor -->
+        <div class="performance-monitor" id="performance-monitor">
+            <div class="fps-counter">FPS: <span id="fps-value">60</span></div>
+            <div class="frame-time">Frame: <span id="frame-time">16</span>ms</div>
+        </div>
+    </main>
+
+    <!-- GSAP Animation Library with 3D Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Scripts -->
+    <script src="./js/performance.js"></script>
+    <script src="./js/particles.js"></script>
+    <script src="./js/cube-simple.js"></script>
+    <script src="./js/animations.js"></script>
+    <script src="./js/main.js"></script>
+</body>
 </html>
